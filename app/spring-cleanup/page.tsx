@@ -673,7 +673,7 @@ export default function SpringCleanupPage() {
                         </div>
                       )}
                     </div>
-                    {bookingStatus !== 'success' && postalStatus === 'valid' && (
+                    {postalStatus === 'valid' && (
                       <>
                         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                           <div className="space-y-1">
@@ -725,9 +725,7 @@ export default function SpringCleanupPage() {
                         </Button>
                         {bookingMessage && (
                           <div
-                            className={`text-sm ${
-                              bookingStatus === 'success' ? 'text-brand-green' : 'text-red-600'
-                            }`}
+                            className="text-sm text-red-600"
                             role="status"
                             aria-live="polite"
                           >

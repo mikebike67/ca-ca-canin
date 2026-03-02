@@ -1,7 +1,10 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {};
+try {
+  const { initOpenNextCloudflareForDev } = await import("@opennextjs/cloudflare");
+  initOpenNextCloudflareForDev();
+} catch {
+  // Allow local development before Cloudflare dependencies are installed.
+}
 
-export default nextConfig;
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   eslint: {
@@ -9,4 +12,4 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+export default nextConfig;

@@ -812,7 +812,7 @@ export default function Page() {
                       )}
                     </div>
 
-                    {postalStatus === 'valid' && bookingStatus !== 'success' && (
+                    {postalStatus === 'valid' && (
                       <>
                         <div className="space-y-3 border-t border-gray-200 pt-4">
                           <div className="hidden" aria-hidden="true">
@@ -892,9 +892,7 @@ export default function Page() {
                         </Button>
                         {bookingMessage && (
                           <div
-                            className={`text-sm ${
-                              bookingStatus === 'success' ? 'text-brand-green' : 'text-red-600'
-                            }`}
+                            className="text-sm text-red-600"
                             role="status"
                             aria-live="polite"
                           >

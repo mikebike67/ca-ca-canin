@@ -281,9 +281,11 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
+    const recipients = [email, adminTo].filter((value): value is string => Boolean(value));
+
     await transporter.sendMail({
       from,
-      to: [email, adminTo].filter(Boolean),
+      to: recipients,
       subject,
       text,
       html,
