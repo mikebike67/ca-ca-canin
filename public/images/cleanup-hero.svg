@@ -1,0 +1,38 @@
+<svg width="1200" height="800" viewBox="0 0 1200 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1200" height="800" fill="#F46F54"/>
+  <rect y="520" width="1200" height="280" fill="#0E2F23"/>
+  <path d="M0 520H1200" stroke="#0A2018" stroke-width="18" stroke-linecap="round"/>
+  <circle cx="1030" cy="140" r="90" fill="#E8F53A" opacity="0.65"/>
+  <path d="M120 520C180 420 320 416 400 520" stroke="#0A2018" stroke-width="16" stroke-linecap="round" opacity="0.7"/>
+  <path d="M820 540C900 444 1040 444 1120 540" stroke="#0A2018" stroke-width="16" stroke-linecap="round" opacity="0.7"/>
+
+  <!-- Person kneeling with scoop -->
+  <rect x="430" y="340" width="210" height="200" rx="46" fill="#4E97FF"/>
+  <circle cx="620" cy="300" r="44" fill="#F5C28D"/>
+  <path d="M586 294C598 276 638 272 654 292" stroke="#0A2018" stroke-width="12" stroke-linecap="round"/>
+  <rect x="454" y="414" width="60" height="164" rx="24" transform="rotate(-12 454 414)" fill="#0A2018"/>
+  <rect x="566" y="414" width="60" height="164" rx="24" transform="rotate(12 566 414)" fill="#0A2018"/>
+  <rect x="430" y="548" width="98" height="34" rx="16" transform="rotate(-8 430 548)" fill="#071710"/>
+  <rect x="588" y="552" width="98" height="34" rx="16" transform="rotate(10 588 552)" fill="#071710"/>
+  <rect x="610" y="442" width="92" height="18" rx="9" transform="rotate(12 610 442)" fill="#0E7E54"/>
+  <rect x="372" y="444" width="92" height="18" rx="9" transform="rotate(-12 372 444)" fill="#0E7E54"/>
+  <rect x="512" y="452" width="16" height="118" rx="8" fill="#F5C28D"/>
+  <rect x="646" y="462" width="16" height="106" rx="8" transform="rotate(10 646 462)" fill="#F5C28D"/>
+  <rect x="646" y="494" width="190" height="30" rx="14" transform="rotate(10 646 494)" fill="#0E7E54"/>
+  <rect x="816" y="484" width="40" height="98" rx="14" transform="rotate(10 816 484)" fill="#0A2018"/>
+
+  <!-- Dog silhouette -->
+  <path d="M780 560C776 522 740 500 690 512L660 520C640 526 624 542 624 562C624 596 652 616 696 616C740 616 782 592 780 560Z" fill="#133D2E"/>
+  <circle cx="684" cy="506" r="22" fill="#133D2E"/>
+  <path d="M664 502C668 488 684 476 698 482" stroke="#0A2018" stroke-width="10" stroke-linecap="round"/>
+
+  <!-- Poop bag -->
+  <rect x="860" y="530" width="86" height="120" rx="18" fill="#E8F53A" stroke="#0A2018" stroke-width="10"/>
+  <path d="M860 540C876 520 930 520 946 540" stroke="#0A2018" stroke-width="10" stroke-linecap="round"/>
+  <rect x="886" y="618" width="30" height="52" rx="12" fill="#4E97FF"/>
+  <rect x="924" y="618" width="30" height="52" rx="12" fill="#4E97FF"/>
+  <rect x="882" y="596" width="64" height="12" rx="6" fill="#0A2018" opacity="0.5"/>
+
+  <!-- Ground detail -->
+  <path d="M0 800H1200" stroke="#071710" stroke-width="24"/>
+</svg>

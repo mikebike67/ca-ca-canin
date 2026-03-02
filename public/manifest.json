@@ -1,0 +1,21 @@
+{
+  "name": "VibeDev",
+  "short_name": "VibeDev",
+  "icons": [
+    {
+      "src": "/images/idevibelogo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/idevibelogo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#724420",
+  "background_color": "#724420",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+} 

@@ -1,0 +1,21 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Green Hexagon -->
+  <polygon 
+    points="100,15 175,50 175,135 100,170 25,135 25,50" 
+    fill="none" 
+    stroke="#307944" 
+    stroke-width="8"
+  />
+  
+  <!-- Brown Paw Print -->
+  <g fill="#724420">
+    <!-- Main palm pad (heart/kidney bean shaped) -->
+    <ellipse cx="100" cy="140" rx="30" ry="35" />
+    
+    <!-- Four toe pads in arc above -->
+    <ellipse cx="68" cy="98" rx="14" ry="17" />
+    <ellipse cx="92" cy="72" rx="14" ry="17" />
+    <ellipse cx="132" cy="98" rx="14" ry="17" />
+    <ellipse cx="108" cy="108" rx="12" ry="15" />
+  </g>
+</svg>
