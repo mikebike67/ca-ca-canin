@@ -88,6 +88,32 @@ export default function Page() {
     return { perVisit, note: frequencyNotes[frequency] };
   }, [dogs, frequency, yardCategory, yardSqft]);
 
+  const monthlyTotal = useMemo(() => {
+    const visitsPerMonth =
+      frequency === 'weekly' ? 4 :
+      frequency === 'biweekly' ? 2 :
+      frequency === 'monthly' ? 1 :
+      0;
+
+    return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
+  }, [frequency, pricingDetails.perVisit]);
+
+  const yearlyTotal = useMemo(() => {
+    if (frequency === 'onetime') {
+      return 0;
+    }
+
+    return Math.round(monthlyTotal * 12 * 0.8 * 100) / 100;
+  }, [frequency, monthlyTotal]);
+
+  const annualMonthlyEquivalent = useMemo(() => {
+    if (frequency === 'onetime') {
+      return 0;
+    }
+
+    return Math.round((yearlyTotal / 12) * 100) / 100;
+  }, [frequency, yearlyTotal]);
+
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -279,7 +305,7 @@ export default function Page() {
             <Link href="/" className="flex items-center space-x-3">
               <img 
                 src="/images/cacacaninlogo.jpg" 
-                alt="Ca-Ca Canin Logo" 
+                alt="Ca-Ca Canin logo" 
                 className="h-10 w-10"
               />
               <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
@@ -378,7 +404,7 @@ export default function Page() {
                   <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
                   <img
                     src="/images/hero-dog.png"
-                    alt="Smiling dog"
+                    alt="Happy dog sitting in a clean yard"
                     className="relative z-10 mx-auto h-auto w-full max-w-[27rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
                   />
                   <div
@@ -508,8 +534,8 @@ export default function Page() {
               </div>
               <div className="scroll-animation scroll-delay-1">
                 <img 
-                  src="/images/cleanup-hero.svg" 
-                  alt="Technician collecting dog waste with scoop and bag" 
+                  src="/images/our dog waste renewal company.png" 
+                  alt="Ca-Ca Canin team in a residential yard with cleanup tools and service truck" 
                   className="rounded-lg shadow-lg w-full"
                   loading="lazy"
                 />
@@ -524,8 +550,8 @@ export default function Page() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="scroll-animation scroll-delay-1 order-2 md:order-1">
                 <img 
-                  src="/images/residential-yard.svg" 
-                  alt="Residential yard cleanup showing worker and dog" 
+                  src="/images/revised residential pooper scooper services.png" 
+                  alt="Residential pooper scooper team cleaning a backyard with a dog nearby" 
                   className="rounded-lg shadow-lg w-full"
                   loading="lazy"
                 />
@@ -537,7 +563,7 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Flexible service options: 2x weekly, weekly, bi-weekly, monthly, and one-time.</span>
+                    <span>Flexible service options: weekly, bi-weekly, monthly, and one-time.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
@@ -551,44 +577,6 @@ export default function Page() {
                 <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
                   Learn More
                 </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Commercial Services */}
-        <section id="pricing-calculator" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="scroll-animation">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Commercial Dog Waste Removal
-                </h2>
-                <ul className="space-y-4 text-lg text-gray-700 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Free dog waste management plans for HOAs, apartments, and commercial properties.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Professional installation and maintenance of dog waste stations.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>We pick up dog waste and remove garbage, ensuring a clean property.</span>
-                  </li>
-                </ul>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  Learn More
-                </Button>
-              </div>
-              <div className="scroll-animation scroll-delay-1">
-                <img 
-                  src="/images/commercial-crew.svg" 
-                  alt="Commercial dog waste removal crew near service van" 
-                  className="rounded-lg shadow-lg w-full"
-                  loading="lazy"
-                />
               </div>
             </div>
           </div>
@@ -615,7 +603,7 @@ export default function Page() {
                 Pricing Calculator
               </h2>
               <p className="text-lg text-gray-600">
-                Estimate your per-visit price based on frequency, dogs, and yard size.
+                Estimate your per-visit and monthly price based on frequency, dogs, and yard size.
               </p>
             </div>
 
@@ -714,6 +702,12 @@ export default function Page() {
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
+                    {frequency !== 'onetime' && (
+                      <div className="space-y-1 text-sm font-semibold text-gray-700">
+                        <p>Estimated monthly total: {formatMoney(monthlyTotal)}/month</p>
+                        <p>Pay annually: {formatMoney(yearlyTotal)}/year ({formatMoney(annualMonthlyEquivalent)}/month equivalent, 20% off)</p>
+                      </div>
+                    )}
                     {frequency === 'onetime' && (
                       <p className="text-sm text-gray-600">
                         +$5 per additional 5-minute block.
@@ -982,7 +976,7 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Dog Waste Removal | Commercial Services
+                    Dog Waste Removal Services
                   </p>
                   <p className="text-gray-600">
                     Serving all neighborhoods throughout Laval, Quebec
@@ -1038,7 +1032,7 @@ export default function Page() {
               <div className="flex items-center space-x-3 mb-4">
                 <img 
                   src="/images/cacacaninlogo.jpg" 
-                  alt="Ca-Ca Canin Logo" 
+                  alt="Ca-Ca Canin logo" 
                   className="h-8 w-8"
                 />
                 <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
@@ -1053,7 +1047,6 @@ export default function Page() {
               <h3 className="font-semibold mb-4">Services</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="#services" className="hover:text-white">Residential</Link></li>
-                <li><Link href="#services" className="hover:text-white">Commercial</Link></li>
               </ul>
             </div>
             <div>

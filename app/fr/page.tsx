@@ -88,6 +88,32 @@ export default function Page() {
     return { perVisit, note: frequencyNotes[frequency] };
   }, [dogs, frequency, yardCategory, yardSqft]);
 
+  const monthlyTotal = useMemo(() => {
+    const visitsPerMonth =
+      frequency === 'weekly' ? 4 :
+      frequency === 'biweekly' ? 2 :
+      frequency === 'monthly' ? 1 :
+      0;
+
+    return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
+  }, [frequency, pricingDetails.perVisit]);
+
+  const yearlyTotal = useMemo(() => {
+    if (frequency === 'onetime') {
+      return 0;
+    }
+
+    return Math.round(monthlyTotal * 12 * 0.8 * 100) / 100;
+  }, [frequency, monthlyTotal]);
+
+  const annualMonthlyEquivalent = useMemo(() => {
+    if (frequency === 'onetime') {
+      return 0;
+    }
+
+    return Math.round((yearlyTotal / 12) * 100) / 100;
+  }, [frequency, yearlyTotal]);
+
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -278,7 +304,7 @@ export default function Page() {
             <Link href="/fr" className="flex items-center space-x-3">
               <img 
                 src="/images/cacacaninlogo.jpg" 
-                alt="Ca-Ca Canin Logo" 
+                alt="Logo Ca-Ca Canin" 
                 className="h-10 w-10"
               />
               <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
@@ -377,7 +403,7 @@ export default function Page() {
                   <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
                   <img
                     src="/images/hero-dog.png"
-                    alt="Chien souriant"
+                    alt="Chien heureux assis dans une cour propre"
                     className="relative z-10 mx-auto h-auto w-full max-w-[27rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
                   />
                   <div
@@ -507,8 +533,8 @@ export default function Page() {
               </div>
               <div className="scroll-animation scroll-delay-1">
                 <img 
-                  src="/images/cleanup-hero.svg" 
-                  alt="Technicien ramassant des déjections avec une pelle et un sac" 
+                  src="/images/our dog waste renewal company.png" 
+                  alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service" 
                   className="rounded-lg shadow-lg w-full"
                   loading="lazy"
                 />
@@ -523,8 +549,8 @@ export default function Page() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="scroll-animation scroll-delay-1 order-2 md:order-1">
                 <img 
-                  src="/images/residential-yard.svg" 
-                  alt="Nettoyage de cour résidentielle avec un employé et un chien" 
+                  src="/images/revised residential pooper scooper services.png" 
+                  alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité" 
                   className="rounded-lg shadow-lg w-full"
                   loading="lazy"
                 />
@@ -536,7 +562,7 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Options flexibles : 2x par semaine, hebdomadaire, aux deux semaines, mensuel et ponctuel.</span>
+                    <span>Options flexibles : hebdomadaire, aux deux semaines, mensuel et ponctuel.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
@@ -550,44 +576,6 @@ export default function Page() {
                 <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
                   En savoir plus
                 </Button>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Commercial Services */}
-        <section id="pricing-calculator" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
-          <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
-              <div className="scroll-animation">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Ramassage commercial de déjections canines
-                </h2>
-                <ul className="space-y-4 text-lg text-gray-700 mb-6">
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Plans gratuits de gestion des déjections pour les copropriétés, immeubles locatifs et propriétés commerciales.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Installation et entretien professionnels des stations de déjections canines.</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Nous ramassons les déjections et retirons les déchets pour garder les lieux propres.</span>
-                  </li>
-                </ul>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  En savoir plus
-                </Button>
-              </div>
-              <div className="scroll-animation scroll-delay-1">
-                <img 
-                  src="/images/commercial-crew.svg" 
-                  alt="Équipe commerciale de ramassage près d&apos;une camionnette de service" 
-                  className="rounded-lg shadow-lg w-full"
-                  loading="lazy"
-                />
               </div>
             </div>
           </div>
@@ -614,7 +602,7 @@ export default function Page() {
                 Calculateur de prix
               </h2>
               <p className="text-lg text-gray-600">
-                Estimez votre prix par visite selon la fréquence, le nombre de chiens et la taille de la cour.
+                Estimez votre prix par visite et par mois selon la fréquence, le nombre de chiens et la taille de la cour.
               </p>
             </div>
 
@@ -713,6 +701,12 @@ export default function Page() {
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
+                    {frequency !== 'onetime' && (
+                      <div className="space-y-1 text-sm font-semibold text-gray-700">
+                        <p>Total mensuel estimé : {formatMoney(monthlyTotal)}/mois</p>
+                        <p>Paiement annuel : {formatMoney(yearlyTotal)}/an ({formatMoney(annualMonthlyEquivalent)}/mois en équivalent, rabais de 20 %)</p>
+                      </div>
+                    )}
                     {frequency === 'onetime' && (
                       <p className="text-sm text-gray-600">
                         +5 $ par bloc additionnel de 5 minutes.
@@ -981,7 +975,7 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Ramassage de déjections canines | Services commerciaux
+                    Services de ramassage de déjections canines
                   </p>
                   <p className="text-gray-600">
                     Nous desservons tous les quartiers de Laval, Québec
@@ -1037,7 +1031,7 @@ export default function Page() {
               <div className="flex items-center space-x-3 mb-4">
                 <img 
                   src="/images/cacacaninlogo.jpg" 
-                  alt="Ca-Ca Canin Logo" 
+                  alt="Logo Ca-Ca Canin" 
                   className="h-8 w-8"
                 />
                 <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
@@ -1052,7 +1046,6 @@ export default function Page() {
               <h3 className="font-semibold mb-4">Services</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="#services" className="hover:text-white">Résidentiel</Link></li>
-                <li><Link href="#services" className="hover:text-white">Commercial</Link></li>
               </ul>
             </div>
             <div>

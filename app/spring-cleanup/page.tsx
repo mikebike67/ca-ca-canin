@@ -281,7 +281,7 @@ export default function SpringCleanupPage() {
             <Link href="/" className="flex items-center space-x-3">
               <img
                 src="/images/cacacaninlogo.jpg"
-                alt="Ca-Ca Canin Logo"
+                alt="Ca-Ca Canin logo"
                 className="h-10 w-10"
               />
               <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
@@ -852,7 +852,7 @@ export default function SpringCleanupPage() {
               <div className="flex items-center space-x-3 mb-4">
                 <img
                   src="/images/cacacaninlogo.jpg"
-                  alt="Ca-Ca Canin Logo"
+                  alt="Ca-Ca Canin logo"
                   className="h-8 w-8"
                 />
                 <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
