@@ -31,14 +31,8 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       {
-        url: "/images/cacacaninlogo.jpg",
-        type: "image/jpeg",
-        sizes: "32x32"
-      },
-      {
-        url: "/images/cacacaninlogo.jpg",
-        type: "image/jpeg",
-        sizes: "16x16"
+        url: "/images/caca-caninfavicon.ico",
+        type: "image/x-icon"
       }
     ],
     apple: [
@@ -48,11 +42,12 @@ export const metadata: Metadata = {
         sizes: "180x180"
       }
     ],
-    shortcut: [{ url: "/images/ca-ca-canin-logo.svg" }],
+    shortcut: [{ url: "/images/caca-caninfavicon.ico", type: "image/x-icon" }],
     other: [
       {
         rel: "icon",
-        url: "/images/cacacaninlogo.jpg",
+        url: "/images/caca-caninfavicon.ico",
+        type: "image/x-icon",
       },
     ],
   },
@@ -71,8 +66,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="icon" type="image/jpeg" sizes="32x32" href="/images/cacacaninlogo.jpg" />
-        <link rel="icon" type="image/jpeg" sizes="16x16" href="/images/cacacaninlogo.jpg" />
+        <link rel="icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
+        <link rel="shortcut icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/images/cacacaninlogo.jpg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
