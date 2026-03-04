@@ -289,7 +289,7 @@ export default function SpringCleanupFrenchPage() {
       `}</style>
 
       {/* RESPONSIVE: keep the sticky header compact and readable on narrow screens without changing the desktop layout. */}
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Principal">
           <div className="flex items-center justify-between h-16">
             <Link href="/fr" className="flex min-w-0 items-center space-x-3">
@@ -346,7 +346,7 @@ export default function SpringCleanupFrenchPage() {
         </nav>
       </header>
 
-      <main id="main-content" className="flex-grow scroll-mt-12">
+      <main id="main-content" className="flex-grow scroll-mt-12 pt-16">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -496,26 +496,8 @@ export default function SpringCleanupFrenchPage() {
                 <div className="space-y-4 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Fréquence</p>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { key: 'weekly', label: 'Hebdomadaire' },
-                        { key: 'biweekly', label: 'Aux deux semaines' },
-                        { key: 'monthly', label: 'Mensuel' },
-                        { key: 'onetime', label: 'Ponctuel' },
-                      ].map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setFrequency(item.key as typeof frequency)}
-                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                            frequency === item.key
-                              ? 'bg-brand-green text-white border-brand-green shadow-md'
-                              : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                          }`}
-                          type="button"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
+                    <div className="rounded-lg border border-brand-green bg-brand-green px-3 py-2 text-sm font-semibold text-white shadow-md">
+                      Nettoyage de printemps ponctuel
                     </div>
                   </div>
 
@@ -633,34 +615,24 @@ export default function SpringCleanupFrenchPage() {
                         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">1</span>
                         Vérifier la zone desservie
                       </div>
-                      {/* RESPONSIVE: stack the postal code field and action button until there is enough horizontal space. */}
-                      <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
-                        <div className="space-y-1">
-                          <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">Code postal</label>
-                          <input
-                            id="postal-code"
-                            type="text"
-                            name="postalCode"
-                            placeholder="H7A 1A1"
-                            value={postalCode}
-                            onChange={(e) => {
-                              setPostalCode(e.target.value);
-                              setPostalStatus('idle');
-                              setConsentError('');
-                            }}
-                            autoComplete="postal-code"
-                            inputMode="text"
-                            className="w-full rounded-lg border border-gray-300 px-3 py-2 uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
-                            required
-                          />
-                        </div>
-                        <Button
-                          type="button"
-                          className="w-full bg-brand-green text-white hover:bg-brand-green-dark md:w-auto"
-                          onClick={handlePostalCodeCheck}
-                        >
-                          Vérifier
-                        </Button>
+                      <div className="space-y-1">
+                        <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">Code postal</label>
+                        <input
+                          id="postal-code"
+                          type="text"
+                          name="postalCode"
+                          placeholder="H7A 1A1"
+                          value={postalCode}
+                          onChange={(e) => {
+                            setPostalCode(e.target.value);
+                            setPostalStatus('idle');
+                            setConsentError('');
+                          }}
+                          autoComplete="postal-code"
+                          inputMode="text"
+                          className="w-full rounded-lg border border-gray-300 px-3 py-2 uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
+                          required
+                        />
                       </div>
                       <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
                         <label className="flex items-start gap-3 text-sm text-gray-700">
@@ -695,6 +667,13 @@ export default function SpringCleanupFrenchPage() {
                           </p>
                         )}
                       </div>
+                      <Button
+                        type="button"
+                        className="w-full bg-brand-green text-white hover:bg-brand-green-dark"
+                        onClick={handlePostalCodeCheck}
+                      >
+                        Vérifier
+                      </Button>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
                           Nous desservons ce code postal de Laval. Passez à l&apos;étape 2.

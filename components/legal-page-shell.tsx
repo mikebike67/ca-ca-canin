@@ -9,7 +9,7 @@ export default function LegalPageShell({
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-white text-gray-900">
-      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
         <nav className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Primary">
           <Link href="/" className="flex min-w-0 items-center space-x-3">
             <img src="/images/cacacaninlogo.jpg" alt="Ca-Ca Canin logo" className="h-10 w-10" />
@@ -34,7 +34,7 @@ export default function LegalPageShell({
         </nav>
       </header>
 
-      <main className="flex-1 bg-white">{children}</main>
+      <main className="flex-1 bg-white pt-16">{children}</main>
 
       <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
