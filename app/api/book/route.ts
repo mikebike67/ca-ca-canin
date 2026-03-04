@@ -25,8 +25,9 @@ const basePricing: Record<"weekly" | "biweekly" | "monthly" | "onetime", Record<
 
 const yardModifiers = {
   small: 1,
-  medium: 1.15,
-  large: 1.3,
+  medium: 1.12,
+  large: 1.24,
+  xlarge: 1.36,
 } as const;
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -87,7 +88,11 @@ function calculateServerPrice(
   dogs: "1" | "2" | "3plus",
   yardSqft: number
 ) {
-  const yardCategory = yardSqft <= 2000 ? "small" : yardSqft <= 3000 ? "medium" : "large";
+  const yardCategory =
+    yardSqft <= 3000 ? "small" :
+    yardSqft <= 6000 ? "medium" :
+    yardSqft < 10000 ? "large" :
+    "xlarge";
   const base = basePricing[frequency][dogs];
 
   if (frequency === "onetime") {
@@ -95,11 +100,11 @@ function calculateServerPrice(
   }
 
   const modifier = yardModifiers[yardCategory];
-  const extraSqft = Math.max(0, yardSqft - 2000);
+  const extraSqft = Math.max(0, yardSqft - 3000);
   const increments = Math.floor(extraSqft / 100);
-  const midIncrements = Math.min(increments, 10);
-  const largeIncrements = Math.max(0, increments - 10);
-  const multiplier = Math.pow(1.02, midIncrements) * Math.pow(1.015, largeIncrements);
+  const midIncrements = Math.min(increments, 20);
+  const largeIncrements = Math.max(0, increments - 20);
+  const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
 
   return Math.round(base * modifier * multiplier * 100) / 100;
 }
