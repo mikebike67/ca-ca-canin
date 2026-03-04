@@ -23,14 +23,16 @@ const basePricing: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', Record<
 
 const yardModifiers = {
   small: 1,
-  medium: 1.15,
-  large: 1.3,
+  medium: 1.12,
+  large: 1.24,
+  xlarge: 1.36,
 };
 
-const yardOptions: { key: 'small' | 'medium' | 'large'; label: string; detail: string }[] = [
-  { key: 'small', label: 'Small', detail: 'Up to 2,000 sq ft' },
-  { key: 'medium', label: 'Medium', detail: '2,000 - 3,000 sq ft' },
-  { key: 'large', label: 'Large', detail: '3,000+ sq ft' },
+const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string; detail: string }[] = [
+  { key: 'small', label: 'Standard / Small', detail: '~1,000-3,000 sq ft' },
+  { key: 'medium', label: 'Medium', detail: '~3,000-6,000 sq ft' },
+  { key: 'large', label: 'Large', detail: '~6,000-10,000 sq ft' },
+  { key: 'xlarge', label: 'X-Large', detail: '10,000+ sq ft' },
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
@@ -50,7 +52,7 @@ export default function Page() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('weekly');
   const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
-  const [yardSqft, setYardSqft] = useState(2000);
+  const [yardSqft, setYardSqft] = useState(3000);
   const [displayPrice, setDisplayPrice] = useState(0);
   const [postalCode, setPostalCode] = useState('');
   const [name, setName] = useState('');
@@ -63,10 +65,11 @@ export default function Page() {
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
 
-  const yardCategory = useMemo<'small' | 'medium' | 'large'>(() => {
-    if (yardSqft <= 2000) return 'small';
-    if (yardSqft <= 3000) return 'medium';
-    return 'large';
+  const yardCategory = useMemo<'small' | 'medium' | 'large' | 'xlarge'>(() => {
+    if (yardSqft <= 3000) return 'small';
+    if (yardSqft <= 6000) return 'medium';
+    if (yardSqft < 10000) return 'large';
+    return 'xlarge';
   }, [yardSqft]);
 
   const pricingDetails = useMemo(() => {
@@ -78,11 +81,11 @@ export default function Page() {
       return { perVisit: base, note: frequencyNotes[frequency] };
     }
 
-    const extraSqft = Math.max(0, yardSqft - 2000);
+    const extraSqft = Math.max(0, yardSqft - 3000);
     const increments = Math.floor(extraSqft / 100);
-    const midIncrements = Math.min(increments, 10);
-    const largeIncrements = Math.max(0, increments - 10);
-    const multiplier = Math.pow(1.02, midIncrements) * Math.pow(1.015, largeIncrements);
+    const midIncrements = Math.min(increments, 20);
+    const largeIncrements = Math.max(0, increments - 20);
+    const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
 
     const perVisit = Math.round(baseWithMod * multiplier * 100) / 100;
     return { perVisit, note: frequencyNotes[frequency] };
@@ -386,7 +389,8 @@ export default function Page() {
         <section className="bg-white px-4 pt-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-7xl mx-auto">
             <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
-              <div className="flex justify-center lg:justify-start">
+              {/* RESPONSIVE: hide the decorative hero image on smaller screens to keep the mobile hero compact and focused on the CTA. */}
+              <div className="hidden justify-center lg:flex lg:justify-start">
                 <div className="relative w-full max-w-[23rem] overflow-hidden sm:max-w-[30rem] lg:max-w-[38rem]">
                   <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
                   <img
@@ -444,7 +448,8 @@ export default function Page() {
         </section>
 
         {/* Customer Promise Section */}
-        <section className="bg-white px-4 pb-16 pt-0 sm:px-6 lg:px-8">
+        {/* RESPONSIVE: add breathing room below the hero on mobile so the next section does not feel cramped. */}
+        <section className="bg-white px-4 pb-16 pt-8 sm:px-6 sm:pt-0 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
@@ -503,10 +508,17 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             {/* RESPONSIVE: tighten stacked section spacing on mobile to reduce long scroll jumps. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation">
+              <div className="scroll-animation order-2 md:order-1">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
                   About Ca-Ca Canin
                 </h2>
+                {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
+                <img 
+                  src="/images/our dog waste renewal company.png" 
+                  alt="Ca-Ca Canin team in a residential yard with cleanup tools and service truck" 
+                  className="mb-6 rounded-lg shadow-lg w-full md:hidden"
+                  loading="lazy"
+                />
                 <p className="text-lg text-gray-700 mb-4">
                   Ca-Ca Canin is a locally owned dog waste removal company serving Laval, Quebec. We built the business around one simple goal: make it easy for busy dog owners to keep their yards clean without dealing with the mess themselves.
                 </p>
@@ -517,7 +529,7 @@ export default function Page() {
                   We&apos;re building this company through reliable service, honest communication, and care for every property we visit.
                 </p>
               </div>
-              <div className="scroll-animation scroll-delay-1">
+              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
                 <img 
                   src="/images/our dog waste renewal company.png" 
                   alt="Ca-Ca Canin team in a residential yard with cleanup tools and service truck" 
@@ -534,18 +546,17 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             {/* RESPONSIVE: keep the service image/text pair balanced as the layout collapses to one column. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation scroll-delay-1 order-2 md:order-1">
-                <img 
-                  src="/images/revised residential pooper scooper services.png" 
-                  alt="Residential pooper scooper team cleaning a backyard with a dog nearby" 
-                  className="rounded-lg shadow-lg w-full"
-                  loading="lazy"
-                />
-              </div>
-              <div className="scroll-animation order-1 md:order-2">
+              <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
                   Residential Pooper Scooper Services
                 </h2>
+                {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
+                <img 
+                  src="/images/revised residential pooper scooper services.png" 
+                  alt="Residential pooper scooper team cleaning a backyard with a dog nearby" 
+                  className="mb-6 rounded-lg shadow-lg w-full md:hidden"
+                  loading="lazy"
+                />
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
@@ -560,6 +571,14 @@ export default function Page() {
                     <span>Deodorizer services keep your yard smelling fresh and odor-free.</span>
                   </li>
                 </ul>
+              </div>
+              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-1 md:block">
+                <img 
+                  src="/images/revised residential pooper scooper services.png" 
+                  alt="Residential pooper scooper team cleaning a backyard with a dog nearby" 
+                  className="rounded-lg shadow-lg w-full"
+                  loading="lazy"
+                />
               </div>
             </div>
           </div>
@@ -591,6 +610,7 @@ export default function Page() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
+              {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
               {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="space-y-4 md:col-span-1">
@@ -651,21 +671,23 @@ export default function Page() {
                       <input
                         id="yard-size"
                         type="range"
-                        min={2000}
-                        max={4000}
+                        min={3000}
+                        max={10000}
                         step={100}
                         value={yardSqft}
                         onChange={(e) => {
                           const raw = Number(e.target.value);
                           const snapped = Math.round(raw / 100) * 100;
-                          const clamped = Math.max(2000, Math.min(4000, snapped));
+                          const clamped = Math.max(3000, Math.min(10000, snapped));
                           setYardSqft(clamped);
                         }}
                         className="w-full accent-brand-green"
                         required
                       />
                       <div className="flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
-                        <span className="font-semibold text-brand-green">{yardSqft.toLocaleString()} sq ft</span>
+                        <span className="font-semibold text-brand-green">
+                          {yardSqft >= 10000 ? '10,000+ sq ft' : `${yardSqft.toLocaleString()} sq ft`}
+                        </span>
                         <span
                           className="inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
                         >
@@ -902,6 +924,29 @@ export default function Page() {
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
                     )}
+                    {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
+                    <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                        {frequency === 'onetime' ? 'Estimated Visit' : 'Live Price'}
+                      </p>
+                      <div className="mt-2 flex items-end justify-between gap-3">
+                        <p className="text-2xl font-extrabold text-gray-900">
+                          {frequency === 'onetime'
+                            ? `${formatMoney(displayPrice)}+`
+                            : `${formatMoney(displayPrice)}/visit`}
+                        </p>
+                        {frequency !== 'onetime' && (
+                          <p className="text-right text-sm font-semibold text-brand-green">
+                            {formatMoney(monthlyTotal)}/month
+                          </p>
+                        )}
+                      </div>
+                      {frequency === 'onetime' && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          +$5 every additional 5 minutes after the first 30 minutes.
+                        </p>
+                      )}
+                    </div>
                   </form>
                 </div>
               </div>

@@ -23,14 +23,16 @@ const basePricing: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', Record<
 
 const yardModifiers = {
   small: 1,
-  medium: 1.15,
-  large: 1.3,
+  medium: 1.12,
+  large: 1.24,
+  xlarge: 1.36,
 };
 
-const yardOptions: { key: 'small' | 'medium' | 'large'; label: string; detail: string }[] = [
-  { key: 'small', label: 'Small', detail: 'Up to 2,000 sq ft' },
-  { key: 'medium', label: 'Medium', detail: '2,000 - 3,000 sq ft' },
-  { key: 'large', label: 'Large', detail: '3,000+ sq ft' },
+const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string; detail: string }[] = [
+  { key: 'small', label: 'Standard / Small', detail: '~1,000-3,000 sq ft' },
+  { key: 'medium', label: 'Medium', detail: '~3,000-6,000 sq ft' },
+  { key: 'large', label: 'Large', detail: '~6,000-10,000 sq ft' },
+  { key: 'xlarge', label: 'X-Large', detail: '10,000+ sq ft' },
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
@@ -50,7 +52,7 @@ export default function SpringCleanupPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('onetime');
   const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
-  const [yardSqft, setYardSqft] = useState(2000);
+  const [yardSqft, setYardSqft] = useState(3000);
   const [displayPrice, setDisplayPrice] = useState(0);
   const [postalCode, setPostalCode] = useState('');
   const [name, setName] = useState('');
@@ -63,10 +65,11 @@ export default function SpringCleanupPage() {
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
 
-  const yardCategory = useMemo<'small' | 'medium' | 'large'>(() => {
-    if (yardSqft <= 2000) return 'small';
-    if (yardSqft <= 3000) return 'medium';
-    return 'large';
+  const yardCategory = useMemo<'small' | 'medium' | 'large' | 'xlarge'>(() => {
+    if (yardSqft <= 3000) return 'small';
+    if (yardSqft <= 6000) return 'medium';
+    if (yardSqft < 10000) return 'large';
+    return 'xlarge';
   }, [yardSqft]);
 
   const pricingDetails = useMemo(() => {
@@ -78,11 +81,11 @@ export default function SpringCleanupPage() {
       return { perVisit: base, note: frequencyNotes[frequency] };
     }
 
-    const extraSqft = Math.max(0, yardSqft - 2000);
+    const extraSqft = Math.max(0, yardSqft - 3000);
     const increments = Math.floor(extraSqft / 100);
-    const midIncrements = Math.min(increments, 10);
-    const largeIncrements = Math.max(0, increments - 10);
-    const multiplier = Math.pow(1.02, midIncrements) * Math.pow(1.015, largeIncrements);
+    const midIncrements = Math.min(increments, 20);
+    const largeIncrements = Math.max(0, increments - 20);
+    const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
 
     const perVisit = Math.round(baseWithMod * multiplier * 100) / 100;
     return { perVisit, note: frequencyNotes[frequency] };
@@ -487,6 +490,7 @@ export default function SpringCleanupPage() {
             </div>
 
             <div className="rounded-2xl border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(17,24,39,0.05)] md:p-8">
+              {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
               {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="space-y-4 md:col-span-1">
@@ -547,21 +551,23 @@ export default function SpringCleanupPage() {
                       <input
                         id="yard-size"
                         type="range"
-                        min={2000}
-                        max={4000}
+                        min={3000}
+                        max={10000}
                         step={100}
                         value={yardSqft}
                         onChange={(e) => {
                           const raw = Number(e.target.value);
                           const snapped = Math.round(raw / 100) * 100;
-                          const clamped = Math.max(2000, Math.min(4000, snapped));
+                          const clamped = Math.max(3000, Math.min(10000, snapped));
                           setYardSqft(clamped);
                         }}
                         className="w-full accent-brand-green"
                         required
                       />
                       <div className="flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
-                        <span className="font-semibold text-brand-green">{yardSqft.toLocaleString()} sq ft</span>
+                        <span className="font-semibold text-brand-green">
+                          {yardSqft >= 10000 ? '10,000+ sq ft' : `${yardSqft.toLocaleString()} sq ft`}
+                        </span>
                         <span
                           className="inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
                         >
@@ -779,6 +785,29 @@ export default function SpringCleanupPage() {
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
                     )}
+                    {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
+                    <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
+                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                        {frequency === 'onetime' ? 'Spring Cleanup Estimate' : 'Live Price'}
+                      </p>
+                      <div className="mt-2 flex items-end justify-between gap-3">
+                        <p className="text-2xl font-extrabold text-gray-900">
+                          {frequency === 'onetime'
+                            ? `${formatMoney(displayPrice)}+`
+                            : `${formatMoney(displayPrice)}/visit`}
+                        </p>
+                        {frequency !== 'onetime' && (
+                          <p className="text-right text-sm font-semibold text-brand-green">
+                            {formatMoney(monthlyTotal)}/month
+                          </p>
+                        )}
+                      </div>
+                      {frequency === 'onetime' && (
+                        <p className="mt-2 text-sm text-gray-600">
+                          +$5 every additional 5 minutes after the first 30 minutes.
+                        </p>
+                      )}
+                    </div>
                   </form>
                 </div>
               </div>
@@ -877,6 +906,7 @@ export default function SpringCleanupPage() {
 
       {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
       <footer className="bg-gray-900 px-4 py-10 text-white sm:px-6 lg:px-8">
+        {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
         <div className="max-w-7xl mx-auto">
           <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-4">
             <div>
