@@ -283,16 +283,17 @@ export default function Page() {
       `}</style>
 
       {/* Navigation */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
+      {/* RESPONSIVE: keep the sticky header compact and readable on narrow screens without changing the desktop layout. */}
+      <header className="sticky top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Primary">
           <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex items-center space-x-3">
+            <Link href="/" className="flex min-w-0 items-center space-x-3">
               <img 
                 src="/images/cacacaninlogo.jpg" 
                 alt="Ca-Ca Canin logo" 
                 className="h-10 w-10"
               />
-              <span className={`text-xl font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
+              <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
                 CA-CA CANIN
               </span>
             </Link>
@@ -316,8 +317,9 @@ export default function Page() {
               </Button>
             </div>
 
+            {/* RESPONSIVE: enlarge the mobile menu trigger to a comfortable 44px touch target. */}
             <button 
-              className="md:hidden p-2"
+              className="md:hidden rounded-lg p-3"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Toggle navigation menu"
               aria-expanded={isMenuOpen}
@@ -329,11 +331,12 @@ export default function Page() {
             </button>
           </div>
 
+          {/* RESPONSIVE: add spacing and tap area so mobile navigation is easy to use on 320px screens. */}
           {isMenuOpen && (
-            <div id="mobile-nav" className="md:hidden py-4 space-y-4">
-              <Link href="#about" className="block text-gray-700 hover:text-brand-green">About</Link>
-              <Link href="#faq" className="block text-gray-700 hover:text-brand-green">FAQ</Link>
-              <Link href="/fr" className="block text-brand-brown hover:text-brand-brown/80">Français</Link>
+            <div id="mobile-nav" className="space-y-2 border-t border-gray-200 py-4 md:hidden">
+              <Link href="#about" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">About</Link>
+              <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
+              <Link href="/fr" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">Français</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link
                   href="#quote-form"
@@ -346,9 +349,10 @@ export default function Page() {
             </div>
           )}
         </nav>
+        {/* RESPONSIVE: keep the announcement bar readable without overpowering the header on small screens. */}
         <Link
           href="/spring-cleanup"
-          className="block bg-brand-green text-white text-center text-sm font-semibold py-2 px-4"
+          className="block bg-brand-green px-4 py-2 text-center text-xs font-semibold text-white sm:text-sm"
         >
           Spring cleanup starting at $60 →
         </Link>
@@ -378,16 +382,17 @@ export default function Page() {
           }}
         />
         {/* Hero Section */}
-        <section className="bg-white py-20 px-4 sm:px-6 lg:px-8">
+        {/* RESPONSIVE: reduce hero density on phones while preserving the desktop art/text composition. */}
+        <section className="bg-white px-4 pt-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-7xl mx-auto">
-            <div className="grid items-center gap-8 lg:grid-cols-[minmax(320px,0.95fr)_minmax(0,1fr)] lg:gap-10">
+            <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
               <div className="flex justify-center lg:justify-start">
-                <div className="relative w-full max-w-[30rem] overflow-hidden sm:max-w-[34rem] lg:max-w-[38rem]">
+                <div className="relative w-full max-w-[23rem] overflow-hidden sm:max-w-[30rem] lg:max-w-[38rem]">
                   <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
                   <img
                     src="/images/hero-dog.png"
                     alt="Happy dog sitting in a clean yard"
-                    className="relative z-10 mx-auto h-auto w-full max-w-[27rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
+                    className="relative z-10 mx-auto h-auto w-full max-w-[21rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
                   />
                   <div
                     className="absolute inset-x-0 bottom-0 z-20 h-20 bg-white sm:h-24 lg:h-28"
@@ -396,17 +401,18 @@ export default function Page() {
                 </div>
               </div>
               <div className="text-center lg:text-left">
-                <h1 className={`mb-5 text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
+                <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
                   Laval&apos;s Premier<br />
                   <span className="text-brand-green">Pooper Scooper Service</span>
                 </h1>
-                <p className="mb-8 max-w-3xl text-lg text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
+                <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
                   Transparent pricing, flexible schedules, and a cleaner yard in no time.
                 </p>
+                {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
                   <Button
                     size="lg"
-                    className="w-full rounded-full bg-brand-green px-8 py-6 text-lg text-white hover:bg-brand-green-dark sm:w-auto"
+                    className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
                     asChild
                   >
                     <Link
@@ -438,14 +444,15 @@ export default function Page() {
         </section>
 
         {/* Customer Promise Section */}
-        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <section className="bg-white px-4 pb-16 pt-0 sm:px-6 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
                 Ca-Ca Canin Customer Promise
               </h2>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
+            <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               <Card className="scroll-animation scroll-delay-1 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                 <CardHeader>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
@@ -494,7 +501,8 @@ export default function Page() {
         {/* About Section */}
         <section id="about" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* RESPONSIVE: tighten stacked section spacing on mobile to reduce long scroll jumps. */}
+            <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
                   About Ca-Ca Canin
@@ -524,7 +532,8 @@ export default function Page() {
         {/* Residential Services */}
         <section id="services" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* RESPONSIVE: keep the service image/text pair balanced as the layout collapses to one column. */}
+            <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation scroll-delay-1 order-2 md:order-1">
                 <img 
                   src="/images/revised residential pooper scooper services.png" 
@@ -582,8 +591,9 @@ export default function Page() {
             </div>
 
             <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
+              {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
               <div className="grid gap-6 md:grid-cols-3">
-                <div className="md:col-span-1 space-y-4">
+                <div className="space-y-4 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Frequency</p>
                     <div className="flex flex-wrap gap-2">
@@ -596,7 +606,7 @@ export default function Page() {
                         <button
                           key={item.key}
                           onClick={() => setFrequency(item.key as typeof frequency)}
-                          className={`px-3 py-2 rounded-lg border text-sm font-semibold transition ${
+                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
                             frequency === item.key
                               ? 'bg-brand-green text-white border-brand-green shadow-md'
                               : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
@@ -620,7 +630,7 @@ export default function Page() {
                         <button
                           key={item.key}
                           onClick={() => setDogs(item.key as typeof dogs)}
-                          className={`px-3 py-2 rounded-lg border text-sm font-semibold transition ${
+                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
                             dogs === item.key
                               ? 'bg-brand-green text-white border-brand-green shadow-md'
                               : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
@@ -666,12 +676,12 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div className="md:col-span-2 flex flex-col gap-4">
+                <div className="flex flex-col gap-4 md:col-span-2">
                   <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
                     </p>
-                    <p className="mb-2 text-4xl font-extrabold text-gray-900">
+                    <p className="mb-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
@@ -681,7 +691,7 @@ export default function Page() {
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                           Estimated monthly total
                         </p>
-                        <p className="text-4xl font-extrabold text-brand-green sm:text-5xl">
+                        <p className="text-3xl font-extrabold text-brand-green sm:text-5xl">
                           {formatMoney(monthlyTotal)}
                           <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
                         </p>
@@ -709,6 +719,7 @@ export default function Page() {
                         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">1</span>
                         Check service area
                       </div>
+                      {/* RESPONSIVE: stack the postal code field and action button until there is enough horizontal space. */}
                       <div className="grid gap-3 md:grid-cols-[1fr_auto] md:items-end">
                         <div className="space-y-1">
                           <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">
@@ -805,7 +816,8 @@ export default function Page() {
                             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
                             Contact information
                           </div>
-                          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
+                        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                             <div className="space-y-1">
                               <label htmlFor="name" className="text-sm font-semibold text-gray-700">
                                 Name
@@ -908,7 +920,7 @@ export default function Page() {
                 When you hire Ca-Ca Canin as your Laval pooper scooper company, you can be confident you made the right decision with our 100% satisfaction guarantee.
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
+            <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               {[
                 { icon: Heart, title: "Pet Safety", desc: "We clean all of our equipment and shoes with a kennel-grade disinfectant after every cleanup, minimizing the spread of germs and illness." },
                 { icon: Smartphone, title: "Easy Scheduling", desc: "Book service, make updates, and ask questions directly with our team by phone or email." },
@@ -1004,11 +1016,12 @@ export default function Page() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+      {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
+      <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-5">
+          <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-5">
             <div>
-              <div className="flex items-center space-x-3 mb-4">
+              <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
                 <img 
                   src="/images/cacacaninlogo.jpg" 
                   alt="Ca-Ca Canin logo" 

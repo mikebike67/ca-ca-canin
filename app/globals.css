@@ -73,6 +73,21 @@
   * {
     @apply border-border;
   }
+  /* RESPONSIVE: prevent accidental horizontal scrolling from wide shadows, text, and transformed cards. */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  /* RESPONSIVE: keep media fluid so images and icons never exceed narrow viewports. */
+  img,
+  svg,
+  video,
+  canvas {
+    max-width: 100%;
+    height: auto;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
