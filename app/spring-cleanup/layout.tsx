@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Spring Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
-  description: "Spring dog poop cleanup in Laval, QC starting at $60. Limited spring spots. Get a fast quote from Ca-Ca Canin.",
+  description: "Spring dog poop cleanup in Laval, QC starting at $60. Request a fast quote for one-time yard cleanup with Ca-Ca Canin.",
   alternates: {
     languages: {
       en: "/spring-cleanup",

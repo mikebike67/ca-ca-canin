@@ -36,10 +36,10 @@ const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
-  weekly: "Best for ongoing cleanliness.",
-  biweekly: "Balanced cost and convenience.",
-  monthly: "Light maintenance option.",
-  onetime: "Spring cleanup visit.",
+  weekly: "Best for ongoing cleanup after the initial reset.",
+  biweekly: "A practical balance of upkeep and cost.",
+  monthly: "A lighter maintenance option.",
+  onetime: "One-time spring cleanup visit.",
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
@@ -232,7 +232,7 @@ export default function SpringCleanupPage() {
   const faqItems = [
     {
       q: "What is included in the spring cleanup?",
-      a: "A full yard sweep to remove winter buildup and leave the property tidy and sanitary."
+      a: "A full yard sweep to remove winter buildup and leave the property cleaner and ready to use."
     },
     {
       q: "Is the spring cleanup really starting at $60?",
@@ -240,11 +240,11 @@ export default function SpringCleanupPage() {
     },
     {
       q: "Do I need to be home?",
-      a: "No. We can service your yard with gate access and send a confirmation."
+      a: "No. If we have access to the gate, we can complete the cleanup and send confirmation after the visit."
     },
     {
       q: "How fast can I book?",
-      a: "We have limited spring spots and typically confirm within 1 business day."
+      a: "Spring spots are limited, and we typically confirm requests within 1 business day."
     }
   ];
 
@@ -371,16 +371,16 @@ export default function SpringCleanupPage() {
               Laval, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              SPRING DOG POOP CLEANUP
+              SPRING DOG POOP CLEANUP IN LAVAL
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Starting at $60 • Limited spring spots
+              One-time yard cleanup starting at $60. Limited spring spots.
             </p>
             {/* RESPONSIVE: keep hero actions full-width on phones for easier tapping. */}
             <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form" data-cta="spring-quote" onClick={() => handleCtaClick("hero-quote")}>
-                  Get a Free Quote
+                  Get My Spring Quote
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -390,15 +390,15 @@ export default function SpringCleanupPage() {
             <ul className="mt-8 grid gap-3 text-left max-w-2xl mx-auto text-gray-700">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Removes winter buildup
+                Clears winter dog waste buildup
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Safe for kids & pets
+                Makes the yard easier to use again
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Professional tools disinfected after every visit
+                One-time cleanup with clear time-based pricing
               </li>
             </ul>
           </div>
@@ -411,15 +411,15 @@ export default function SpringCleanupPage() {
                 How it works
               </h2>
               <p className="text-lg text-gray-600">
-                Fast, simple, and built for spring cleanup in Laval, QC.
+                Fast, clear, and built for one-time spring cleanup in Laval.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { icon: ClipboardCheck, title: "Request a quote", desc: "Tell us your yard size and dog count." },
-                { icon: PawPrint, title: "Confirm a time", desc: "We confirm details and schedule your visit." },
-                { icon: Sparkles, title: "We clean up", desc: "We remove buildup and leave the yard fresh." },
+                { icon: ClipboardCheck, title: "Request a quote", desc: "Tell us your yard size and number of dogs." },
+                { icon: PawPrint, title: "Confirm your visit", desc: "We review the details and schedule your cleanup." },
+                { icon: Sparkles, title: "We clean the yard", desc: "We remove buildup and leave the space cleaner." },
               ].map((step, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -444,7 +444,7 @@ export default function SpringCleanupPage() {
                 Testimonials
               </h2>
               <p className="text-lg text-gray-600">
-                Real feedback from Ca-Ca Canin customers.
+                Reviews from Ca-Ca Canin customers.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -482,10 +482,10 @@ export default function SpringCleanupPage() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-8">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Spring cleanup estimate
+                Spring Cleanup Pricing Calculator
               </h2>
               <p className="text-lg text-gray-600">
-                Final price confirmed by quote. One-time cleanups start at $60.
+                Estimate your one-time cleanup price. Final pricing is confirmed after review.
               </p>
             </div>
 
@@ -610,7 +610,7 @@ export default function SpringCleanupPage() {
                   </div>
 
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Final price depends on yard size and number of dogs. Request a free quote for a personalized estimate.
+                    Pricing depends on yard size and number of dogs. Request a free quote for final pricing.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -686,7 +686,7 @@ export default function SpringCleanupPage() {
                             <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
                               Privacy Policy
                             </Link>{" "}
-                            and consent to be contacted about my request.
+                            and allow Ca-Ca Canin to contact me about my quote request.
                           </span>
                         </label>
                         {consentError && (
@@ -697,7 +697,7 @@ export default function SpringCleanupPage() {
                       </div>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Great, we serve that Laval postal code. Continue to step 2.
+                          We service that Laval postal code. Continue to step 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
@@ -757,7 +757,7 @@ export default function SpringCleanupPage() {
                           </div>
                         </div>
                         <Button type="submit" className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3" disabled={bookingStatus === 'loading'}>
-                          {bookingStatus === 'loading' ? 'Sending...' : 'Get a Free Quote'}
+                          {bookingStatus === 'loading' ? 'Sending...' : 'Request My Spring Quote'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -769,7 +769,7 @@ export default function SpringCleanupPage() {
                           </div>
                         )}
                         <p className="text-xs text-gray-500">
-                          We typically respond within 1 business day.
+                          We usually reply within 1 business day.
                         </p>
                       </>
                     )}
@@ -778,9 +778,9 @@ export default function SpringCleanupPage() {
                     {bookingStatus === 'success' && (
                       <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your spring cleanup request has been sent.</h3>
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your spring cleanup request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          We received your request and will follow up shortly. You do not need to submit the form again.
+                          We received your request and will follow up shortly. No need to send the form again.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -819,17 +819,17 @@ export default function SpringCleanupPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Why choose Ca-Ca Canin?
+                Why Book Your Spring Cleanup With Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                Local, reliable, and built for spring cleanup in Laval.
+                A simple way to reset your yard after winter in Laval.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  { icon: Heart, title: "Pet-safe process", desc: "Sanitary practices for a clean yard." },
-                  { icon: Camera, title: "Gate photo", desc: "We send a confirmation after each visit." },
-                  { icon: ClipboardCheck, title: "Clear time-based pricing", desc: "Spring cleanup starts at $60 for the first 30 minutes, then $5 per additional 5 minutes with time rounded down." },
+                  { icon: Heart, title: "Cleaner yard, less hassle", desc: "A focused cleanup that helps get your yard back into shape after winter." },
+                  { icon: Camera, title: "Visit confirmation", desc: "We send confirmation after the cleanup is complete." },
+                  { icon: ClipboardCheck, title: "Clear time-based pricing", desc: "Spring cleanup starts at $60 for the first 30 minutes, then $5 per additional 5 minutes." },
                 ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -854,7 +854,7 @@ export default function SpringCleanupPage() {
                 Service area
               </h2>
               <p className="text-lg text-gray-600">
-                Serving Laval, QC neighborhoods with spring cleanup service.
+                One-time spring cleanup service for Laval, QC.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation">
@@ -867,10 +867,10 @@ export default function SpringCleanupPage() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Spring dog poop cleanup and ongoing service
+                    Spring dog poop cleanup
                   </p>
                   <p className="text-gray-600">
-                    Fast scheduling, limited spring spots
+                    Fast scheduling while spring spots last
                   </p>
                 </CardContent>
               </Card>
@@ -882,10 +882,10 @@ export default function SpringCleanupPage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Spring cleanup FAQs
+                Spring Cleanup FAQs
               </h2>
               <p className="text-lg text-gray-600">
-                Answers for Laval spring cleanup requests.
+                Answers about one-time spring cleanup in Laval.
               </p>
             </div>
             <div className="space-y-4">
@@ -921,7 +921,7 @@ export default function SpringCleanupPage() {
                 </span>
               </div>
               <p className="text-gray-400">
-                Spring cleanup and one-time yard reset service in Laval, Quebec.
+                Spring dog poop cleanup and one-time yard reset service in Laval, Quebec.
               </p>
             </div>
             <div>

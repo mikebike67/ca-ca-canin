@@ -36,10 +36,10 @@ const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
-  weekly: "Idéal pour garder la cour propre.",
-  biweekly: "Bon équilibre coût/praticité.",
-  monthly: "Option d'entretien léger.",
-  onetime: "Visite de nettoyage de printemps.",
+  weekly: "Idéal pour garder la cour propre après le grand nettoyage.",
+  biweekly: "Un bon équilibre entre entretien et coût.",
+  monthly: "Une option d'entretien plus léger.",
+  onetime: "Visite ponctuelle de nettoyage de printemps.",
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
@@ -232,7 +232,7 @@ export default function SpringCleanupFrenchPage() {
   const faqItems = [
     {
       q: "Qu'est-ce qui est inclus dans le nettoyage de printemps?",
-      a: "Un balayage complet de la cour pour enlever l'accumulation de l'hiver."
+      a: "Un nettoyage complet de la cour pour enlever l'accumulation de l'hiver et rendre l'espace plus utilisable."
     },
     {
       q: "Le nettoyage commence vraiment à 60 $?",
@@ -240,11 +240,11 @@ export default function SpringCleanupFrenchPage() {
     },
     {
       q: "Dois-je être sur place?",
-      a: "Non. Nous pouvons intervenir avec l'accès au portail et envoyer une confirmation."
+      a: "Non. Si nous avons accès au portail, nous pouvons faire le nettoyage et envoyer une confirmation après la visite."
     },
     {
       q: "À quelle vitesse puis-je réserver?",
-      a: "Les places sont limitées au printemps et nous confirmons généralement en 1 jour ouvrable."
+      a: "Les places de printemps sont limitées et nous confirmons généralement les demandes en 1 jour ouvrable."
     }
   ];
 
@@ -371,16 +371,16 @@ export default function SpringCleanupFrenchPage() {
               Laval, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              NETTOYAGE PRINTEMPS DES DÉJECTIONS CANINES
+              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES À LAVAL
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              À partir de 60 $ • Places limitées au printemps
+              Nettoyage ponctuel à partir de 60 $. Places limitées au printemps.
             </p>
             {/* RESPONSIVE: keep hero actions full-width on phones for easier tapping. */}
             <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form" data-cta="spring-quote" onClick={() => handleCtaClick("hero-quote")}>
-                  Obtenir un devis gratuit
+                  Obtenir mon devis de printemps
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -390,15 +390,15 @@ export default function SpringCleanupFrenchPage() {
             <ul className="mt-8 grid gap-3 text-left max-w-2xl mx-auto text-gray-700">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Enlève l'accumulation de l'hiver
+                Enlève l'accumulation de déjections de l'hiver
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Sécuritaire pour les enfants et les animaux
+                Rend la cour plus facile à réutiliser
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Outils professionnels désinfectés après chaque visite
+                Nettoyage ponctuel avec tarification claire selon le temps
               </li>
             </ul>
           </div>
@@ -411,15 +411,15 @@ export default function SpringCleanupFrenchPage() {
                 Comment ça fonctionne
               </h2>
               <p className="text-lg text-gray-600">
-                Simple, rapide, et pensé pour le printemps à Laval, QC.
+                Simple, rapide et pensé pour un nettoyage ponctuel à Laval.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
             <div className="grid gap-6 md:grid-cols-3">
               {[
                 { icon: ClipboardCheck, title: "Demander un devis", desc: "Indiquez la taille de la cour et le nombre de chiens." },
-                { icon: PawPrint, title: "Confirmer un horaire", desc: "On confirme les détails et la visite." },
-                { icon: Sparkles, title: "On nettoie", desc: "On enlève l'accumulation et on laisse la cour propre." },
+                { icon: PawPrint, title: "Confirmer la visite", desc: "Nous validons les détails et planifions le nettoyage." },
+                { icon: Sparkles, title: "On nettoie la cour", desc: "Nous enlevons l'accumulation et laissons l'espace plus propre." },
               ].map((step, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -444,7 +444,7 @@ export default function SpringCleanupFrenchPage() {
                 Témoignages
               </h2>
               <p className="text-lg text-gray-600">
-                Un vrai commentaire client pour Ca-Ca Canin.
+                Avis de clients Ca-Ca Canin.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2">
@@ -482,10 +482,10 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-8">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Estimation du nettoyage de printemps
+                Calculateur de prix du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">
-                Prix final confirmé par devis. Nettoyages ponctuels à partir de 60 $.
+                Estimez le prix de votre nettoyage ponctuel. Le prix final est confirmé après révision.
               </p>
             </div>
 
@@ -610,7 +610,7 @@ export default function SpringCleanupFrenchPage() {
                   </div>
 
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Prix final confirmé par devis. Demandez un devis gratuit pour une estimation personnalisée.
+                    Le prix dépend de la taille de la cour et du nombre de chiens. Demandez un devis gratuit pour le prix final.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -686,7 +686,7 @@ export default function SpringCleanupFrenchPage() {
                             <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
                               politique de confidentialité
                             </Link>{" "}
-                            et je consens à être contacté au sujet de ma demande.
+                            et j&apos;autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
                           </span>
                         </label>
                         {consentError && (
@@ -697,7 +697,7 @@ export default function SpringCleanupFrenchPage() {
                       </div>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Parfait, nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
+                          Nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
@@ -757,7 +757,7 @@ export default function SpringCleanupFrenchPage() {
                           </div>
                         </div>
                         <Button type="submit" className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3" disabled={bookingStatus === 'loading'}>
-                          {bookingStatus === 'loading' ? 'Envoi...' : 'Obtenir un devis gratuit'}
+                          {bookingStatus === 'loading' ? 'Envoi...' : 'Demander mon devis de printemps'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -769,7 +769,7 @@ export default function SpringCleanupFrenchPage() {
                           </div>
                         )}
                         <p className="text-xs text-gray-500">
-                          Nous répondons généralement en 1 jour ouvrable.
+                          Nous répondons habituellement en 1 jour ouvrable.
                         </p>
                       </>
                     )}
@@ -778,9 +778,9 @@ export default function SpringCleanupFrenchPage() {
                     {bookingStatus === 'success' && (
                       <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Merci</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de nettoyage de printemps a bien été envoyée.</h3>
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de nettoyage de printemps est envoyée.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          Nous avons bien reçu votre demande et nous vous contacterons sous peu. Inutile d&apos;envoyer le formulaire de nouveau.
+                          Nous avons bien reçu votre demande et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -819,17 +819,17 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Pourquoi Ca-Ca Canin?
+                Pourquoi réserver votre nettoyage printanier avec Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                Local, fiable, et prêt pour le nettoyage de printemps à Laval.
+                Une façon simple de remettre votre cour en ordre après l&apos;hiver à Laval.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  { icon: Heart, title: "Procédés sûrs", desc: "Pratiques sanitaires pour une cour propre." },
-                  { icon: Camera, title: "Photo du portail", desc: "Confirmation envoyée après la visite." },
-                  { icon: ClipboardCheck, title: "Tarification claire", desc: "Le nettoyage de printemps commence à 60 $ pour les 30 premières minutes, puis 5 $ par tranche additionnelle de 5 minutes avec arrondi vers le bas." },
+                  { icon: Heart, title: "Cour plus propre, moins de tracas", desc: "Un nettoyage ciblé pour remettre la cour en ordre après l'hiver." },
+                  { icon: Camera, title: "Confirmation de visite", desc: "Nous envoyons une confirmation une fois le nettoyage terminé." },
+                  { icon: ClipboardCheck, title: "Tarification claire", desc: "Le nettoyage de printemps commence à 60 $ pour les 30 premières minutes, puis 5 $ par tranche additionnelle de 5 minutes." },
                 ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -854,7 +854,7 @@ export default function SpringCleanupFrenchPage() {
                 Zone de service
               </h2>
               <p className="text-lg text-gray-600">
-                Desservant Laval, QC pour le nettoyage de printemps.
+                Service ponctuel de nettoyage de printemps à Laval, QC.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation">
@@ -867,10 +867,10 @@ export default function SpringCleanupFrenchPage() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Nettoyage de printemps et service continu
+                    Nettoyage printanier des déjections canines
                   </p>
                   <p className="text-gray-600">
-                    Planification rapide, places limitées
+                    Planification rapide pendant la période printanière
                   </p>
                 </CardContent>
               </Card>
@@ -882,10 +882,10 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                FAQ nettoyage de printemps
+                FAQ du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">
-                Réponses pour Laval, QC.
+                Réponses sur le nettoyage ponctuel à Laval.
               </p>
             </div>
             <div className="space-y-4">
@@ -920,7 +920,7 @@ export default function SpringCleanupFrenchPage() {
                 </span>
               </div>
               <p className="text-gray-400">
-                Nettoyage de printemps et remise à zéro ponctuelle des cours à Laval, Québec.
+                Nettoyage printanier des déjections canines et remise à zéro ponctuelle des cours à Laval, Québec.
               </p>
             </div>
             <div>

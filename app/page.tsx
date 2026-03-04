@@ -36,10 +36,10 @@ const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
-  weekly: "Perfect for keeping your yard consistently clean.",
-  biweekly: "Great balance of price and convenience.",
-  monthly: "Ideal for light maintenance.",
-  onetime: "Includes up to 30 minutes. +$5 per extra 5 minutes.",
+  weekly: "Best for keeping your yard clean week after week.",
+  biweekly: "A practical balance of price and upkeep.",
+  monthly: "A simple option for lighter maintenance.",
+  onetime: "Includes up to 30 minutes. Add $5 for each extra 5 minutes.",
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
@@ -369,7 +369,7 @@ export default function Page() {
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "Ca-Ca Canin",
-              description: "Dog waste removal and pooper scooper services in Laval, Quebec.",
+              description: "Dog waste removal and pooper scooper service in Laval, Quebec.",
               areaServed: "Laval, QC",
               address: {
                 "@type": "PostalAddress",
@@ -406,11 +406,11 @@ export default function Page() {
               </div>
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
-                  Laval&apos;s Premier<br />
+                  Dog Waste Removal<br />
                   <span className="text-brand-green">Pooper Scooper Service</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Transparent pricing, flexible schedules, and a cleaner yard in no time.
+                  Dog poop cleanup in Laval with clear pricing, flexible scheduling, and a yard you can use again.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
@@ -453,7 +453,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Ca-Ca Canin Customer Promise
+                What You Can Expect
               </h2>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -463,11 +463,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Reliable, Hassle-Free Service</CardTitle>
+                  <CardTitle className="text-xl">Reliable Yard Cleanup</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Our reliable, hassle-free dog waste removal service ensures timely, efficient visits, leaving your yard pristine. Enjoy more time with your dog—let us handle the mess!
+                    We show up, clean the yard thoroughly, and keep the process simple from quote to service day.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -477,11 +477,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Satisfaction Guaranteed</CardTitle>
+                  <CardTitle className="text-xl">Straightforward Service</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    At Ca-Ca Canin, we guarantee your satisfaction with our Laval pooper scooper service. If you&apos;re not happy, we&apos;ll make it right—your happiness is our priority.
+                    Clear communication, simple scheduling, and no long-term contract. You get a service that is easy to start and easy to manage.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -491,11 +491,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Health and Safety Commitment</CardTitle>
+                  <CardTitle className="text-xl">Clean and Pet-Conscious</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Ca-Ca Canin prioritizes health and safety by using sanitary practices and eco-friendly disposal methods, ensuring a clean, safe environment for Laval pets and families.
+                    We focus on sanitary cleanup practices so your yard feels cleaner and more comfortable for your family and your dog.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -520,13 +520,13 @@ export default function Page() {
                   loading="lazy"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin is a locally owned dog waste removal company serving Laval, Quebec. We built the business around one simple goal: make it easy for busy dog owners to keep their yards clean without dealing with the mess themselves.
+                  Ca-Ca Canin is a local dog waste removal company serving Laval, Quebec. We built the service to help busy dog owners keep their yards clean without adding another chore to the week.
                 </p>
                 <p className="text-lg text-gray-700 mb-4">
-                  Our residential pooper scooper service is designed for homeowners who want dependable, detail-oriented yard cleanups with clear pricing and flexible scheduling. Whether you need weekly service or occasional help, we focus on consistent results, respectful communication, and a yard your family can actually enjoy.
+                  Our residential pooper scooper service is built for homeowners who want dependable yard cleanup, clear pricing, and flexible scheduling. Whether you need weekly visits or occasional help, we focus on consistent results and direct communication.
                 </p>
                 <p className="text-lg text-gray-700">
-                  We&apos;re building this company through reliable service, honest communication, and care for every property we visit.
+                  The goal is simple. Leave every property cleaner than we found it and make the service easy to trust.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
@@ -548,7 +548,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Residential Pooper Scooper Services
+                  Residential Dog Waste Removal Services
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <img 
@@ -560,15 +560,15 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Flexible service options: weekly, bi-weekly, monthly, and one-time.</span>
+                    <span>Choose weekly, bi-weekly, monthly, or one-time cleanup.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Personalized service with attention to detail for every customer.</span>
+                    <span>Get detail-focused cleanup for the areas your dog uses most.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Deodorizer services keep your yard smelling fresh and odor-free.</span>
+                    <span>Book one-time cleanup or ongoing service based on your yard and schedule.</span>
                   </li>
                 </ul>
               </div>
@@ -593,8 +593,8 @@ export default function Page() {
             >
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Need a one-time reset?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Looking for a spring cleanup instead?</p>
-                <p className="mt-1 text-sm text-gray-600">Use the spring cleanup calculator for time-based pricing and one-time yard cleanup quotes.</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Need a one-time spring dog poop cleanup?</p>
+                <p className="mt-1 text-sm text-gray-600">Use the spring cleanup calculator for time-based pricing on one-time yard cleanup in Laval.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
                 Go to spring cleanup
@@ -602,10 +602,10 @@ export default function Page() {
             </Link>
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Pricing Calculator
+                Dog Waste Removal Pricing Calculator
               </h2>
               <p className="text-lg text-gray-600">
-                Estimate your per-visit and monthly price based on frequency, dogs, and yard size.
+                Estimate your per-visit and monthly price based on service frequency, number of dogs, and yard size.
               </p>
             </div>
 
@@ -730,7 +730,7 @@ export default function Page() {
                   </div>
 
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Exact pricing depends on yard size and number of dogs. Request a free quote for a personalized estimate.
+                    Pricing is based on yard size, number of dogs, and visit frequency. Request a free quote for final pricing.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -796,7 +796,7 @@ export default function Page() {
                             <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
                               Privacy Policy
                             </Link>{" "}
-                            and consent to be contacted about my request.
+                            and allow Ca-Ca Canin to contact me about my quote request.
                           </span>
                         </label>
                         {consentError && (
@@ -807,7 +807,7 @@ export default function Page() {
                       </div>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Great, we serve that Laval postal code. Continue to step 2.
+                          We service that Laval postal code. Continue to step 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
@@ -836,7 +836,7 @@ export default function Page() {
                           </div>
                           <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
-                            Contact information
+                            Your contact information
                           </div>
                         {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
                         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -896,7 +896,7 @@ export default function Page() {
                           className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
                           disabled={bookingStatus === 'loading'}
                         >
-                          {bookingStatus === 'loading' ? 'Sending...' : 'Get a Quote'}
+                          {bookingStatus === 'loading' ? 'Sending...' : 'Request My Quote'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -908,7 +908,7 @@ export default function Page() {
                           </div>
                         )}
                         <p className="text-xs text-gray-500">
-                          We typically respond within 1 business day.
+                          We usually reply within 1 business day.
                         </p>
                       </>
                     )}
@@ -917,9 +917,9 @@ export default function Page() {
                     {bookingStatus === 'success' && (
                       <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your quote request has been sent.</h3>
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your quote request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          We received your details and will follow up shortly. You do not need to submit the form again.
+                          We received your details and will follow up shortly. No need to send the form again.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -959,19 +959,19 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Why Choose Ca-Ca Canin?
+                Why Homeowners Choose Ca-Ca Canin
               </h2>
               <p className="text-xl text-gray-600">
-                When you hire Ca-Ca Canin as your Laval pooper scooper company, you can be confident you made the right decision with our 100% satisfaction guarantee.
+                Built for homeowners who want dog waste removal in Laval that is simple, consistent, and easy to book.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               {[
-                { icon: Heart, title: "Pet Safety", desc: "We clean all of our equipment and shoes with a kennel-grade disinfectant after every cleanup, minimizing the spread of germs and illness." },
-                { icon: Smartphone, title: "Easy Scheduling", desc: "Book service, make updates, and ask questions directly with our team by phone or email." },
-                { icon: FileText, title: "No Contracts", desc: "Enjoy the freedom of our flexible services without being tied down by any contracts, giving you the flexibility to start or stop whenever you need." },
-                { icon: Camera, title: "Gate Photos", desc: "You will receive a reassuring snapshot of your closed gate after each service visit, giving you peace of mind as your furry friends venture back into their tidy yard." },
-                { icon: Bell, title: "Notification Texts", desc: "We'll send you a notification text 60 minutes before we arrive and an email once the job is done, ensuring you're informed at every step of the process." },
+                { icon: Heart, title: "Pet-Conscious Visits", desc: "We use sanitary cleanup practices designed for homes with dogs, kids, and everyday backyard use." },
+                { icon: Smartphone, title: "Easy Scheduling", desc: "Request service, make updates, and ask questions directly by phone or email." },
+                { icon: FileText, title: "No Contracts", desc: "Start, pause, or stop service without being locked into a long-term contract." },
+                { icon: Camera, title: "Gate Photos", desc: "Get a photo confirmation after each visit so you know the gate is closed." },
+                { icon: Bell, title: "Arrival Updates", desc: "Stay informed with service updates before and after your scheduled visit." },
               ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
@@ -996,10 +996,10 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Pooper Scooper Locations
+                Service Area
               </h2>
               <p className="text-xl text-gray-600">
-                Ca-Ca Canin proudly services all of Laval, Quebec
+                Dog waste removal service across Laval, Quebec.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
@@ -1012,10 +1012,10 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Dog Waste Removal Services
+                    Residential dog waste removal
                   </p>
                   <p className="text-gray-600">
-                    Serving all neighborhoods throughout Laval, Quebec
+                    Serving Laval homeowners with recurring and one-time cleanup service
                   </p>
                 </CardContent>
               </Card>
@@ -1028,20 +1028,20 @@ export default function Page() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Frequently Asked Pooper Scooper Questions!
+                Dog Waste Removal FAQs
               </h2>
               <p className="text-xl text-gray-600">
-                Get the answers to your pooper scooper service questions right here.
+                Answers about dog waste removal service in Laval.
               </p>
             </div>
             <div className="space-y-4">
               {[
-                { q: "Does Ca-Ca Canin Clean the Entire Yard?", a: "Ca-Ca Canin will clean any areas of your property that have dog waste issues, including front, back, and side yards, flower beds, dog runs, etc." },
-                { q: "Do you provide dog waste removal services all year round?", a: "Yes! Ca-Ca Canin provides dog waste removal services year-round in Laval. Even in the winter, we will still show up to provide services. In locations with snow, most of the waste that accumulates is still scoopable." },
-                { q: "How do you ensure the safety of my dogs?", a: "The safety of our clients and their dogs is a top priority at Ca-Ca Canin. To ensure all dogs are safe, we clean all our equipment and shoes between each yard with a kennel-grade disinfectant to prevent the spread of germs. We also take gate pictures when we are done cleaning so you know your pets won't get out of the yard, and we ensure all our employees are background checked." },
-                { q: "How much does it cost to hire a professional pooper scooper?", a: "Ca-Ca Canin has pooper scooper service plans starting as low as $60 per month. However, pricing is based on the size of the yard, service frequency, and number of dogs. Most of our clients end up paying between $95 and $135 per month." },
-                { q: "Do I have to sign a contract for pooper scooper services?", a: "No contracts! You can start, pause, and cancel your service at any time by calling or emailing our team." },
-                { q: "How do you dispose of the pet waste after each cleanup?", a: "We bag the waste and place it in the customer's outdoor trash bin for disposal. If the bin isn't accessible, we'll leave it neatly beside the bin location as arranged." },
+                { q: "Do you clean the whole yard?", a: "Yes. We clean the areas of your property where dog waste is present, including front, back, and side yards, plus dog runs and similar spaces." },
+                { q: "Do you offer service year-round?", a: "Yes. Ca-Ca Canin offers dog waste removal service in Laval throughout the year, including winter conditions when cleanup is still accessible." },
+                { q: "How is pricing calculated?", a: "Pricing depends on yard size, service frequency, and the number of dogs. Use the calculator for an estimate, then request a quote for final pricing." },
+                { q: "Do I need a contract?", a: "No. You can start, pause, or cancel service by contacting our team." },
+                { q: "What happens after each visit?", a: "You receive service confirmation, and we can provide a gate photo after the visit." },
+                { q: "How is the waste disposed of?", a: "Waste is bagged and placed in the outdoor trash bin when available. If the bin is not accessible, disposal is handled based on the service arrangement." },
               ].map((faq, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>
@@ -1077,7 +1077,7 @@ export default function Page() {
                 </span>
               </div>
               <p className="text-gray-400">
-                Reliable dog waste removal service for homes across Laval, Quebec.
+                Dog waste removal and pooper scooper service for Laval homeowners.
               </p>
             </div>
             <div>
@@ -1094,7 +1094,7 @@ export default function Page() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold mb-4">Get in touch</h3>
+              <h3 className="font-semibold mb-4">Contact</h3>
               <ul className="space-y-2 text-gray-400">
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4" />
@@ -1118,7 +1118,7 @@ export default function Page() {
               <h3 className="font-semibold mb-4">Legal</h3>
               <ul className="space-y-2 text-gray-400">
                 <li><Link href="/terms" className="hover:text-white">Terms</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy</Link></li>
+                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
               </ul>
             </div>
           </div>

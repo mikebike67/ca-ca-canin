@@ -10,8 +10,8 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
-  title: "Ca-Ca Canin - Laval's Premier Pooper Scooper Service",
-  description: "Ca-Ca Canin provides reliable, hassle-free dog waste removal services throughout Laval, Quebec. Get your free quote today!",
+  title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
+  description: "Dog waste removal and pooper scooper service in Laval, QC. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
   alternates: {
     languages: {
       en: "/",
@@ -19,14 +19,14 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: "Ca-Ca Canin - Laval's Premier Pooper Scooper Service",
-    description: "Reliable, hassle-free dog waste removal services throughout Laval, Quebec.",
+    title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
+    description: "Dog waste removal and pooper scooper service in Laval, QC with clear pricing and flexible scheduling.",
     type: "website"
   },
   twitter: {
     card: "summary",
-    title: "Ca-Ca Canin - Laval's Premier Pooper Scooper Service",
-    description: "Reliable, hassle-free dog waste removal services throughout Laval, Quebec."
+    title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
+    description: "Dog waste removal and pooper scooper service in Laval, QC with clear pricing and flexible scheduling."
   },
   icons: {
     icon: [

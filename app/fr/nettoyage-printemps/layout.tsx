@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Nettoyage de printemps à Laval, QC | Ca-Ca Canin",
-  description: "Nettoyage de printemps des déjections canines à Laval, QC à partir de 60 $. Places limitées. Obtenez un devis rapidement.",
+  title: "Nettoyage printanier des déjections canines à Laval, QC | Ca-Ca Canin",
+  description: "Nettoyage printanier des déjections canines à Laval, QC à partir de 60 $. Demandez un devis rapide pour un nettoyage ponctuel.",
   alternates: {
     languages: {
       en: "/spring-cleanup",

@@ -19,18 +19,18 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900">What we collect</h2>
             <p>
               We may collect your name, email address, phone number, postal code, requested service details,
-              and other information you provide when you contact us or request a quote. We may also collect
-              basic website analytics information such as device type, pages viewed, and general visit activity
-              if analytics tools are enabled on the site.
+              and any other information you submit when you contact us or request a quote. If analytics tools
+              are enabled, we may also collect basic website usage data such as device type, pages viewed,
+              and general visit activity.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">How we use your information</h2>
             <p>
-              We use your information to provide quotes, schedule and deliver services, send service updates,
+              We use your information to provide quotes, schedule and deliver service, send updates,
               respond to questions, support customers, process payments when applicable, and improve the website
-              and our service operations.
+              and service operations.
             </p>
           </section>
 
@@ -47,17 +47,17 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900">Cookies and analytics</h2>
             <p>
               We may use cookies or similar tools to remember site preferences, understand site usage, and improve
-              performance. You can control cookies through your browser settings, including blocking or deleting them,
-              though some site features may not work as expected if you disable them.
+              performance. You can manage cookies through your browser settings, including blocking or deleting them.
+              Some site features may not work as expected if cookies are disabled.
             </p>
           </section>
 
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">How we share information</h2>
             <p>
-              We may share information with service providers that help us run the website or customer communication tools, such as email,
-              SMS, analytics, payment, hosting, or scheduling providers. We may also disclose information where
-              required by law or to protect our rights. We do not sell personal information.
+              We may share information with service providers that help us operate the website or communication tools,
+              including email, SMS, analytics, payment, hosting, or scheduling providers. We may also disclose information
+              when required by law or when needed to protect our rights. We do not sell personal information.
             </p>
           </section>
 
@@ -73,7 +73,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900">Security</h2>
             <p>
               We use reasonable administrative, technical, and organizational safeguards to protect personal information.
-              No system is completely secure, so we cannot guarantee absolute security.
+              No system is completely secure, so absolute security cannot be guaranteed.
             </p>
           </section>
 
@@ -90,7 +90,7 @@ export default function PrivacyPage() {
             <h2 className="text-2xl font-bold text-gray-900">Your rights</h2>
             <p>
               Subject to applicable law, you may request access to your personal information, ask for corrections,
-              or request deletion. To make a request, contact us using the information on this page.
+              or request deletion. To make a request, use the contact details on this page.
             </p>
           </section>
 

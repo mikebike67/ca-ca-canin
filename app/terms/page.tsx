@@ -19,7 +19,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-900">About Ca-Ca Canin</h2>
             <p>
               Ca-Ca Canin provides dog waste removal and spring cleanup services in Laval, Quebec.
-              These terms apply when you use our website, request a quote, or book service with us.
+              These terms apply when you use our website, request a quote, or book service.
             </p>
           </section>
 
@@ -27,7 +27,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-900">Acceptance of terms</h2>
             <p>
               By using this website, requesting a quote, or booking service, you agree to these terms
-              and our Privacy Policy. If you do not agree, please do not use the site or submit a request.
+              and our Privacy Policy. If you do not agree, do not use the site or submit a request.
             </p>
           </section>
 
@@ -73,9 +73,9 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">Cancellations and missed visits</h2>
             <p>
-              If you need to cancel or reschedule, please contact us as early as possible by phone or email.
+              If you need to cancel or reschedule, contact us as early as possible by phone or email.
               If we cannot access the yard at the scheduled time or conditions are unsafe, we may treat that
-              as a missed visit and reschedule or charge for the time reserved, depending on the situation.
+              as a missed visit and reschedule or charge for the reserved time, depending on the situation.
             </p>
           </section>
 
@@ -84,7 +84,7 @@ export default function TermsPage() {
             <p>
               Recurring services may be billed on the schedule provided when you sign up. Applicable taxes may
               be added where required. Service is offered without long-term contracts, and you may cancel anytime
-              by calling or emailing us. Cancellation requests apply going forward and do not reverse completed services.
+              by phone or email. Cancellation requests apply going forward and do not reverse completed services.
             </p>
           </section>
 

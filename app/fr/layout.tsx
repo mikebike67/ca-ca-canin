@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Ca-Ca Canin - Service de ramassage de déjections canines à Laval",
-  description: "Ca-Ca Canin offre un service fiable de ramassage de déjections canines à Laval, Québec. Obtenez un devis gratuit.",
+  title: "Ramassage de déjections canines à Laval, QC | Ca-Ca Canin",
+  description: "Service de ramassage de déjections canines à Laval, QC. Tarifs clairs, horaires flexibles et devis rapide avec Ca-Ca Canin.",
   alternates: {
     languages: {
       en: "/",
@@ -10,15 +10,15 @@ export const metadata: Metadata = {
     }
   },
   openGraph: {
-    title: "Ca-Ca Canin - Service de ramassage de déjections canines à Laval",
-    description: "Service fiable et sans tracas de ramassage de déjections canines à Laval, Québec.",
+    title: "Ramassage de déjections canines à Laval, QC | Ca-Ca Canin",
+    description: "Service de ramassage de déjections canines à Laval, QC avec tarifs clairs et horaires flexibles.",
     type: "website",
     locale: "fr_CA"
   },
   twitter: {
     card: "summary",
-    title: "Ca-Ca Canin - Service de ramassage de déjections canines à Laval",
-    description: "Service fiable et sans tracas de ramassage de déjections canines à Laval, Québec."
+    title: "Ramassage de déjections canines à Laval, QC | Ca-Ca Canin",
+    description: "Service de ramassage de déjections canines à Laval, QC avec tarifs clairs et horaires flexibles."
   }
 };
 

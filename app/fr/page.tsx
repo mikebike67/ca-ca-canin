@@ -36,10 +36,10 @@ const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string
 ];
 
 const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
-  weekly: "Parfait pour garder votre cour propre en tout temps.",
-  biweekly: "Excellent équilibre entre prix et commodité.",
-  monthly: "Idéal pour un entretien léger.",
-  onetime: "Inclut jusqu'à 30 minutes. +5 $ par tranche de 5 minutes.",
+  weekly: "Le meilleur choix pour garder la cour propre chaque semaine.",
+  biweekly: "Un bon équilibre entre prix et entretien.",
+  monthly: "Une option simple pour un entretien léger.",
+  onetime: "Inclut jusqu'à 30 minutes. Ajoutez 5 $ par tranche supplémentaire de 5 minutes.",
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
@@ -405,11 +405,11 @@ export default function Page() {
               </div>
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
-                  Le service de ramassage<br />
+                  Ramassage de déjections<br />
                   <span className="text-brand-green">de déjections canines à Laval</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Tarifs clairs, horaires flexibles et une cour propre rapidement.
+                  Un service de ramassage à Laval avec tarifs clairs, horaires flexibles et une cour enfin propre.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
@@ -452,7 +452,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Promesse client Ca-Ca Canin
+                Ce que vous obtenez
               </h2>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -462,11 +462,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Service fiable et sans tracas</CardTitle>
+                  <CardTitle className="text-xl">Nettoyage fiable</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Notre service fiable et sans tracas assure des visites ponctuelles et efficaces, laissant votre cour impeccable. Profitez de plus de temps avec votre chien — on s&apos;occupe du reste!
+                    Nous passons, nous nettoyons soigneusement, puis nous laissons une cour plus propre sans compliquer votre semaine.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -476,11 +476,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Satisfaction garantie</CardTitle>
+                  <CardTitle className="text-xl">Service simple à gérer</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Chez Ca-Ca Canin, votre satisfaction est garantie avec notre service de ramassage à Laval. Si vous n&apos;êtes pas satisfait, nous corrigerons la situation — votre bonheur est notre priorité.
+                    Communication claire, planification simple et aucun contrat à long terme. Le service est facile à démarrer et facile à ajuster.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -490,11 +490,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Engagement santé et sécurité</CardTitle>
+                  <CardTitle className="text-xl">Approche propre et pensée pour les chiens</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Ca-Ca Canin priorise la santé et la sécurité grâce à des pratiques sanitaires et une élimination écoresponsable, pour un environnement propre et sécuritaire pour les familles et animaux de Laval.
+                    Nous misons sur des pratiques de nettoyage sanitaires pour rendre votre cour plus agréable pour votre famille et votre chien.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -519,13 +519,13 @@ export default function Page() {
                   loading="lazy"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin est une entreprise locale de ramassage de déjections canines qui dessert Laval, Québec. Nous avons lancé l&apos;entreprise avec un objectif simple : aider les propriétaires de chiens occupés à garder leur cour propre sans avoir à gérer le désordre eux-mêmes.
+                  Ca-Ca Canin est une entreprise locale de ramassage de déjections canines qui dessert Laval, Québec. Nous avons créé ce service pour aider les propriétaires de chiens occupés à garder leur cour propre sans ajouter une corvée de plus.
                 </p>
                 <p className="text-lg text-gray-700 mb-4">
-                  Notre service résidentiel est conçu pour les propriétaires qui veulent des nettoyages fiables, soignés et simples à planifier. Que vous ayez besoin d&apos;un passage hebdomadaire ou d&apos;une aide occasionnelle, nous misons sur des résultats constants, une communication claire et une cour réellement agréable à utiliser.
+                  Notre service résidentiel est conçu pour les propriétaires qui veulent un nettoyage fiable, des tarifs clairs et une planification souple. Que vous ayez besoin d&apos;un passage chaque semaine ou d&apos;une aide occasionnelle, nous visons des résultats constants et une communication directe.
                 </p>
                 <p className="text-lg text-gray-700">
-                  Nous bâtissons cette entreprise avec un service fiable, une communication honnête et du respect pour chaque propriété visitée.
+                  L&apos;objectif est simple. Laisser chaque propriété plus propre et rendre le service facile à faire confiance.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
@@ -547,7 +547,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Services résidentiels de ramassage
+                  Service résidentiel de ramassage de déjections canines
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <img 
@@ -559,15 +559,15 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Options flexibles : hebdomadaire, aux deux semaines, mensuel et ponctuel.</span>
+                    <span>Choisissez un passage hebdomadaire, aux deux semaines, mensuel ou ponctuel.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Service personnalisé avec une grande attention aux détails pour chaque client.</span>
+                    <span>Obtenez un nettoyage soigné dans les zones que votre chien utilise le plus.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Des services de désodorisation gardent votre cour fraîche et sans odeur.</span>
+                    <span>Réservez un nettoyage ponctuel ou un service récurrent selon votre cour et votre horaire.</span>
                   </li>
                 </ul>
               </div>
@@ -592,8 +592,8 @@ export default function Page() {
             >
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Besoin d&apos;un grand nettoyage?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Vous cherchez plutôt un nettoyage de printemps?</p>
-                <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour les devis ponctuels avec tarification selon le temps.</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Besoin d&apos;un nettoyage printanier ponctuel?</p>
+                <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour une tarification selon le temps et un devis rapide à Laval.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
                 Aller au nettoyage de printemps
@@ -601,10 +601,10 @@ export default function Page() {
             </Link>
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Calculateur de prix
+                Calculateur de prix pour le ramassage
               </h2>
               <p className="text-lg text-gray-600">
-                Estimez votre prix par visite et par mois selon la fréquence, le nombre de chiens et la taille de la cour.
+                Estimez votre prix par visite et par mois selon la fréquence, le nombre de chiens et la taille de votre cour.
               </p>
             </div>
 
@@ -729,7 +729,7 @@ export default function Page() {
                   </div>
 
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Le prix exact dépend de la taille de la cour et du nombre de chiens. Demandez un devis gratuit pour une estimation personnalisée.
+                    Le prix dépend de la taille de la cour, du nombre de chiens et de la fréquence. Demandez un devis gratuit pour le prix final.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -795,7 +795,7 @@ export default function Page() {
                             <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
                               politique de confidentialité
                             </Link>{" "}
-                            et je consens à être contacté au sujet de ma demande.
+                            et j&apos;autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
                           </span>
                         </label>
                         {consentError && (
@@ -806,7 +806,7 @@ export default function Page() {
                       </div>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Parfait, nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
+                          Nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
@@ -835,7 +835,7 @@ export default function Page() {
                           </div>
                           <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
                             <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
-                            Coordonnées
+                            Vos coordonnées
                           </div>
                         {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
                         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
@@ -895,7 +895,7 @@ export default function Page() {
                           className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
                           disabled={bookingStatus === 'loading'}
                         >
-                          {bookingStatus === 'loading' ? 'Envoi...' : 'Obtenir un devis'}
+                          {bookingStatus === 'loading' ? 'Envoi...' : 'Demander mon devis'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -907,7 +907,7 @@ export default function Page() {
                           </div>
                         )}
                         <p className="text-xs text-gray-500">
-                          Nous répondons généralement en 1 jour ouvrable.
+                          Nous répondons habituellement en 1 jour ouvrable.
                         </p>
                       </>
                     )}
@@ -916,9 +916,9 @@ export default function Page() {
                     {bookingStatus === 'success' && (
                       <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Merci</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de devis a bien été envoyée.</h3>
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de devis est envoyée.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          Nous avons bien reçu vos informations et nous vous contacterons sous peu. Inutile d&apos;envoyer le formulaire de nouveau.
+                          Nous avons bien reçu vos informations et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -958,19 +958,19 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Pourquoi choisir Ca-Ca Canin?
+                Pourquoi les propriétaires choisissent Ca-Ca Canin
               </h2>
               <p className="text-xl text-gray-600">
-                En choisissant Ca-Ca Canin pour votre service à Laval, vous faites le bon choix avec notre garantie de satisfaction à 100 %.
+                Un service pensé pour les propriétaires qui veulent un ramassage simple, régulier et facile à réserver à Laval.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               {[
-                { icon: Heart, title: "Sécurité des animaux", desc: "Nous nettoyons tout notre équipement et nos chaussures avec un désinfectant de grade chenil après chaque visite, limitant la propagation des germes." },
-                { icon: Smartphone, title: "Planification facile", desc: "Réservez le service, faites des changements et posez vos questions directement à notre équipe par téléphone ou par courriel." },
-                { icon: FileText, title: "Aucun contrat", desc: "Bénéficiez de services flexibles sans engagement, avec la liberté de commencer ou d&apos;arrêter quand vous le souhaitez." },
-                { icon: Camera, title: "Photos du portail", desc: "Recevez une photo rassurante de votre portail fermé après chaque visite, pour votre tranquillité d&apos;esprit." },
-                { icon: Bell, title: "Textos de notification", desc: "Nous envoyons un texto 60 minutes avant l&apos;arrivée et un courriel après le service pour vous tenir informé." },
+                { icon: Heart, title: "Visites pensées pour les chiens", desc: "Nous utilisons des pratiques de nettoyage sanitaires adaptées aux cours familiales avec chiens." },
+                { icon: Smartphone, title: "Planification facile", desc: "Demandez le service, faites des changements et posez vos questions par téléphone ou par courriel." },
+                { icon: FileText, title: "Aucun contrat", desc: "Commencez, mettez en pause ou arrêtez le service sans engagement à long terme." },
+                { icon: Camera, title: "Photos du portail", desc: "Recevez une photo de confirmation après la visite pour savoir que le portail est bien fermé." },
+                { icon: Bell, title: "Mises à jour de visite", desc: "Restez informé avec des mises à jour avant et après votre passage prévu." },
               ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
@@ -998,7 +998,7 @@ export default function Page() {
                 Zones desservies
               </h2>
               <p className="text-xl text-gray-600">
-                Ca-Ca Canin dessert fièrement tout Laval, Québec
+                Service de ramassage de déjections canines partout à Laval, Québec.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
@@ -1011,10 +1011,10 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Services de ramassage de déjections canines
+                    Ramassage résidentiel de déjections canines
                   </p>
                   <p className="text-gray-600">
-                    Nous desservons tous les quartiers de Laval, Québec
+                    Service récurrent et ponctuel pour les propriétaires de Laval
                   </p>
                 </CardContent>
               </Card>
@@ -1027,20 +1027,20 @@ export default function Page() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Questions fréquentes sur le service de ramassage!
+                FAQ sur le ramassage de déjections canines
               </h2>
               <p className="text-xl text-gray-600">
-                Trouvez ici les réponses à vos questions sur notre service de ramassage.
+                Réponses aux questions sur notre service à Laval.
               </p>
             </div>
             <div className="space-y-4">
               {[
-                { q: "Est-ce que Ca-Ca Canin nettoie toute la cour?", a: "Ca-Ca Canin nettoie toutes les zones de votre propriété où il y a des déjections, y compris l'avant, l'arrière, les côtés, les plates-bandes, les enclos à chiens, etc." },
-                { q: "Offrez-vous le service de ramassage toute l'année?", a: "Oui! Ca-Ca Canin offre le service toute l'année à Laval. Même en hiver, nous assurons les visites. Dans les zones enneigées, la plupart des déjections restent ramassables." },
-                { q: "Comment assurez-vous la sécurité de mes chiens?", a: "La sécurité de nos clients et de leurs chiens est une priorité chez Ca-Ca Canin. Nous désinfectons notre équipement et nos chaussures entre chaque cour avec un désinfectant de grade chenil pour limiter les germes. Nous prenons aussi des photos du portail une fois le nettoyage terminé, et tous nos employés sont vérifiés." },
-                { q: "Combien coûte un service professionnel de ramassage?", a: "Les plans de Ca-Ca Canin commencent dès 60 $ par mois. Le prix dépend de la taille de la cour, de la fréquence et du nombre de chiens. La plupart de nos clients paient entre 95 $ et 135 $ par mois." },
-                { q: "Dois-je signer un contrat pour le service?", a: "Aucun contrat! Vous pouvez commencer, mettre en pause ou annuler votre service à tout moment en appelant ou en écrivant à notre équipe." },
-                { q: "Comment disposez-vous des déchets après chaque visite?", a: "L'élimination adéquate est essentielle puisque les déjections canines sont considérées comme un matériau potentiellement dangereux. Nous mettons les déchets dans un double sac et les déposons dans la poubelle du client ou près de la maison." },
+                { q: "Nettoyez-vous toute la cour?", a: "Oui. Nous nettoyons les zones de la propriété où il y a des déjections, y compris l'avant, l'arrière, les côtés et les espaces comme les enclos à chiens." },
+                { q: "Offrez-vous le service toute l&apos;année?", a: "Oui. Ca-Ca Canin offre le service à Laval toute l&apos;année, y compris en hiver lorsque le nettoyage demeure accessible." },
+                { q: "Comment le prix est-il calculé?", a: "Le prix dépend de la taille de la cour, de la fréquence du service et du nombre de chiens. Utilisez le calculateur pour une estimation, puis demandez un devis pour le prix final." },
+                { q: "Dois-je signer un contrat?", a: "Non. Vous pouvez commencer, mettre en pause ou annuler le service en communiquant avec notre équipe." },
+                { q: "Que se passe-t-il après chaque visite?", a: "Vous recevez une confirmation de service et, au besoin, une photo du portail après la visite." },
+                { q: "Comment les déchets sont-ils disposés?", a: "Les déchets sont mis dans des sacs et déposés dans la poubelle extérieure lorsqu&apos;elle est accessible. Sinon, la disposition suit l&apos;entente prévue pour le service." },
               ].map((faq, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>
@@ -1076,7 +1076,7 @@ export default function Page() {
                 </span>
               </div>
               <p className="text-gray-400">
-                Service fiable de ramassage de déjections canines pour les résidences à Laval, Québec.
+                Service de ramassage de déjections canines pour les propriétaires de Laval.
               </p>
             </div>
             <div>

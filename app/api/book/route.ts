@@ -232,9 +232,9 @@ export async function POST(req: NextRequest) {
       `- ${isFrench ? "Telephone" : "Phone"}: ${phone.trim()}`,
       `- ${isFrench ? "Courriel" : "Email"}: ${email.trim()}`,
       ``,
-      isFrench ? `Nous vous contacterons sous peu pour confirmer les details et la suite.` : `We’ll reach out soon to finalize your schedule.`,
+      isFrench ? `Nous vous contacterons sous peu pour confirmer les details et la suite.` : `We'll reach out soon to finalize your schedule.`,
       ``,
-      `— Ca-Ca Canin`,
+      `Ca-Ca Canin`,
     ].join("\n");
 
     const html = `
