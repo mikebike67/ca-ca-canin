@@ -88,6 +88,16 @@ export default function SpringCleanupPage() {
     return { perVisit, note: frequencyNotes[frequency] };
   }, [dogs, frequency, yardCategory, yardSqft]);
 
+  const monthlyTotal = useMemo(() => {
+    const visitsPerMonth =
+      frequency === 'weekly' ? 4 :
+      frequency === 'biweekly' ? 2 :
+      frequency === 'monthly' ? 1 :
+      0;
+
+    return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
+  }, [frequency, pricingDetails.perVisit]);
+
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -284,7 +294,7 @@ export default function SpringCleanupPage() {
                 alt="Ca-Ca Canin logo"
                 className="h-10 w-10"
               />
-              <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
+              <span className={`text-xl font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
                 CA-CA CANIN
               </span>
             </Link>
@@ -565,6 +575,17 @@ export default function SpringCleanupPage() {
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
+                    {frequency !== 'onetime' && (
+                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                          Estimated monthly total
+                        </p>
+                        <p className="text-4xl font-extrabold text-brand-green sm:text-5xl">
+                          {formatMoney(monthlyTotal)}
+                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
+                        </p>
+                      </div>
+                    )}
                     {frequency === 'onetime' && (
                       <p className="text-sm text-gray-600">
                         +$5 per additional 5-minute block.
@@ -847,7 +868,7 @@ export default function SpringCleanupPage() {
 
       <footer className="bg-gray-900 text-white py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid gap-8 md:grid-cols-4 mb-8">
+          <div className="mb-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img
@@ -855,12 +876,12 @@ export default function SpringCleanupPage() {
                   alt="Ca-Ca Canin logo"
                   className="h-8 w-8"
                 />
-                <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
+                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
                   CA-CA CANIN
                 </span>
               </div>
               <p className="text-gray-400">
-                Spring dog poop cleanup in Laval, QC.
+                Spring cleanup and one-time yard reset service in Laval, Quebec.
               </p>
             </div>
             <div>
@@ -872,7 +893,7 @@ export default function SpringCleanupPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="hover:text-white">cacacaninqc@gmail.com</a>
+                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">cacacaninqc@gmail.com</a>
                 </li>
               </ul>
             </div>
@@ -893,7 +914,7 @@ export default function SpringCleanupPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-6 text-center text-gray-400">
-            <p>© 2024 Ca-Ca Canin • Laval spring cleanup</p>
+            <p>© 2026 Ca-Ca Canin</p>
           </div>
         </div>
       </footer>

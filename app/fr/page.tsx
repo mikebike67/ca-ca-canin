@@ -98,22 +98,6 @@ export default function Page() {
     return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
   }, [frequency, pricingDetails.perVisit]);
 
-  const yearlyTotal = useMemo(() => {
-    if (frequency === 'onetime') {
-      return 0;
-    }
-
-    return Math.round(monthlyTotal * 12 * 0.8 * 100) / 100;
-  }, [frequency, monthlyTotal]);
-
-  const annualMonthlyEquivalent = useMemo(() => {
-    if (frequency === 'onetime') {
-      return 0;
-    }
-
-    return Math.round((yearlyTotal / 12) * 100) / 100;
-  }, [frequency, yearlyTotal]);
-
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -307,13 +291,12 @@ export default function Page() {
                 alt="Logo Ca-Ca Canin" 
                 className="h-10 w-10"
               />
-              <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
+              <span className={`text-xl font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
                 CA-CA CANIN
               </span>
             </Link>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="#services" className="text-gray-700 hover:text-brand-green transition-colors">Services</Link>
               <Link href="#about" className="text-gray-700 hover:text-brand-green transition-colors">À propos</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
               <Link href="/" className="text-brand-brown hover:text-brand-brown/80 transition-colors">English</Link>
@@ -347,7 +330,6 @@ export default function Page() {
 
           {isMenuOpen && (
             <div id="mobile-nav" className="md:hidden py-4 space-y-4">
-              <Link href="#services" className="block text-gray-700 hover:text-brand-green">Services</Link>
               <Link href="#about" className="block text-gray-700 hover:text-brand-green">À propos</Link>
               <Link href="#faq" className="block text-gray-700 hover:text-brand-green">FAQ</Link>
               <Link href="/" className="block text-brand-brown hover:text-brand-brown/80">English</Link>
@@ -434,14 +416,6 @@ export default function Page() {
                       Obtenir un devis
                     </Link>
                   </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-8 py-6 text-lg text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto"
-                    asChild
-                  >
-                    <Link href="#services">Voir comment ça fonctionne</Link>
-                  </Button>
                 </div>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
@@ -522,14 +496,17 @@ export default function Page() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="scroll-animation">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Notre entreprise de ramassage de déjections canines
+                  À propos de Ca-Ca Canin
                 </h2>
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin a été fondée pour améliorer la vie des propriétaires de chiens en offrant des services de ramassage de déjections de grande qualité partout à Laval, Québec. Nous sommes une nouvelle entreprise locale dédiée à un service fiable et professionnel pour notre communauté. Chaque client compte, et nous bâtissons la confiance grâce à un service exceptionnel et un souci du détail.
+                  Ca-Ca Canin est une entreprise locale de ramassage de déjections canines qui dessert Laval, Québec. Nous avons lancé l&apos;entreprise avec un objectif simple : aider les propriétaires de chiens occupés à garder leur cour propre sans avoir à gérer le désordre eux-mêmes.
                 </p>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  En savoir plus
-                </Button>
+                <p className="text-lg text-gray-700 mb-4">
+                  Notre service résidentiel est conçu pour les propriétaires qui veulent des nettoyages fiables, soignés et simples à planifier. Que vous ayez besoin d&apos;un passage hebdomadaire ou d&apos;une aide occasionnelle, nous misons sur des résultats constants, une communication claire et une cour réellement agréable à utiliser.
+                </p>
+                <p className="text-lg text-gray-700">
+                  Nous bâtissons cette entreprise avec un service fiable, une communication honnête et du respect pour chaque propriété visitée.
+                </p>
               </div>
               <div className="scroll-animation scroll-delay-1">
                 <img 
@@ -573,9 +550,6 @@ export default function Page() {
                     <span>Des services de désodorisation gardent votre cour fraîche et sans odeur.</span>
                   </li>
                 </ul>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  En savoir plus
-                </Button>
               </div>
             </div>
           </div>
@@ -702,9 +676,14 @@ export default function Page() {
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
                     {frequency !== 'onetime' && (
-                      <div className="space-y-1 text-sm font-semibold text-gray-700">
-                        <p>Total mensuel estimé : {formatMoney(monthlyTotal)}/mois</p>
-                        <p>Paiement annuel : {formatMoney(yearlyTotal)}/an ({formatMoney(annualMonthlyEquivalent)}/mois en équivalent, rabais de 20 %)</p>
+                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                          Total mensuel estimé
+                        </p>
+                        <p className="text-4xl font-extrabold text-brand-green sm:text-5xl">
+                          {formatMoney(monthlyTotal)}
+                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
+                        </p>
                       </div>
                     )}
                     {frequency === 'onetime' && (
@@ -1026,7 +1005,7 @@ export default function Page() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8 mb-8">
+          <div className="mb-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-4">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
@@ -1034,12 +1013,12 @@ export default function Page() {
                   alt="Logo Ca-Ca Canin" 
                   className="h-8 w-8"
                 />
-                <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
+                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
                   CA-CA CANIN
                 </span>
               </div>
               <p className="text-gray-400">
-                Le principal service de ramassage de déjections canines à Laval.
+                Service fiable de ramassage de déjections canines pour les résidences à Laval, Québec.
               </p>
             </div>
             <div>
@@ -1070,7 +1049,7 @@ export default function Page() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="hover:text-white">
+                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">
                     cacacaninqc@gmail.com
                   </a>
                 </li>
@@ -1078,7 +1057,7 @@ export default function Page() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© 2024 Ca-Ca Canin • Le principal service de ramassage de déjections canines à Laval.</p>
+            <p>© 2026 Ca-Ca Canin</p>
           </div>
         </div>
       </footer>

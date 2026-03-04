@@ -98,22 +98,6 @@ export default function Page() {
     return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
   }, [frequency, pricingDetails.perVisit]);
 
-  const yearlyTotal = useMemo(() => {
-    if (frequency === 'onetime') {
-      return 0;
-    }
-
-    return Math.round(monthlyTotal * 12 * 0.8 * 100) / 100;
-  }, [frequency, monthlyTotal]);
-
-  const annualMonthlyEquivalent = useMemo(() => {
-    if (frequency === 'onetime') {
-      return 0;
-    }
-
-    return Math.round((yearlyTotal / 12) * 100) / 100;
-  }, [frequency, yearlyTotal]);
-
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -308,13 +292,12 @@ export default function Page() {
                 alt="Ca-Ca Canin logo" 
                 className="h-10 w-10"
               />
-              <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
+              <span className={`text-xl font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
                 CA-CA CANIN
               </span>
             </Link>
             
             <div className="hidden md:flex items-center space-x-8">
-              <Link href="#services" className="text-gray-700 hover:text-brand-green transition-colors">Services</Link>
               <Link href="#about" className="text-gray-700 hover:text-brand-green transition-colors">About</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
               <Link href="/fr" className="text-brand-brown hover:text-brand-brown/80 transition-colors">Français</Link>
@@ -348,7 +331,6 @@ export default function Page() {
 
           {isMenuOpen && (
             <div id="mobile-nav" className="md:hidden py-4 space-y-4">
-              <Link href="#services" className="block text-gray-700 hover:text-brand-green">Services</Link>
               <Link href="#about" className="block text-gray-700 hover:text-brand-green">About</Link>
               <Link href="#faq" className="block text-gray-700 hover:text-brand-green">FAQ</Link>
               <Link href="/fr" className="block text-brand-brown hover:text-brand-brown/80">Français</Link>
@@ -435,14 +417,6 @@ export default function Page() {
                       Get a Quote
                     </Link>
                   </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-8 py-6 text-lg text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto"
-                    asChild
-                  >
-                    <Link href="#services">Watch how it works</Link>
-                  </Button>
                 </div>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
@@ -523,14 +497,17 @@ export default function Page() {
             <div className="grid md:grid-cols-2 gap-12 items-center">
               <div className="scroll-animation">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Our Dog Waste Removal Company
+                  About Ca-Ca Canin
                 </h2>
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin was founded with the goal of improving the lives of dog owners by offering high-quality dog waste removal services throughout Laval, Quebec. We&apos;re a new, locally-owned business dedicated to providing reliable, professional service to our community. Every customer matters to us, and we&apos;re committed to building trust through exceptional service and attention to detail.
+                  Ca-Ca Canin is a locally owned dog waste removal company serving Laval, Quebec. We built the business around one simple goal: make it easy for busy dog owners to keep their yards clean without dealing with the mess themselves.
                 </p>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  Learn More
-                </Button>
+                <p className="text-lg text-gray-700 mb-4">
+                  Our residential pooper scooper service is designed for homeowners who want dependable, detail-oriented yard cleanups with clear pricing and flexible scheduling. Whether you need weekly service or occasional help, we focus on consistent results, respectful communication, and a yard your family can actually enjoy.
+                </p>
+                <p className="text-lg text-gray-700">
+                  We&apos;re building this company through reliable service, honest communication, and care for every property we visit.
+                </p>
               </div>
               <div className="scroll-animation scroll-delay-1">
                 <img 
@@ -574,9 +551,6 @@ export default function Page() {
                     <span>Deodorizer services keep your yard smelling fresh and odor-free.</span>
                   </li>
                 </ul>
-                <Button className="bg-brand-green hover:bg-brand-green-dark text-white">
-                  Learn More
-                </Button>
               </div>
             </div>
           </div>
@@ -703,9 +677,14 @@ export default function Page() {
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
                     {frequency !== 'onetime' && (
-                      <div className="space-y-1 text-sm font-semibold text-gray-700">
-                        <p>Estimated monthly total: {formatMoney(monthlyTotal)}/month</p>
-                        <p>Pay annually: {formatMoney(yearlyTotal)}/year ({formatMoney(annualMonthlyEquivalent)}/month equivalent, 20% off)</p>
+                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                          Estimated monthly total
+                        </p>
+                        <p className="text-4xl font-extrabold text-brand-green sm:text-5xl">
+                          {formatMoney(monthlyTotal)}
+                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
+                        </p>
                       </div>
                     )}
                     {frequency === 'onetime' && (
@@ -1005,7 +984,7 @@ export default function Page() {
                 { q: "How do you ensure the safety of my dogs?", a: "The safety of our clients and their dogs is a top priority at Ca-Ca Canin. To ensure all dogs are safe, we clean all our equipment and shoes between each yard with a kennel-grade disinfectant to prevent the spread of germs. We also take gate pictures when we are done cleaning so you know your pets won't get out of the yard, and we ensure all our employees are background checked." },
                 { q: "How much does it cost to hire a professional pooper scooper?", a: "Ca-Ca Canin has pooper scooper service plans starting as low as $60 per month. However, pricing is based on the size of the yard, service frequency, and number of dogs. Most of our clients end up paying between $95 and $135 per month." },
                 { q: "Do I have to sign a contract for pooper scooper services?", a: "No contracts! You can start, pause, and cancel your service at any time by calling or emailing our team." },
-                { q: "How do you dispose of the pet waste after each cleanup?", a: "We bag the waste and place it in the customer&apos;s outdoor trash bin for disposal. If the bin isn&apos;t accessible, we&apos;ll leave it neatly beside the bin location as arranged." },
+                { q: "How do you dispose of the pet waste after each cleanup?", a: "We bag the waste and place it in the customer's outdoor trash bin for disposal. If the bin isn't accessible, we'll leave it neatly beside the bin location as arranged." },
               ].map((faq, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>
@@ -1027,7 +1006,7 @@ export default function Page() {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid gap-8 md:grid-cols-5 mb-8">
+          <div className="mb-8 grid gap-8 sm:grid-cols-2 xl:grid-cols-5">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img 
@@ -1035,12 +1014,12 @@ export default function Page() {
                   alt="Ca-Ca Canin logo" 
                   className="h-8 w-8"
                 />
-                <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
+                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
                   CA-CA CANIN
                 </span>
               </div>
               <p className="text-gray-400">
-                Laval&apos;s premier pet waste removal pooper scooper service provider.
+                Reliable dog waste removal service for homes across Laval, Quebec.
               </p>
             </div>
             <div>
@@ -1071,7 +1050,7 @@ export default function Page() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="hover:text-white">
+                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">
                     cacacaninqc@gmail.com
                   </a>
                 </li>
@@ -1086,7 +1065,7 @@ export default function Page() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© 2024 Ca-Ca Canin • Laval&apos;s premier pet waste removal pooper scooper service provider.</p>
+            <p>© 2026 Ca-Ca Canin</p>
           </div>
         </div>
       </footer>

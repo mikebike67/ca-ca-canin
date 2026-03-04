@@ -88,6 +88,16 @@ export default function SpringCleanupFrenchPage() {
     return { perVisit, note: frequencyNotes[frequency] };
   }, [dogs, frequency, yardCategory, yardSqft]);
 
+  const monthlyTotal = useMemo(() => {
+    const visitsPerMonth =
+      frequency === 'weekly' ? 4 :
+      frequency === 'biweekly' ? 2 :
+      frequency === 'monthly' ? 1 :
+      0;
+
+    return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
+  }, [frequency, pricingDetails.perVisit]);
+
   useEffect(() => {
     const duration = 350;
     const start = displayPrice;
@@ -284,7 +294,7 @@ export default function SpringCleanupFrenchPage() {
                 alt="Logo Ca-Ca Canin"
                 className="h-10 w-10"
               />
-              <span className={`text-2xl font-bold text-brand-green ${montserrat.className}`}>
+              <span className={`text-xl font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
                 CA-CA CANIN
               </span>
             </Link>
@@ -565,6 +575,17 @@ export default function SpringCleanupFrenchPage() {
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
+                    {frequency !== 'onetime' && (
+                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                          Total mensuel estimé
+                        </p>
+                        <p className="text-4xl font-extrabold text-brand-green sm:text-5xl">
+                          {formatMoney(monthlyTotal)}
+                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
+                        </p>
+                      </div>
+                    )}
                     {frequency === 'onetime' && (
                       <p className="text-sm text-gray-600">
                         +5 $ par bloc additionnel de 5 minutes.
@@ -847,7 +868,7 @@ export default function SpringCleanupFrenchPage() {
 
       <footer className="bg-gray-900 text-white py-10 px-4 sm:px-6 lg:px-8">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
+          <div className="mb-8 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <div className="flex items-center space-x-3 mb-4">
                 <img
@@ -855,12 +876,12 @@ export default function SpringCleanupFrenchPage() {
                   alt="Logo Ca-Ca Canin"
                   className="h-8 w-8"
                 />
-                <span className={`text-xl font-bold text-brand-green ${montserrat.className}`}>
+                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
                   CA-CA CANIN
                 </span>
               </div>
               <p className="text-gray-400">
-                Nettoyage de printemps à Laval, QC.
+                Nettoyage de printemps et remise à zéro ponctuelle des cours à Laval, Québec.
               </p>
             </div>
             <div>
@@ -872,7 +893,7 @@ export default function SpringCleanupFrenchPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="hover:text-white">cacacaninqc@gmail.com</a>
+                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">cacacaninqc@gmail.com</a>
                 </li>
               </ul>
             </div>
@@ -886,7 +907,7 @@ export default function SpringCleanupFrenchPage() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-6 text-center text-gray-400">
-            <p>© 2024 Ca-Ca Canin • Nettoyage de printemps à Laval</p>
+            <p>© 2026 Ca-Ca Canin</p>
           </div>
         </div>
       </footer>
