@@ -1,5 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
+
+declare global {
+  interface CloudflareEnv {
+    SMTP_HOST?: string;
+    SMTP_PORT?: string;
+    SMTP_USER?: string;
+    SMTP_PASS?: string;
+    SMTP_FROM?: string;
+    ADMIN_EMAIL?: string;
+    SMTP_TO?: string;
+  }
+}
 
 type BookingPayload = {
   name: string;
@@ -109,6 +122,33 @@ function calculateServerPrice(
   return Math.round(base * modifier * multiplier * 100) / 100;
 }
 
+async function getMailConfig() {
+  let cfEnv: CloudflareEnv | undefined;
+
+  try {
+    const context = await getCloudflareContext({ async: true });
+    cfEnv = context.env;
+  } catch {
+    // Fall back to process.env outside the Cloudflare runtime.
+  }
+
+  const host = cfEnv?.SMTP_HOST ?? process.env.SMTP_HOST;
+  const portValue = cfEnv?.SMTP_PORT ?? process.env.SMTP_PORT;
+  const user = cfEnv?.SMTP_USER ?? process.env.SMTP_USER;
+  const pass = cfEnv?.SMTP_PASS ?? process.env.SMTP_PASS;
+  const from = cfEnv?.SMTP_FROM ?? process.env.SMTP_FROM;
+  const adminTo = cfEnv?.ADMIN_EMAIL ?? process.env.ADMIN_EMAIL ?? cfEnv?.SMTP_TO ?? process.env.SMTP_TO;
+
+  return {
+    host,
+    port: portValue ? Number(portValue) : undefined,
+    user,
+    pass,
+    from,
+    adminTo,
+  };
+}
+
 export async function POST(req: NextRequest) {
   try {
     if (!isAllowedOrigin(req)) {
@@ -180,14 +220,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid quote request." }, { status: 400 });
     }
 
-    const host = process.env.SMTP_HOST;
-    const port = process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined;
-    const user = process.env.SMTP_USER;
-    const pass = process.env.SMTP_PASS;
-    const from = process.env.SMTP_FROM;
-    const adminTo = process.env.ADMIN_EMAIL || process.env.SMTP_TO;
+    const { host, port, user, pass, from, adminTo } = await getMailConfig();
 
     if (!host || !port || !user || !pass || !from) {
+      console.error("Booking email config missing:", {
+        SMTP_HOST: Boolean(host),
+        SMTP_PORT: Boolean(port),
+        SMTP_USER: Boolean(user),
+        SMTP_PASS: Boolean(pass),
+        SMTP_FROM: Boolean(from),
+      });
       return NextResponse.json({ error: "Service is temporarily unavailable." }, { status: 500 });
     }
 
