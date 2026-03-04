@@ -1,9 +1,11 @@
 import Link from "next/link";
+import LegalPageShell from "@/components/legal-page-shell";
 
 export default function TermsPage() {
   return (
-    <main className="min-h-screen bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
+    <LegalPageShell>
+      <main className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-4xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
         <div className="mb-10 border-b border-[#d7e6da] pb-6">
           <Link href="/" className="text-sm font-semibold text-[#307944] hover:underline">
             Back to home
@@ -139,7 +141,8 @@ export default function TermsPage() {
             <p>Laval, QC</p>
           </section>
         </div>
-      </div>
-    </main>
+        </div>
+      </main>
+    </LegalPageShell>
   );
 }

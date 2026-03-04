@@ -58,6 +58,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({
@@ -66,14 +67,14 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-white">
       <head>
         <link rel="icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
         <link rel="shortcut icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
         <link rel="apple-touch-icon" sizes="180x180" href="/images/cacacaninlogo.jpg" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${montserrat.className} bg-white`}>{children}</body>
+      <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>{children}</body>
     </html>
   );
 }

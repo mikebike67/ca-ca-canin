@@ -613,7 +613,7 @@ export default function Page() {
               {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
               {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
               <div className="grid gap-6 md:grid-cols-3">
-                <div className="space-y-4 md:col-span-1">
+                <div className="order-2 space-y-4 md:order-1 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Frequency</p>
                     <div className="flex flex-wrap gap-2">
@@ -698,7 +698,7 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div className="flex flex-col gap-4 md:col-span-2">
+                <div className="order-1 md:order-2 md:col-span-2">
                   <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
@@ -728,7 +728,9 @@ export default function Page() {
                       {pricingDetails.note}
                     </p>
                   </div>
+                </div>
 
+                <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
                     Pricing is based on yard size, number of dogs, and visit frequency. Request a free quote for final pricing.
                   </div>

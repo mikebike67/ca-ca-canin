@@ -77,6 +77,7 @@
   html,
   body {
     overflow-x: hidden;
+    background-color: #ffffff;
   }
 
   /* RESPONSIVE: keep media fluid so images and icons never exceed narrow viewports. */
