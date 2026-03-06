@@ -562,21 +562,21 @@ export default function SpringCleanupFrenchPage() {
                 </div>
 
                 <div className="flex flex-col gap-4 md:col-span-2">
-                  <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <div className="mx-auto w-full max-w-[26rem] rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimation du nettoyage de printemps' : 'Estimation par visite'}
                     </p>
-                    <p className="mb-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    <p className="mb-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
                     {frequency !== 'onetime' && (
-                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                      <div className="mt-3 rounded-2xl bg-white/75 p-3 shadow-sm">
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                           Total mensuel estimé
                         </p>
-                        <p className="text-3xl font-extrabold text-brand-green sm:text-5xl">
+                        <p className="text-2xl font-extrabold text-brand-green sm:text-4xl">
                           {formatMoney(monthlyTotal)}
                           <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
                         </p>
@@ -587,7 +587,7 @@ export default function SpringCleanupFrenchPage() {
                         +5 $ par bloc additionnel de 5 minutes.
                       </p>
                     )}
-                    <p className="mt-3 text-base font-semibold text-brand-green">
+                    <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -769,6 +769,7 @@ export default function SpringCleanupFrenchPage() {
                       </div>
                     )}
                     {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
+                    {bookingStatus !== 'success' && (
                     <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                         {frequency === 'onetime' ? 'Estimation du nettoyage' : 'Prix en direct'}
@@ -791,6 +792,7 @@ export default function SpringCleanupFrenchPage() {
                         </p>
                       )}
                     </div>
+                    )}
                   </form>
                 </div>
               </div>

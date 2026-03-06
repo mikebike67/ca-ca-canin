@@ -3,51 +3,52 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 type SiteFooterProps = {
   locale?: "en" | "fr";
+  isHome?: boolean;
 };
 
-const footerContent = {
-  en: {
-    description: "Dog waste removal and spring cleanup service for Laval homeowners.",
-    servicesHeading: "Services",
-    services: [
-      { href: "/#services", label: "Residential" },
-      { href: "/spring-cleanup", label: "Spring Cleanup" },
-    ],
-    aboutHeading: "About",
-    about: [
-      { href: "/#about", label: "About" },
-      { href: "/#faq", label: "FAQ" },
-    ],
-    contactHeading: "Contact",
-    legalHeading: "Legal",
-    legal: [
-      { href: "/terms", label: "Terms" },
-      { href: "/privacy", label: "Privacy Policy" },
-    ],
-  },
-  fr: {
-    description: "Service de ramassage de dejections canines et de nettoyage printanier pour les proprietaires de Laval.",
-    servicesHeading: "Services",
-    services: [
-      { href: "/fr#services", label: "Residentiel" },
-      { href: "/fr/nettoyage-printemps", label: "Nettoyage printanier" },
-    ],
-    aboutHeading: "A propos",
-    about: [
-      { href: "/fr#about", label: "A propos" },
-      { href: "/fr#faq", label: "FAQ" },
-    ],
-    contactHeading: "Nous joindre",
-    legalHeading: "Mentions legales",
-    legal: [
-      { href: "/fr/terms", label: "Conditions" },
-      { href: "/fr/privacy", label: "Confidentialite" },
-    ],
-  },
-} as const;
-
-export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
-  const copy = footerContent[locale];
+export default function SiteFooter({ locale = "en", isHome = false }: SiteFooterProps) {
+  const copy = {
+    en: {
+      description: "Dog waste removal and spring cleanup service for Laval homeowners.",
+      servicesHeading: "Services",
+      services: [
+        { href: isHome ? "#services" : "/#services", label: "Residential" },
+        { href: "/spring-cleanup", label: "Spring Cleanup" },
+      ],
+      aboutHeading: "About",
+      about: [
+        { href: isHome ? "#about" : "/#about", label: "About" },
+        { href: isHome ? "#faq" : "/#faq", label: "FAQ" },
+      ],
+      contactHeading: "Contact",
+      legalHeading: "Legal",
+      legal: [
+        { href: "/terms", label: "Terms" },
+        { href: "/privacy", label: "Privacy Policy" },
+      ],
+      logoAlt: "Ca-Ca Canin logo",
+    },
+    fr: {
+      description: "Service de ramassage de déjections canines et de nettoyage printanier pour les propriétaires de Laval.",
+      servicesHeading: "Services",
+      services: [
+        { href: isHome ? "#services" : "/fr#services", label: "Résidentiel" },
+        { href: "/fr/nettoyage-printemps", label: "Nettoyage printanier" },
+      ],
+      aboutHeading: "À propos",
+      about: [
+        { href: isHome ? "#about" : "/fr#about", label: "À propos" },
+        { href: isHome ? "#faq" : "/fr#faq", label: "FAQ" },
+      ],
+      contactHeading: "Nous joindre",
+      legalHeading: "Mentions légales",
+      legal: [
+        { href: "/fr/terms", label: "Conditions" },
+        { href: "/fr/privacy", label: "Confidentialité" },
+      ],
+      logoAlt: "Logo Ca-Ca Canin",
+    },
+  }[locale];
 
   return (
     <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
@@ -55,7 +56,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
         <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-5">
           <div>
             <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
-              <img src="/images/cacacaninlogo.jpg" alt="Ca-Ca Canin logo" className="h-8 w-8" />
+              <img src="/images/cacacaninlogo.jpg" alt={copy.logoAlt} className="h-8 w-8" />
               <span className="text-lg font-bold text-[#307944] sm:text-xl">CA-CA CANIN</span>
             </div>
             <p className="text-gray-400">{copy.description}</p>

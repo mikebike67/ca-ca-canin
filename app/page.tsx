@@ -605,26 +605,40 @@ export default function Page() {
                 <div className="order-2 space-y-4 md:order-1 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Frequency</p>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { key: 'weekly', label: 'Weekly' },
-                        { key: 'biweekly', label: 'Bi-Weekly' },
-                        { key: 'monthly', label: 'Monthly' },
-                        { key: 'onetime', label: 'One-Time' },
-                      ].map((item) => (
+                    <div className="space-y-2">
+                      <div className="flex flex-wrap gap-2">
+                        {[
+                          { key: 'weekly', label: 'Weekly' },
+                          { key: 'biweekly', label: 'Bi-Weekly' },
+                          { key: 'monthly', label: 'Monthly' },
+                        ].map((item) => (
+                          <button
+                            key={item.key}
+                            onClick={() => setFrequency(item.key as typeof frequency)}
+                            className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
+                              frequency === item.key
+                                ? 'bg-brand-green text-white border-brand-green shadow-md'
+                                : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
+                            }`}
+                            type="button"
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
+                      <div className="flex">
                         <button
-                          key={item.key}
-                          onClick={() => setFrequency(item.key as typeof frequency)}
-                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                            frequency === item.key
+                          onClick={() => setFrequency('onetime')}
+                          className={`min-h-[44px] w-full rounded-lg border px-3 py-2 text-sm font-semibold transition sm:w-auto ${
+                            frequency === 'onetime'
                               ? 'bg-brand-green text-white border-brand-green shadow-md'
                               : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
                           }`}
                           type="button"
                         >
-                          {item.label}
+                          One-Time
                         </button>
-                      ))}
+                      </div>
                     </div>
                   </div>
 
@@ -688,38 +702,38 @@ export default function Page() {
                 </div>
 
                 <div className="order-1 md:order-2 md:col-span-2">
-                  <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <div className="mx-auto w-full max-w-[26rem] rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
                     </p>
-                    <p className="mb-2 min-h-[2.5rem] text-3xl font-extrabold tabular-nums text-gray-900 sm:min-h-[3rem] sm:text-4xl">
+                    <p className="mb-2 min-h-[2.25rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:min-h-[2.75rem] sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
-                    <div className="mt-4 min-h-[7rem] rounded-2xl bg-white/75 p-4 shadow-sm">
+                    <div className="mt-3 flex min-h-[6.5rem] flex-col justify-center rounded-2xl bg-white/75 p-3 text-center shadow-sm md:min-h-[5.75rem] md:block md:text-left">
                       {frequency !== 'onetime' ? (
-                        <>
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                          Estimated monthly total
-                        </p>
-                        <p className="text-3xl font-extrabold tabular-nums text-brand-green sm:text-5xl">
-                          {formatMoney(monthlyTotal)}
-                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
-                        </p>
-                        </>
+                        <div className="space-y-1">
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                            Estimated monthly total
+                          </p>
+                          <p className="text-2xl font-extrabold tabular-nums text-brand-green sm:text-4xl">
+                            {formatMoney(monthlyTotal)}
+                            <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
+                          </p>
+                        </div>
                       ) : (
-                        <>
+                        <div className="space-y-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                             Time-based pricing
                           </p>
                           <p className="text-sm text-gray-600">
                             +$5 per additional 5-minute block after the first 30 minutes.
                           </p>
-                        </>
+                        </div>
                       )}
                     </div>
-                    <p className="mt-3 min-h-[3rem] text-base font-semibold text-brand-green">
+                    <p className="mt-3 min-h-[2.5rem] text-sm font-semibold text-brand-green sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -922,6 +936,7 @@ export default function Page() {
                       </div>
                     )}
                     {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
+                    {bookingStatus !== 'success' && (
                     <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                         {frequency === 'onetime' ? 'Estimated Visit' : 'Live Price'}
@@ -944,6 +959,7 @@ export default function Page() {
                         </p>
                       )}
                     </div>
+                    )}
                   </form>
                 </div>
               </div>
@@ -1070,7 +1086,7 @@ export default function Page() {
         </section>
 
       </main>
-      <SiteFooter locale="en" />
+      <SiteFooter locale="en" isHome />
     </div>
   )
 }

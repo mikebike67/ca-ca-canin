@@ -10,6 +10,7 @@ const montserrat = Montserrat({
 })
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://cacacanin.com"),
   title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
   description: "Dog waste removal and pooper scooper service in Laval, QC. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
   alternates: {

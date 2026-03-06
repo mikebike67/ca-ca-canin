@@ -588,19 +588,6 @@ export default function Page() {
         {/* Pricing Calculator */}
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto scroll-animation">
-            <Link
-              href="/fr/nettoyage-printemps#quote-form"
-              className="mb-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Besoin d&apos;un grand nettoyage?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Besoin d&apos;un nettoyage printanier ponctuel?</p>
-                <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour une tarification selon le temps et un devis rapide à Laval.</p>
-              </div>
-              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Aller au nettoyage de printemps
-              </span>
-            </Link>
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
                 Calculateur de prix pour le ramassage
@@ -617,26 +604,28 @@ export default function Page() {
                 <div className="order-2 space-y-4 md:order-1 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Fréquence</p>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        { key: 'weekly', label: 'Hebdomadaire' },
-                        { key: 'biweekly', label: 'Aux deux semaines' },
-                        { key: 'monthly', label: 'Mensuel' },
-                        { key: 'onetime', label: 'Ponctuel' },
-                      ].map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setFrequency(item.key as typeof frequency)}
-                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                            frequency === item.key
-                              ? 'bg-brand-green text-white border-brand-green shadow-md'
-                              : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                          }`}
-                          type="button"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
+                    <div className="space-y-2">
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { key: 'weekly', label: 'Hebdomadaire' },
+                          { key: 'biweekly', label: 'Aux deux semaines' },
+                          { key: 'monthly', label: 'Mensuel' },
+                          { key: 'onetime', label: 'Ponctuel' },
+                        ].map((item) => (
+                          <button
+                            key={item.key}
+                            onClick={() => setFrequency(item.key as typeof frequency)}
+                            className={`min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                              frequency === item.key
+                                ? 'bg-brand-green text-white border-brand-green shadow-md'
+                                : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
+                            }`}
+                            type="button"
+                          >
+                            {item.label}
+                          </button>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
@@ -700,38 +689,38 @@ export default function Page() {
                 </div>
 
                 <div className="order-1 md:order-2 md:col-span-2">
-                  <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <div className="mx-auto w-full max-w-[26rem] rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Visite estimée' : 'Estimation par visite'}
                     </p>
-                    <p className="mb-2 min-h-[2.5rem] text-3xl font-extrabold tabular-nums text-gray-900 sm:min-h-[3rem] sm:text-4xl">
+                    <p className="mb-2 min-h-[2.25rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:min-h-[2.75rem] sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
-                    <div className="mt-4 min-h-[7rem] rounded-2xl bg-white/75 p-4 shadow-sm">
+                    <div className="mt-3 flex min-h-[6.5rem] flex-col justify-center rounded-2xl bg-white/75 p-3 text-center shadow-sm md:min-h-[5.75rem] md:block md:text-left">
                       {frequency !== 'onetime' ? (
-                        <>
-                        <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                          Total mensuel estimé
-                        </p>
-                        <p className="text-3xl font-extrabold tabular-nums text-brand-green sm:text-5xl">
-                          {formatMoney(monthlyTotal)}
-                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
-                        </p>
-                        </>
+                        <div className="space-y-1">
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                            Total mensuel estimé
+                          </p>
+                          <p className="text-2xl font-extrabold tabular-nums text-brand-green sm:text-4xl">
+                            {formatMoney(monthlyTotal)}
+                            <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
+                          </p>
+                        </div>
                       ) : (
-                        <>
+                        <div className="space-y-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                             Tarification selon le temps
                           </p>
                           <p className="text-sm text-gray-600">
                             +5 $ par bloc additionnel de 5 minutes après les 30 premières minutes.
                           </p>
-                        </>
+                        </div>
                       )}
                     </div>
-                    <p className="mt-3 min-h-[3rem] text-base font-semibold text-brand-green">
+                    <p className="mt-3 min-h-[2.5rem] text-sm font-semibold text-brand-green sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -934,6 +923,7 @@ export default function Page() {
                       </div>
                     )}
                     {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
+                    {bookingStatus !== 'success' && (
                     <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                         {frequency === 'onetime' ? 'Visite estimée' : 'Prix en direct'}
@@ -956,10 +946,25 @@ export default function Page() {
                         </p>
                       )}
                     </div>
+                    )}
                   </form>
                 </div>
               </div>
             </div>
+
+            <Link
+              href="/fr/nettoyage-printemps#quote-form"
+              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Besoin d&apos;un grand nettoyage?</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Besoin d&apos;un nettoyage printanier ponctuel?</p>
+                <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour une tarification selon le temps et un devis rapide à Laval.</p>
+              </div>
+              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
+                Aller au nettoyage de printemps
+              </span>
+            </Link>
           </div>
         </section>
 
@@ -1068,7 +1073,7 @@ export default function Page() {
         </section>
 
       </main>
-      <SiteFooter locale="fr" />
+      <SiteFooter locale="fr" isHome />
     </div>
   )
 }

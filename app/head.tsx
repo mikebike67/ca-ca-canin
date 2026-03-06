@@ -1,3 +1,3 @@
 export default function Head() {
-  return <link rel="canonical" href="/" />;
+  return <link rel="canonical" href="https://cacacanin.com/" />;
 }
