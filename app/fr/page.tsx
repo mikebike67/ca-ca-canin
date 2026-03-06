@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
-import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin, Phone, Mail } from 'lucide-react'
+import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -406,7 +407,8 @@ export default function Page() {
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
                   Ramassage de déjections<br />
-                  <span className="text-brand-green">de déjections canines à Laval</span>
+
+                  <span className="text-brand-green">canines à Laval</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
                   Un service de ramassage à Laval avec tarifs clairs, horaires flexibles et une cour enfin propre.
@@ -702,28 +704,34 @@ export default function Page() {
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Visite estimée' : 'Estimation par visite'}
                     </p>
-                    <p className="mb-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    <p className="mb-2 min-h-[2.5rem] text-3xl font-extrabold tabular-nums text-gray-900 sm:min-h-[3rem] sm:text-4xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
-                    {frequency !== 'onetime' && (
-                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                    <div className="mt-4 min-h-[7rem] rounded-2xl bg-white/75 p-4 shadow-sm">
+                      {frequency !== 'onetime' ? (
+                        <>
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                           Total mensuel estimé
                         </p>
-                        <p className="text-3xl font-extrabold text-brand-green sm:text-5xl">
+                        <p className="text-3xl font-extrabold tabular-nums text-brand-green sm:text-5xl">
                           {formatMoney(monthlyTotal)}
                           <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
                         </p>
-                      </div>
-                    )}
-                    {frequency === 'onetime' && (
-                      <p className="text-sm text-gray-600">
-                        +5 $ par bloc additionnel de 5 minutes.
-                      </p>
-                    )}
-                    <p className="mt-3 text-base font-semibold text-brand-green">
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                            Tarification selon le temps
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            +5 $ par bloc additionnel de 5 minutes après les 30 premières minutes.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <p className="mt-3 min-h-[3rem] text-base font-semibold text-brand-green">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -780,11 +788,11 @@ export default function Page() {
                           />
                           <span>
                             J&apos;accepte les{" "}
-                            <Link href="/terms" className="font-semibold text-brand-green hover:underline">
+                            <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
                               conditions
                             </Link>{" "}
                             et la{" "}
-                            <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
+                            <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
                               politique de confidentialité
                             </Link>{" "}
                             et j&apos;autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
@@ -919,6 +927,9 @@ export default function Page() {
                         <p className="mt-3 text-base text-gray-600">
                           Nous avons bien reçu vos informations et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
                         </p>
+                        <p className="mt-2 text-sm text-gray-600">
+                          Vous ne l&apos;avez pas reçu? Vérifiez vos courriels indésirables.
+                        </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
                     )}
@@ -928,13 +939,13 @@ export default function Page() {
                         {frequency === 'onetime' ? 'Visite estimée' : 'Prix en direct'}
                       </p>
                       <div className="mt-2 flex items-end justify-between gap-3">
-                        <p className="text-2xl font-extrabold text-gray-900">
+                        <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
                           {frequency === 'onetime'
                             ? `${formatMoney(displayPrice)}+`
                             : `${formatMoney(displayPrice)}/visite`}
                         </p>
                         {frequency !== 'onetime' && (
-                          <p className="text-right text-sm font-semibold text-brand-green">
+                          <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
                             {formatMoney(monthlyTotal)}/mois
                           </p>
                         )}
@@ -1057,67 +1068,7 @@ export default function Page() {
         </section>
 
       </main>
-
-      {/* Footer */}
-      {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
-      <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-4">
-            <div>
-              <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
-                <img 
-                  src="/images/cacacaninlogo.jpg" 
-                  alt="Logo Ca-Ca Canin" 
-                  className="h-8 w-8"
-                />
-                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
-                  CA-CA CANIN
-                </span>
-              </div>
-              <p className="text-gray-400">
-                Service de ramassage de déjections canines pour les propriétaires de Laval.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#services" className="hover:text-white">Résidentiel</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">À propos</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#about" className="hover:text-white">À propos</Link></li>
-                <li><Link href="#faq" className="hover:text-white">FAQ</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Nous joindre</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>Laval, QC</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <a href="tel:+14388808922" className="hover:text-white">
-                    438 880 8922
-                  </a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">
-                    cacacaninqc@gmail.com
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© 2026 Ca-Ca Canin</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter locale="fr" />
     </div>
   )
 }

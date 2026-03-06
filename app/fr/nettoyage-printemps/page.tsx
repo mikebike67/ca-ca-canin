@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
-import { CheckCircle2, Shield, Heart, Camera, MapPin, Phone, Mail, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
+import { CheckCircle2, Shield, Heart, Camera, MapPin, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -651,11 +652,11 @@ export default function SpringCleanupFrenchPage() {
                           />
                           <span>
                             J&apos;accepte les{" "}
-                            <Link href="/terms" className="font-semibold text-brand-green hover:underline">
+                            <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
                               conditions
                             </Link>{" "}
                             et la{" "}
-                            <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
+                            <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
                               politique de confidentialité
                             </Link>{" "}
                             et j&apos;autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
@@ -761,6 +762,9 @@ export default function SpringCleanupFrenchPage() {
                         <p className="mt-3 text-base text-gray-600">
                           Nous avons bien reçu votre demande et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
                         </p>
+                        <p className="mt-2 text-sm text-gray-600">
+                          Vous ne l&apos;avez pas reçu? Vérifiez vos courriels indésirables.
+                        </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
                     )}
@@ -770,13 +774,13 @@ export default function SpringCleanupFrenchPage() {
                         {frequency === 'onetime' ? 'Estimation du nettoyage' : 'Prix en direct'}
                       </p>
                       <div className="mt-2 flex items-end justify-between gap-3">
-                        <p className="text-2xl font-extrabold text-gray-900">
+                        <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
                           {frequency === 'onetime'
                             ? `${formatMoney(displayPrice)}+`
                             : `${formatMoney(displayPrice)}/visite`}
                         </p>
                         {frequency !== 'onetime' && (
-                          <p className="text-right text-sm font-semibold text-brand-green">
+                          <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
                             {formatMoney(monthlyTotal)}/mois
                           </p>
                         )}
@@ -883,52 +887,7 @@ export default function SpringCleanupFrenchPage() {
         </section>
       </main>
 
-      {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
-      <footer className="bg-gray-900 px-4 py-10 text-white sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left lg:grid-cols-3">
-            <div>
-              <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
-                <img
-                  src="/images/cacacaninlogo.jpg"
-                  alt="Logo Ca-Ca Canin"
-                  className="h-8 w-8"
-                />
-                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
-                  CA-CA CANIN
-                </span>
-              </div>
-              <p className="text-gray-400">
-                Nettoyage printanier des déjections canines et remise à zéro ponctuelle des cours à Laval, Québec.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <a href="tel:+14388808922" className="hover:text-white">438 880 8922</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">cacacaninqc@gmail.com</a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Liens rapides</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#quote-form" className="hover:text-white">Obtenir un devis gratuit</Link></li>
-                <li><Link href="#how-it-works" className="hover:text-white">Comment ça fonctionne</Link></li>
-                <li><Link href="#faq" className="hover:text-white">FAQ</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-6 text-center text-gray-400">
-            <p>© 2026 Ca-Ca Canin</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter locale="fr" />
     </div>
   )
 }

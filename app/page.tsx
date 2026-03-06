@@ -2,10 +2,11 @@
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
-import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin, Phone, Mail } from 'lucide-react'
+import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
 
 const montserrat = Montserrat({ 
   subsets: ['latin'],
@@ -406,11 +407,12 @@ export default function Page() {
               </div>
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
-                  Dog Waste Removal<br />
-                  <span className="text-brand-green">Pooper Scooper Service</span>
+                  Laval
+                  <br />
+                  <span className="text-brand-green">dog poop cleanup</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Dog poop cleanup in Laval with clear pricing, flexible scheduling, and a yard you can use again.
+                  Reliable yard cleanup with flexible scheduling and a fast quote.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
@@ -428,6 +430,9 @@ export default function Page() {
                     </Link>
                   </Button>
                 </div>
+                <p className="mt-3 text-sm font-medium text-gray-600 lg:max-w-md">
+                  Free quote in under a minute.
+                </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <CheckCircle2 className="h-4 w-4 text-brand-green" />
@@ -435,11 +440,11 @@ export default function Page() {
                   </div>
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <Camera className="h-4 w-4 text-brand-green" />
-                    Gate photo after every visit
+                    Gate photo sent
                   </div>
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <Bell className="h-4 w-4 text-brand-green" />
-                    Text updates before arrival
+                    Arrival text
                   </div>
                 </div>
               </div>
@@ -520,13 +525,10 @@ export default function Page() {
                   loading="lazy"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin is a local dog waste removal company serving Laval, Quebec. We built the service to help busy dog owners keep their yards clean without adding another chore to the week.
-                </p>
-                <p className="text-lg text-gray-700 mb-4">
-                  Our residential pooper scooper service is built for homeowners who want dependable yard cleanup, clear pricing, and flexible scheduling. Whether you need weekly visits or occasional help, we focus on consistent results and direct communication.
+                  Ca-Ca Canin is a local Laval service built for dog owners who want a clean yard without another chore on the weekly list.
                 </p>
                 <p className="text-lg text-gray-700">
-                  The goal is simple. Leave every property cleaner than we found it and make the service easy to trust.
+                  We keep scheduling simple, pricing clear, and every visit focused on leaving the property cleaner than we found it.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
@@ -548,7 +550,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Residential Dog Waste Removal Services
+                  Residential Yard Cleanup
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <img 
@@ -568,7 +570,7 @@ export default function Page() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Book one-time cleanup or ongoing service based on your yard and schedule.</span>
+                    <span>Pick the plan that fits your yard and schedule.</span>
                   </li>
                 </ul>
               </div>
@@ -587,19 +589,6 @@ export default function Page() {
         {/* Pricing Calculator */}
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto scroll-animation">
-            <Link
-              href="/spring-cleanup#quote-form"
-              className="mb-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
-            >
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Need a one-time reset?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Need a one-time spring dog poop cleanup?</p>
-                <p className="mt-1 text-sm text-gray-600">Use the spring cleanup calculator for time-based pricing on one-time yard cleanup in Laval.</p>
-              </div>
-              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Go to spring cleanup
-              </span>
-            </Link>
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
                 Dog Waste Removal Pricing Calculator
@@ -703,28 +692,34 @@ export default function Page() {
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
                     </p>
-                    <p className="mb-2 text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    <p className="mb-2 min-h-[2.5rem] text-3xl font-extrabold tabular-nums text-gray-900 sm:min-h-[3rem] sm:text-4xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
-                    {frequency !== 'onetime' && (
-                      <div className="mt-4 rounded-2xl bg-white/75 p-4 shadow-sm">
+                    <div className="mt-4 min-h-[7rem] rounded-2xl bg-white/75 p-4 shadow-sm">
+                      {frequency !== 'onetime' ? (
+                        <>
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                           Estimated monthly total
                         </p>
-                        <p className="text-3xl font-extrabold text-brand-green sm:text-5xl">
+                        <p className="text-3xl font-extrabold tabular-nums text-brand-green sm:text-5xl">
                           {formatMoney(monthlyTotal)}
                           <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
                         </p>
-                      </div>
-                    )}
-                    {frequency === 'onetime' && (
-                      <p className="text-sm text-gray-600">
-                        +$5 per additional 5-minute block.
-                      </p>
-                    )}
-                    <p className="mt-3 text-base font-semibold text-brand-green">
+                        </>
+                      ) : (
+                        <>
+                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                            Time-based pricing
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            +$5 per additional 5-minute block after the first 30 minutes.
+                          </p>
+                        </>
+                      )}
+                    </div>
+                    <p className="mt-3 min-h-[3rem] text-base font-semibold text-brand-green">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -920,6 +915,9 @@ export default function Page() {
                         <p className="mt-3 text-base text-gray-600">
                           We received your details and will follow up shortly. No need to send the form again.
                         </p>
+                        <p className="mt-2 text-sm text-gray-600">
+                          Didn&apos;t receive it? Check your junk folder.
+                        </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
                     )}
@@ -929,13 +927,13 @@ export default function Page() {
                         {frequency === 'onetime' ? 'Estimated Visit' : 'Live Price'}
                       </p>
                       <div className="mt-2 flex items-end justify-between gap-3">
-                        <p className="text-2xl font-extrabold text-gray-900">
+                        <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
                           {frequency === 'onetime'
                             ? `${formatMoney(displayPrice)}+`
                             : `${formatMoney(displayPrice)}/visit`}
                         </p>
                         {frequency !== 'onetime' && (
-                          <p className="text-right text-sm font-semibold text-brand-green">
+                          <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
                             {formatMoney(monthlyTotal)}/month
                           </p>
                         )}
@@ -950,6 +948,20 @@ export default function Page() {
                 </div>
               </div>
             </div>
+
+            <Link
+              href="/spring-cleanup#quote-form"
+              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
+            >
+              <div>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Need a one-time reset?</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Need a one-time spring dog poop cleanup?</p>
+                <p className="mt-1 text-sm text-gray-600">Use the spring cleanup calculator for time-based pricing on one-time yard cleanup in Laval.</p>
+              </div>
+              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
+                Go to spring cleanup
+              </span>
+            </Link>
           </div>
         </section>
 
@@ -1058,74 +1070,7 @@ export default function Page() {
         </section>
 
       </main>
-
-      {/* Footer */}
-      {/* RESPONSIVE: center footer sections on phones and restore the multi-column layout progressively. */}
-      <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-5">
-            <div>
-              <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
-                <img 
-                  src="/images/cacacaninlogo.jpg" 
-                  alt="Ca-Ca Canin logo" 
-                  className="h-8 w-8"
-                />
-                <span className={`text-lg font-bold text-brand-green sm:text-xl ${montserrat.className}`}>
-                  CA-CA CANIN
-                </span>
-              </div>
-              <p className="text-gray-400">
-                Dog waste removal and pooper scooper service for Laval homeowners.
-              </p>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Services</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#services" className="hover:text-white">Residential</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">About</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="#about" className="hover:text-white">About</Link></li>
-                <li><Link href="#faq" className="hover:text-white">FAQ</Link></li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Contact</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4" />
-                  <span>Laval, QC</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4" />
-                  <a href="tel:+14388808922" className="hover:text-white">
-                    438 880 8922
-                  </a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  <a href="mailto:cacacaninqc@gmail.com" className="break-all hover:text-white">
-                    cacacaninqc@gmail.com
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div>
-              <h3 className="font-semibold mb-4">Legal</h3>
-              <ul className="space-y-2 text-gray-400">
-                <li><Link href="/terms" className="hover:text-white">Terms</Link></li>
-                <li><Link href="/privacy" className="hover:text-white">Privacy Policy</Link></li>
-              </ul>
-            </div>
-          </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
-            <p>© 2026 Ca-Ca Canin</p>
-          </div>
-        </div>
-      </footer>
+      <SiteFooter locale="en" />
     </div>
   )
 }
