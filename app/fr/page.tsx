@@ -600,8 +600,8 @@ export default function Page() {
             <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
               {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
               {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
-              <div className="grid gap-6 md:grid-cols-3">
-                <div className="order-2 space-y-4 md:order-1 md:col-span-1">
+              <div className="grid min-w-0 gap-6 md:grid-cols-3">
+                <div className="order-2 min-w-0 space-y-4 md:order-1 md:col-span-1">
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Fréquence</p>
                     <div className="space-y-2">
@@ -615,7 +615,7 @@ export default function Page() {
                           <button
                             key={item.key}
                             onClick={() => setFrequency(item.key as typeof frequency)}
-                            className={`min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                            className={`min-h-[44px] min-w-0 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
                               frequency === item.key
                                 ? 'bg-brand-green text-white border-brand-green shadow-md'
                                 : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
@@ -631,7 +631,7 @@ export default function Page() {
 
                   <div>
                     <p className="text-sm font-semibold text-gray-700 mb-2">Nombre de chiens</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex min-w-0 flex-wrap gap-2">
                       {[
                         { key: '1', label: '1 chien' },
                         { key: '2', label: '2 chiens' },
@@ -640,7 +640,7 @@ export default function Page() {
                         <button
                           key={item.key}
                           onClick={() => setDogs(item.key as typeof dogs)}
-                          className={`min-h-[44px] flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
+                          className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
                             dogs === item.key
                               ? 'bg-brand-green text-white border-brand-green shadow-md'
                               : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
@@ -674,12 +674,12 @@ export default function Page() {
                         className="w-full accent-brand-green"
                         required
                       />
-                      <div className="flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
                         <span className="font-semibold text-brand-green">
                           {yardSqft >= 10000 ? '10 000+ pi²' : `${yardSqft.toLocaleString()} pi²`}
                         </span>
                         <span
-                          className="inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
+                          className="inline-flex max-w-full rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
                         >
                           {yardOptions.find((o) => o.key === yardCategory)?.label} · {yardOptions.find((o) => o.key === yardCategory)?.detail}
                         </span>
@@ -688,17 +688,17 @@ export default function Page() {
                   </div>
                 </div>
 
-                <div className="order-1 md:order-2 md:col-span-2">
-                  <div className="mx-auto w-full max-w-[26rem] rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <div className="order-1 min-w-0 md:order-2 md:col-span-2">
+                  <div className="mx-auto h-[16.5rem] min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:h-auto md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Visite estimée' : 'Estimation par visite'}
                     </p>
-                    <p className="mb-2 min-h-[2.25rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:min-h-[2.75rem] sm:text-3xl">
+                    <p className="mb-2 h-[3rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:h-[2.75rem] sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
-                    <div className="mt-3 flex min-h-[6.5rem] flex-col justify-center rounded-2xl bg-white/75 p-3 text-center shadow-sm md:min-h-[5.75rem] md:block md:text-left">
+                    <div className="mt-3 h-[6.75rem] min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:h-auto md:text-left">
                       {frequency !== 'onetime' ? (
                         <div className="space-y-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
@@ -720,7 +720,7 @@ export default function Page() {
                         </div>
                       )}
                     </div>
-                    <p className="mt-3 min-h-[2.5rem] text-sm font-semibold text-brand-green sm:text-base">
+                    <p className="mt-3 h-[3.75rem] text-sm font-semibold text-brand-green sm:h-[2.5rem] sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
