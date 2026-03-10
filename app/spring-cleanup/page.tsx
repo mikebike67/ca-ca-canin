@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
@@ -46,7 +47,6 @@ const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', stri
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
-const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
 
 export default function SpringCleanupPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -131,7 +131,7 @@ export default function SpringCleanupPage() {
       return;
     }
 
-    if (!isLavalPostalCode(normalized)) {
+    if (!isSpringCleanupPostalCode(normalized)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -156,7 +156,7 @@ export default function SpringCleanupPage() {
       return;
     }
 
-    if (!isCanadianPostalCode(postalCode) || !isLavalPostalCode(postalCode)) {
+    if (!isCanadianPostalCode(postalCode) || !isSpringCleanupPostalCode(postalCode)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -369,10 +369,10 @@ export default function SpringCleanupPage() {
         <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
-              Laval, QC
+              Laval and North Shore, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              SPRING DOG POOP CLEANUP IN LAVAL
+              SPRING DOG POOP CLEANUP IN LAVAL AND THE NORTH SHORE
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
               One-time yard cleanup starting at $60. Limited spring spots.
@@ -412,7 +412,7 @@ export default function SpringCleanupPage() {
                 How it works
               </h2>
               <p className="text-lg text-gray-600">
-                Fast, clear, and built for one-time spring cleanup in Laval.
+                Fast, clear, and built for one-time spring cleanup across Laval and select North Shore locations.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -622,7 +622,7 @@ export default function SpringCleanupPage() {
                           id="postal-code"
                           type="text"
                           name="postalCode"
-                          placeholder="H7A 1A1"
+                          placeholder="J7E 1A1"
                           value={postalCode}
                           onChange={(e) => {
                             setPostalCode(e.target.value);
@@ -677,14 +677,14 @@ export default function SpringCleanupPage() {
                       </Button>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          We service that Laval postal code. Continue to step 2.
+                          We service that postal code. Continue to step 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
                         <div className="text-sm text-red-600" role="status" aria-live="polite">
                           {postalCode && !isCanadianPostalCode(postalCode)
                             ? 'Please enter a valid Canadian postal code.'
-                            : 'Sorry, we currently only serve Laval, QC.'}
+                            : 'Sorry, that postal code is outside our spring cleanup service area.'}
                         </div>
                       )}
                     </div>
@@ -807,7 +807,7 @@ export default function SpringCleanupPage() {
                 Why Book Your Spring Cleanup With Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                A simple way to reset your yard after winter in Laval.
+                A simple way to reset your yard after winter across Laval and the North Shore.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -839,26 +839,32 @@ export default function SpringCleanupPage() {
                 Service area
               </h2>
               <p className="text-lg text-gray-600">
-                One-time spring cleanup service for Laval, QC.
+                One-time spring cleanup service for Laval and select North Shore locations.
               </p>
             </div>
-            <div className="max-w-2xl mx-auto scroll-animation">
-              <Card className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                <CardHeader className="text-center">
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-[1.5rem] border border-brand-green/15 bg-[#eef7f0]">
-                    <MapPin className="h-8 w-8 text-brand-green" />
-                  </div>
-                  <CardTitle className="text-2xl">Laval, QC</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg text-gray-700 mb-4">
-                    Spring dog poop cleanup
-                  </p>
-                  <p className="text-gray-600">
-                    Fast scheduling while spring spots last
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {SPRING_CLEANUP_LOCATIONS.map((location) => (
+                <Card
+                  key={location.slug}
+                  className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]"
+                >
+                  <CardHeader className="items-center text-center">
+                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
+                      <MapPin className="h-7 w-7 text-brand-green" />
+                    </div>
+                    <CardTitle className="text-xl">
+                      <Link href={`/spring-cleanup/${location.slug}`} className="hover:text-brand-green">
+                        {location.name}
+                      </Link>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 text-center">
+                    <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                      FSA: {location.fsaPrefixes.join(", ")}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
@@ -870,7 +876,7 @@ export default function SpringCleanupPage() {
                 Spring Cleanup FAQs
               </h2>
               <p className="text-lg text-gray-600">
-                Answers about one-time spring cleanup in Laval.
+                Answers about one-time spring cleanup in our spring service area.
               </p>
             </div>
             <div className="space-y-4">

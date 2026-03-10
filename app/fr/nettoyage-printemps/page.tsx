@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
@@ -46,7 +47,6 @@ const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', stri
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
 const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
-const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
 
 export default function SpringCleanupFrenchPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -131,7 +131,7 @@ export default function SpringCleanupFrenchPage() {
       return;
     }
 
-    if (!isLavalPostalCode(normalized)) {
+    if (!isSpringCleanupPostalCode(normalized)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -156,7 +156,7 @@ export default function SpringCleanupFrenchPage() {
       return;
     }
 
-    if (!isCanadianPostalCode(postalCode) || !isLavalPostalCode(postalCode)) {
+    if (!isCanadianPostalCode(postalCode) || !isSpringCleanupPostalCode(postalCode)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -369,10 +369,10 @@ export default function SpringCleanupFrenchPage() {
         <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
-              Laval, QC
+              Laval et Rive-Nord, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES À LAVAL
+              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES À LAVAL ET SUR LA RIVE-NORD
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
               Nettoyage ponctuel à partir de 60 $. Places limitées au printemps.
@@ -412,7 +412,7 @@ export default function SpringCleanupFrenchPage() {
                 Comment ça fonctionne
               </h2>
               <p className="text-lg text-gray-600">
-                Simple, rapide et pensé pour un nettoyage ponctuel à Laval.
+                Simple, rapide et pensé pour un nettoyage ponctuel à Laval et dans certaines villes de la Rive-Nord.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -622,7 +622,7 @@ export default function SpringCleanupFrenchPage() {
                           id="postal-code"
                           type="text"
                           name="postalCode"
-                          placeholder="H7A 1A1"
+                          placeholder="J7E 1A1"
                           value={postalCode}
                           onChange={(e) => {
                             setPostalCode(e.target.value);
@@ -677,14 +677,14 @@ export default function SpringCleanupFrenchPage() {
                       </Button>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
+                          Nous desservons ce code postal. Passez à l&apos;étape 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
                         <div className="text-sm text-red-600" role="status" aria-live="polite">
                           {postalCode && !isCanadianPostalCode(postalCode)
                             ? 'Veuillez entrer un code postal canadien valide.'
-                            : 'Désolé, nous desservons actuellement seulement Laval, QC.'}
+                            : 'Désolé, ce code postal est hors de notre zone de service pour le nettoyage de printemps.'}
                         </div>
                       )}
                     </div>
@@ -807,7 +807,7 @@ export default function SpringCleanupFrenchPage() {
                 Pourquoi réserver votre nettoyage printanier avec Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                Une façon simple de remettre votre cour en ordre après l&apos;hiver à Laval.
+                Une façon simple de remettre votre cour en ordre après l&apos;hiver à Laval et sur la Rive-Nord.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -839,26 +839,32 @@ export default function SpringCleanupFrenchPage() {
                 Zone de service
               </h2>
               <p className="text-lg text-gray-600">
-                Service ponctuel de nettoyage de printemps à Laval, QC.
+                Service ponctuel de nettoyage de printemps à Laval et dans certaines villes de la Rive-Nord.
               </p>
             </div>
-            <div className="max-w-2xl mx-auto scroll-animation">
-              <Card className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                <CardHeader className="text-center">
-                  <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-[1.5rem] border border-brand-green/15 bg-[#eef7f0]">
-                    <MapPin className="h-8 w-8 text-brand-green" />
-                  </div>
-                  <CardTitle className="text-2xl">Laval, QC</CardTitle>
-                </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg text-gray-700 mb-4">
-                    Nettoyage printanier des déjections canines
-                  </p>
-                  <p className="text-gray-600">
-                    Planification rapide pendant la période printanière
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+              {SPRING_CLEANUP_LOCATIONS.map((location) => (
+                <Card
+                  key={location.slug}
+                  className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]"
+                >
+                  <CardHeader className="items-center text-center">
+                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
+                      <MapPin className="h-7 w-7 text-brand-green" />
+                    </div>
+                    <CardTitle className="text-xl">
+                      <Link href={`/fr/nettoyage-printemps/${location.slug}`} className="hover:text-brand-green">
+                        {location.nameFr}
+                      </Link>
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="pt-0 text-center">
+                    <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                      FSA : {location.fsaPrefixes.join(", ")}
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
             </div>
           </div>
         </section>
@@ -870,7 +876,7 @@ export default function SpringCleanupFrenchPage() {
                 FAQ du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">
-                Réponses sur le nettoyage ponctuel à Laval.
+                Reponses sur le nettoyage ponctuel dans notre zone de service printaniere.
               </p>
             </div>
             <div className="space-y-4">

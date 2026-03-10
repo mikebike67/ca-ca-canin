@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
+import { isLavalPostalCode, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
 
 declare global {
   interface CloudflareEnv {
@@ -49,7 +50,6 @@ const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
 
 const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, "");
 const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
-const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith("H7");
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9+\-()\s]{10,20}$/;
 
@@ -205,8 +205,21 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Invalid postal code." }, { status: 400 });
       }
 
-      if (!isLavalPostalCode(normalizedPostalCode)) {
-        return NextResponse.json({ error: "Service is limited to Laval, QC." }, { status: 400 });
+      const postalCodeIsAllowed =
+        source === "spring-cleanup"
+          ? isSpringCleanupPostalCode(normalizedPostalCode)
+          : isLavalPostalCode(normalizedPostalCode);
+
+      if (!postalCodeIsAllowed) {
+        return NextResponse.json(
+          {
+            error:
+              source === "spring-cleanup"
+                ? "Postal code is outside the spring cleanup service area."
+                : "Service is limited to Laval, QC.",
+          },
+          { status: 400 },
+        );
       }
     }
 

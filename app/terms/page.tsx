@@ -31,7 +31,7 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">About Ca-Ca Canin</h2>
             <p>
-              Ca-Ca Canin provides dog waste removal and spring cleanup services in Laval, Quebec.
+              Ca-Ca Canin provides dog waste removal in Laval, Quebec and spring cleanup in Laval plus select North Shore locations.
               These terms apply when you use our website, request a quote, or book service.
             </p>
           </section>
@@ -47,8 +47,9 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">Service area</h2>
             <p>
-              We currently serve Laval, Quebec only. Postal codes in our regular service area generally
-              begin with <span className="font-semibold">H7</span>. We may refuse or cancel requests outside Laval.
+              Our regular recurring service area is currently Laval, Quebec only, and those postal codes generally
+              begin with <span className="font-semibold">H7</span>. Spring cleanup is also available in select North Shore
+              postal code areas shown on the spring cleanup pages. We may refuse or cancel requests outside our listed service areas.
             </p>
           </section>
 

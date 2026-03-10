@@ -31,7 +31,7 @@ export default function FrenchTermsPage() {
             <section className="space-y-3">
               <h2 className="text-2xl font-bold text-gray-900">A propos de Ca-Ca Canin</h2>
               <p>
-                Ca-Ca Canin offre des services de ramassage de dejections canines et de nettoyage de printemps a Laval, Quebec.
+                Ca-Ca Canin offre le service de ramassage de dejections canines a Laval, Quebec et le nettoyage de printemps a Laval ainsi que dans certaines villes de la Rive-Nord.
                 Les presentes conditions s'appliquent lorsque vous utilisez notre site web, demandez un devis ou reservez un service.
               </p>
             </section>
@@ -47,8 +47,8 @@ export default function FrenchTermsPage() {
             <section className="space-y-3">
               <h2 className="text-2xl font-bold text-gray-900">Zone de service</h2>
               <p>
-                Nous desservons actuellement Laval, Quebec uniquement. Les codes postaux de notre zone de service reguliere
-                commencent generalement par <span className="font-semibold">H7</span>. Nous pouvons refuser ou annuler les demandes a l'exterieur de Laval.
+                Notre zone reguliere de service recurrent se limite actuellement a Laval, Quebec, et les codes postaux
+                commencent generalement par <span className="font-semibold">H7</span>. Le nettoyage de printemps est aussi offert dans certaines zones de codes postaux de la Rive-Nord indiquees sur les pages de nettoyage printanier. Nous pouvons refuser ou annuler les demandes a l'exterieur de nos zones de service affichees.
               </p>
             </section>
 
