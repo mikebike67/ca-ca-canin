@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
+import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
@@ -291,9 +292,11 @@ export default function Page() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Principal">
           <div className="flex items-center justify-between h-16">
             <Link href="/fr" className="flex min-w-0 items-center space-x-3">
-              <img 
-                src="/images/cacacaninlogo.jpg" 
-                alt="Logo Ca-Ca Canin" 
+              <Image
+                src="/images/cacacaninlogo.jpg"
+                alt="Logo Ca-Ca Canin"
+                width={40}
+                height={40}
                 className="h-10 w-10"
               />
               <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
@@ -367,20 +370,42 @@ export default function Page() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "LocalBusiness",
-              name: "Ca-Ca Canin",
-              description: "Service de ramassage de déjections canines à Laval, Québec.",
-              areaServed: "Laval, QC",
-              address: {
-                "@type": "PostalAddress",
-                addressLocality: "Laval",
-                addressRegion: "QC",
-                addressCountry: "CA"
-              },
-              telephone: "438 880 8922",
-              email: "cacacaninqc@gmail.com",
-              serviceType: "Ramassage de déjections canines",
-              priceRange: "$$"
+              "@graph": [
+                {
+                  "@type": "LocalBusiness",
+                  "@id": "https://cacacanin.com/#business",
+                  name: "Ca-Ca Canin",
+                  url: "https://cacacanin.com/fr",
+                  image: "https://cacacanin.com/images/cacacaninlogo.jpg",
+                  logo: "https://cacacanin.com/images/cacacaninlogo.jpg",
+                  description: "Service de ramassage de dejections canines a Laval, Quebec.",
+                  areaServed: "Laval, QC",
+                  address: {
+                    "@type": "PostalAddress",
+                    addressLocality: "Laval",
+                    addressRegion: "QC",
+                    addressCountry: "CA"
+                  },
+                  telephone: "+1-438-880-8922",
+                  email: "cacacaninqc@gmail.com",
+                  priceRange: "$$"
+                },
+                {
+                  "@type": "Service",
+                  serviceType: "Ramassage de dejections canines",
+                  provider: {
+                    "@id": "https://cacacanin.com/#business"
+                  },
+                  areaServed: {
+                    "@type": "City",
+                    name: "Laval"
+                  },
+                  offers: {
+                    "@type": "Offer",
+                    availability: "https://schema.org/InStock"
+                  }
+                }
+              ]
             })
           }}
         />
@@ -393,9 +418,13 @@ export default function Page() {
               <div className="hidden justify-center lg:flex lg:justify-start">
                 <div className="relative w-full max-w-[23rem] overflow-hidden sm:max-w-[30rem] lg:max-w-[38rem]">
                   <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
-                  <img
+                  <Image
                     src="/images/hero-dog.png"
                     alt="Chien heureux assis dans une cour propre"
+                    width={1200}
+                    height={1200}
+                    priority
+                    sizes="(min-width: 1024px) 34rem, 0px"
                     className="relative z-10 mx-auto h-auto w-full max-w-[21rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
                   />
                   <div
@@ -411,7 +440,7 @@ export default function Page() {
                   <span className="text-brand-green">canines à Laval</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Un service de ramassage à Laval avec tarifs clairs, horaires flexibles et une cour enfin propre.
+                  Un service de ramassage de déjections canines à Laval avec tarifs clairs, horaires flexibles et devis rapide.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
@@ -464,7 +493,7 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Nettoyage fiable</CardTitle>
+                  <CardTitle className="text-xl">Ramassage fiable</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
@@ -478,11 +507,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Service simple à gérer</CardTitle>
+                  <CardTitle className="text-xl">Service simple de ramassage</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Communication claire, planification simple et aucun contrat à long terme. Le service est facile à démarrer et facile à ajuster.
+                    Communication claire, planification simple et aucun contrat à long terme. Le service est facile a demarrer et facile a ajuster.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -492,11 +521,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Approche propre et pensée pour les chiens</CardTitle>
+                  <CardTitle className="text-xl">Cour plus propre pour toute la famille</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Nous misons sur des pratiques de nettoyage sanitaires pour rendre votre cour plus agréable pour votre famille et votre chien.
+                    Nous misons sur un nettoyage soigne pour rendre votre cour plus agreable pour votre famille et votre chien.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -514,28 +543,32 @@ export default function Page() {
                   À propos de Ca-Ca Canin
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
-                <img 
-                  src="/images/our dog waste renewal company.png" 
-                  alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service" 
+                <Image
+                  src="/images/our dog waste renewal company.png"
+                  alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service"
+                  width={1200}
+                  height={900}
+                  sizes="(max-width: 767px) 100vw, 0px"
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
-                  loading="lazy"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin est une entreprise locale de ramassage de déjections canines qui dessert Laval, Québec. Nous avons créé ce service pour aider les propriétaires de chiens occupés à garder leur cour propre sans ajouter une corvée de plus.
+                  Ca-Ca Canin est une entreprise locale de ramassage de dejections canines a Laval. Nous avons cree ce service pour aider les proprietaires de chiens occupes a garder leur cour propre sans ajouter une corvee de plus.
                 </p>
                 <p className="text-lg text-gray-700 mb-4">
-                  Notre service résidentiel est conçu pour les propriétaires qui veulent un nettoyage fiable, des tarifs clairs et une planification souple. Que vous ayez besoin d&apos;un passage chaque semaine ou d&apos;une aide occasionnelle, nous visons des résultats constants et une communication directe.
+                  Notre service residentiel est concu pour les proprietaires qui veulent un nettoyage fiable, des tarifs clairs et une planification souple. Que vous ayez besoin d'un passage chaque semaine ou d'une aide occasionnelle, nous visons des resultats constants et une communication directe.
                 </p>
                 <p className="text-lg text-gray-700">
-                  L&apos;objectif est simple. Laisser chaque propriété plus propre et rendre le service facile à faire confiance.
+                  L'objectif est simple : laisser chaque propriete plus propre et rendre le service facile a faire confiance.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
-                <img 
-                  src="/images/our dog waste renewal company.png" 
-                  alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service" 
+                <Image
+                  src="/images/our dog waste renewal company.png"
+                  alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service"
+                  width={1200}
+                  height={900}
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="rounded-lg shadow-lg w-full"
-                  loading="lazy"
                 />
               </div>
             </div>
@@ -549,14 +582,16 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Service résidentiel de ramassage de déjections canines
+                  Service residentiel de ramassage de dejections canines
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
-                <img 
-                  src="/images/revised residential pooper scooper services.png" 
-                  alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité" 
+                <Image
+                  src="/images/revised residential pooper scooper services.png"
+                  alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité"
+                  width={1200}
+                  height={900}
+                  sizes="(max-width: 767px) 100vw, 0px"
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
-                  loading="lazy"
                 />
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
@@ -565,20 +600,22 @@ export default function Page() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Obtenez un nettoyage soigné dans les zones que votre chien utilise le plus.</span>
+                    <span>Obtenez un nettoyage soigne dans les zones que votre chien utilise le plus.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Réservez un nettoyage ponctuel ou un service récurrent selon votre cour et votre horaire.</span>
+                    <span>Reservez un nettoyage ponctuel ou un service recurrent selon votre cour et votre horaire.</span>
                   </li>
                 </ul>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-1 md:block">
-                <img 
-                  src="/images/revised residential pooper scooper services.png" 
-                  alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité" 
+                <Image
+                  src="/images/revised residential pooper scooper services.png"
+                  alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité"
+                  width={1200}
+                  height={900}
+                  sizes="(min-width: 768px) 50vw, 100vw"
                   className="rounded-lg shadow-lg w-full"
-                  loading="lazy"
                 />
               </div>
             </div>
@@ -590,10 +627,10 @@ export default function Page() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Calculateur de prix pour le ramassage
+                Calculateur de prix du ramassage de dejections canines
               </h2>
               <p className="text-lg text-gray-600">
-                Estimez votre prix par visite et par mois selon la fréquence, le nombre de chiens et la taille de votre cour.
+                Estimez votre prix par visite et par mois selon la frequence, le nombre de chiens et la taille de votre cour.
               </p>
             </div>
 
@@ -728,7 +765,7 @@ export default function Page() {
 
                 <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Le prix dépend de la taille de la cour, du nombre de chiens et de la fréquence. Demandez un devis gratuit pour le prix final.
+                    Le prix depend de la taille de la cour, du nombre de chiens et de la frequence. Demandez un devis gratuit pour le prix final.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -1045,7 +1082,7 @@ export default function Page() {
                 FAQ sur le ramassage de déjections canines
               </h2>
               <p className="text-xl text-gray-600">
-                Réponses aux questions sur notre service à Laval.
+                Reponses aux questions sur le ramassage de dejections canines, les prix et le service recurrent a Laval.
               </p>
             </div>
             <div className="space-y-4">

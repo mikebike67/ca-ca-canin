@@ -3,12 +3,26 @@ import LegalPageShell from "@/components/legal-page-shell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: "Terms of Service | Ca-Ca Canin",
+  description: "Review the Ca-Ca Canin terms of service for dog waste removal in Laval and spring cleanup across Laval and select North Shore locations.",
   alternates: {
     canonical: "/terms",
     languages: {
       en: "/terms",
       fr: "/fr/terms",
     },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Terms of Service | Ca-Ca Canin",
+    description: "Review the Ca-Ca Canin terms of service for dog waste removal in Laval and spring cleanup across Laval and select North Shore locations.",
+    url: "https://cacacanin.com/terms",
+    siteName: "Ca-Ca Canin",
+    locale: "en_CA",
+    type: "website",
   },
 };
 

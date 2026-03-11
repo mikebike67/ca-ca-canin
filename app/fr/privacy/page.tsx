@@ -3,12 +3,26 @@ import LegalPageShell from "@/components/legal-page-shell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: "Politique de confidentialite | Ca-Ca Canin",
+  description: "Consultez la politique de confidentialite de Ca-Ca Canin pour les services de ramassage de dejections canines et de nettoyage printanier.",
   alternates: {
     canonical: "/fr/privacy",
     languages: {
       en: "/privacy",
       fr: "/fr/privacy",
     },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Politique de confidentialite | Ca-Ca Canin",
+    description: "Consultez la politique de confidentialite de Ca-Ca Canin pour les services de ramassage de dejections canines et de nettoyage printanier.",
+    url: "https://cacacanin.com/fr/privacy",
+    siteName: "Ca-Ca Canin",
+    locale: "fr_CA",
+    type: "website",
   },
 };
 

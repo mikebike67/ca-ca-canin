@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import SpringCleanupLocationPage from "@/components/spring-cleanup-location-page";
 import {
-  SPRING_CLEANUP_LOCATIONS,
   getSpringCleanupLocationBySlug,
+  SPRING_CLEANUP_LOCATIONS,
 } from "@/lib/spring-cleanup-service-area";
 
 type LocationPageProps = {
@@ -27,7 +27,7 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
 
   return {
     title: `Spring Dog Poop Cleanup in ${location.name}, QC | Ca-Ca Canin`,
-    description: `${location.introEn} Serving FSA prefixes ${location.fsaPrefixes.join(", ")}.`,
+    description: `${location.introEn} Request a fast quote for one-time spring cleanup with Ca-Ca Canin.`,
     alternates: {
       canonical: `/spring-cleanup/${location.slug}`,
       languages: {
@@ -39,6 +39,9 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
       title: `Spring Dog Poop Cleanup in ${location.name}, QC | Ca-Ca Canin`,
       description: location.introEn,
       type: "website",
+      url: `/spring-cleanup/${location.slug}`,
+      siteName: "Ca-Ca Canin",
+      locale: "en_CA",
     },
     twitter: {
       card: "summary",
@@ -55,15 +58,10 @@ export default function LocationPage({ params }: LocationPageProps) {
     notFound();
   }
 
-  const relatedLocations = SPRING_CLEANUP_LOCATIONS.filter(
-    (item) => item.slug !== location.slug,
-  ).slice(0, 8);
-
   return (
     <SpringCleanupLocationPage
       locale="en"
       location={location}
-      relatedLocations={relatedLocations}
     />
   );
 }

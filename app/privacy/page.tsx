@@ -3,12 +3,26 @@ import LegalPageShell from "@/components/legal-page-shell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: "Privacy Policy | Ca-Ca Canin",
+  description: "Read the Ca-Ca Canin privacy policy for dog waste removal and spring cleanup services in Laval and select North Shore locations.",
   alternates: {
     canonical: "/privacy",
     languages: {
       en: "/privacy",
       fr: "/fr/privacy",
     },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Privacy Policy | Ca-Ca Canin",
+    description: "Read the Ca-Ca Canin privacy policy for dog waste removal and spring cleanup services in Laval and select North Shore locations.",
+    url: "https://cacacanin.com/privacy",
+    siteName: "Ca-Ca Canin",
+    locale: "en_CA",
+    type: "website",
   },
 };
 

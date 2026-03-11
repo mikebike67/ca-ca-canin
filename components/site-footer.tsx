@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 
 type SiteFooterProps = {
@@ -9,7 +10,7 @@ type SiteFooterProps = {
 export default function SiteFooter({ locale = "en", isHome = false }: SiteFooterProps) {
   const copy = {
     en: {
-      description: "Dog waste removal and spring cleanup service for Laval homeowners.",
+      description: "Dog waste removal in Laval and spring cleanup across Laval plus select North Shore locations.",
       servicesHeading: "Services",
       services: [
         { href: isHome ? "#services" : "/#services", label: "Residential" },
@@ -29,7 +30,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
       logoAlt: "Ca-Ca Canin logo",
     },
     fr: {
-      description: "Service de ramassage de déjections canines et de nettoyage printanier pour les propriétaires de Laval.",
+      description: "Service de ramassage de déjections canines a Laval et nettoyage printanier a Laval ainsi que dans certaines villes de la Rive-Nord.",
       servicesHeading: "Services",
       services: [
         { href: isHome ? "#services" : "/fr#services", label: "Résidentiel" },
@@ -56,7 +57,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
         <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-5">
           <div>
             <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
-              <img src="/images/cacacaninlogo.jpg" alt={copy.logoAlt} className="h-8 w-8" />
+              <Image src="/images/cacacaninlogo.jpg" alt={copy.logoAlt} width={32} height={32} className="h-8 w-8" />
               <span className="text-lg font-bold text-[#307944] sm:text-xl">CA-CA CANIN</span>
             </div>
             <p className="text-gray-400">{copy.description}</p>

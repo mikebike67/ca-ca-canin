@@ -2,6 +2,7 @@
 
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Montserrat } from "next/font/google";
 import {
   Camera,
@@ -69,13 +70,11 @@ const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(n
 type SpringCleanupLocationPageProps = {
   locale: "en" | "fr";
   location: SpringCleanupLocation;
-  relatedLocations: readonly SpringCleanupLocation[];
 };
 
 export default function SpringCleanupLocationPage({
   locale,
   location,
-  relatedLocations,
 }: SpringCleanupLocationPageProps) {
   const isFrench = locale === "fr";
   const locationName = isFrench ? location.nameFr : location.name;
@@ -252,30 +251,30 @@ export default function SpringCleanupLocationPage({
   const heroBullets = isFrench
     ? [
         "Enleve l'accumulation de dejections de l'hiver",
-        `Intervention ponctuelle pensee pour ${locationName}`,
-        `Prefixes desservis : ${location.fsaPrefixes.join(", ")}`,
+        "Visite ponctuelle avec tarification claire selon le temps",
+        "Disponibilite confirmee avant la reservation",
       ]
     : [
         "Clears winter dog waste buildup",
-        `One-time cleanup tailored for ${locationName}`,
-        `Served FSA prefixes: ${location.fsaPrefixes.join(", ")}`,
+        "One-time visit with clear time-based pricing",
+        "Availability confirmed before booking",
       ];
 
   const howItWorksCopy = isFrench
     ? {
         title: "Comment ça fonctionne",
-        subtitle: `Simple, rapide et pensé pour un nettoyage ponctuel à ${locationName}.`,
+        subtitle: location.fitFr,
         steps: [
-          { icon: ClipboardCheck, title: "Demander un devis", desc: `Indiquez la taille de la cour, le nombre de chiens et votre code postal à ${locationName}.` },
+          { icon: ClipboardCheck, title: "Demander un devis", desc: "Indiquez la taille de la cour, le nombre de chiens et votre code postal." },
           { icon: PawPrint, title: "Confirmer la visite", desc: "Nous validons les détails et planifions le nettoyage selon la disponibilité printanière." },
           { icon: Sparkles, title: "On nettoie la cour", desc: "Nous enlevons l'accumulation et laissons l'espace plus propre et prêt à être réutilisé." },
         ],
       }
     : {
         title: "How it works",
-        subtitle: `Fast, clear, and built for one-time spring cleanup in ${locationName}.`,
+        subtitle: location.fitEn,
         steps: [
-          { icon: ClipboardCheck, title: "Request a quote", desc: `Tell us your yard size, dog count, and postal code in ${locationName}.` },
+          { icon: ClipboardCheck, title: "Request a quote", desc: "Tell us your yard size, dog count, and postal code." },
           { icon: PawPrint, title: "Confirm your visit", desc: "We review the details and schedule your cleanup around spring availability." },
           { icon: Sparkles, title: "We clean the yard", desc: "We remove winter buildup and leave the space cleaner and easier to use again." },
         ],
@@ -293,19 +292,19 @@ export default function SpringCleanupLocationPage({
 
   const whyBookCopy = isFrench
     ? {
-        title: `Pourquoi réserver votre nettoyage printanier à ${locationName}`,
-        subtitle: location.fitFr,
+        title: "Pourquoi réserver votre nettoyage printanier",
+        subtitle: location.timingFr,
         items: [
-          { icon: Heart, title: "Cour plus propre, moins de tracas", desc: `Une visite concentrée pour remettre votre cour de ${locationName} en ordre après l'hiver.` },
+          { icon: Heart, title: "Cour plus propre, moins de tracas", desc: "Une visite concentrée pour remettre la cour en ordre après l'hiver." },
           { icon: Camera, title: "Confirmation de visite", desc: "Nous envoyons une confirmation une fois le nettoyage terminé." },
           { icon: ClipboardCheck, title: "Tarification claire", desc: "Le nettoyage de printemps commence à 60 $ pour les 30 premières minutes, puis 5 $ par tranche additionnelle de 5 minutes." },
         ],
       }
     : {
-        title: `Why book your spring cleanup in ${locationName}`,
-        subtitle: location.fitEn,
+        title: "Why book your spring cleanup",
+        subtitle: location.timingEn,
         items: [
-          { icon: Heart, title: "Cleaner yard, less hassle", desc: `A focused visit to get your ${locationName} yard back into shape after winter.` },
+          { icon: Heart, title: "Cleaner yard, less hassle", desc: "A focused visit to get the yard back into shape after winter." },
           { icon: Camera, title: "Visit confirmation", desc: "We send confirmation once the cleanup is complete." },
           { icon: ClipboardCheck, title: "Clear time-based pricing", desc: "Spring cleanup starts at $60 for the first 30 minutes, then $5 per additional 5 minutes." },
         ],
@@ -314,12 +313,12 @@ export default function SpringCleanupLocationPage({
   const faqItems = isFrench
     ? [
         {
-          q: `Que comprend le nettoyage printanier à ${locationName}?`,
+          q: "Que comprend le nettoyage printanier?",
           a: "Un nettoyage complet de la cour pour enlever l'accumulation de l'hiver et rendre l'espace plus utilisable.",
         },
         {
-          q: `Quels codes postaux acceptez-vous à ${locationName}?`,
-          a: `Nous confirmons actuellement le service dans les prefixes FSA ${location.fsaPrefixes.join(", ")} ainsi que dans les autres zones printanieres desservies via le formulaire.`,
+          q: "Comment confirmez-vous la disponibilite?",
+          a: "Nous validons chaque demande par code postal avant la reservation afin de confirmer que l'adresse se trouve bien dans la zone de nettoyage printanier.",
         },
         {
           q: "Dois-je être sur place?",
@@ -327,17 +326,17 @@ export default function SpringCleanupLocationPage({
         },
         {
           q: "À quelle vitesse puis-je réserver?",
-          a: location.timingFr,
+          a: "Les places de printemps sont limitées et nous confirmons généralement les demandes en 1 jour ouvrable.",
         },
       ]
     : [
         {
-          q: `What is included in spring cleanup in ${locationName}?`,
+          q: "What is included in spring cleanup?",
           a: "A full yard sweep to remove winter buildup and leave the property cleaner and ready to use.",
         },
         {
-          q: `Which postal prefixes do you serve in ${locationName}?`,
-          a: `We currently confirm service in ${location.fsaPrefixes.join(", ")} plus the other spring cleanup areas supported through the booking form.`,
+          q: "How do you confirm availability?",
+          a: "We validate each request by postal code before booking so the address is confirmed inside the spring cleanup service area.",
         },
         {
           q: "Do I need to be home?",
@@ -345,7 +344,7 @@ export default function SpringCleanupLocationPage({
         },
         {
           q: "How fast can I book?",
-          a: location.timingEn,
+          a: "Spring spots are limited, and we typically confirm requests within 1 business day.",
         },
       ];
 
@@ -356,25 +355,23 @@ export default function SpringCleanupLocationPage({
     cta: isFrench ? "Obtenir un devis gratuit" : "Get a Free Quote",
     heroEyebrow: `${locationName}, QC`,
     heroTitle: isFrench
-      ? `NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES À ${locationName.toUpperCase()}`
-      : `SPRING DOG POOP CLEANUP IN ${locationName.toUpperCase()}`,
-    heroSubtitle: isFrench
-      ? "Nettoyage ponctuel à partir de 60 $. Places limitées au printemps."
-      : "One-time yard cleanup starting at $60. Limited spring spots.",
+      ? "NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES"
+      : "SPRING DOG POOP CLEANUP",
+    heroSubtitle: isFrench ? location.introFr : location.introEn,
     howItWorks: howItWorksCopy,
     testimonials: testimonialsCopy,
-    pricingTitle: isFrench ? `Calculateur de prix à ${locationName}` : `Spring Cleanup Pricing Calculator for ${locationName}`,
+    pricingTitle: isFrench ? "Calculateur de prix" : "Spring Cleanup Pricing Calculator",
     pricingSubtitle: isFrench
-      ? "Estimez le prix de votre nettoyage ponctuel. Le prix final est confirmé après révision."
-      : "Estimate your one-time cleanup price. Final pricing is confirmed after review.",
+      ? "Estimez le prix d'un nettoyage ponctuel avec une tarification claire selon le temps et une confirmation rapide des disponibilites."
+      : "Estimate the price of a one-time cleanup with clear time-based pricing and a fast availability check.",
     serviceAreaTitle: isFrench ? "Zone de service" : "Service area",
     serviceAreaSubtitle: isFrench
-      ? `Page locale de nettoyage de printemps pour ${locationName} et les autres villes desservies.`
-      : `Local spring cleanup page for ${locationName} and the other served areas.`,
-    faqTitle: isFrench ? `FAQ du nettoyage de printemps à ${locationName}` : `Spring Cleanup FAQs for ${locationName}`,
+      ? "Consultez cette page locale puis explorez les autres villes desservies pour le nettoyage printanier."
+      : "Browse this local page, then explore the other served towns for spring cleanup service.",
+    faqTitle: isFrench ? "FAQ du nettoyage de printemps" : "Spring Cleanup FAQs",
     faqSubtitle: isFrench
-      ? `Réponses sur le nettoyage ponctuel à ${locationName}.`
-      : `Answers about one-time spring cleanup in ${locationName}.`,
+      ? "Reponses sur le nettoyage ponctuel, la tarification et la reservation printaniere."
+      : "Answers about one-time cleanup, pricing, and spring booking.",
     validPostal: isFrench
       ? "Nous desservons ce code postal. Passez à l'étape 2."
       : "We service that postal code. Continue to step 2.",
@@ -402,9 +399,11 @@ export default function SpringCleanupLocationPage({
     sending: isFrench ? "Envoi..." : "Sending...",
     replyTime: isFrench ? "Nous répondons habituellement en 1 jour ouvrable." : "We usually reply within 1 business day.",
     areaCardTitle: locationName,
-    areaCardNote: isFrench ? "Disponibilité confirmée par FSA" : "Availability confirmed by FSA",
+    areaCardNote: isFrench ? "Page locale actuelle" : "Current local page",
     relatedTitle: isFrench ? "Autres villes desservies" : "Other served locations",
-    relatedButton: isFrench ? "Voir la page" : "View page",
+    relatedIntro: isFrench
+      ? "Cliquez sur une carte pour consulter la page locale d'une autre ville."
+      : "Click any card to open another local service page.",
   };
 
   return (
@@ -438,7 +437,7 @@ export default function SpringCleanupLocationPage({
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8" aria-label={isFrench ? "Principal" : "Primary"}>
           <div className="flex h-16 items-center justify-between">
             <Link href={homeHref} className="flex min-w-0 items-center space-x-3">
-              <img src="/images/cacacaninlogo.jpg" alt={isFrench ? "Logo Ca-Ca Canin" : "Ca-Ca Canin logo"} className="h-10 w-10" />
+              <Image src="/images/cacacaninlogo.jpg" alt={isFrench ? "Logo Ca-Ca Canin" : "Ca-Ca Canin logo"} width={40} height={40} className="h-10 w-10" />
               <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>CA-CA CANIN</span>
             </Link>
 
@@ -485,12 +484,35 @@ export default function SpringCleanupLocationPage({
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                "@type": "Question",
-                name: item.q,
-                acceptedAnswer: { "@type": "Answer", text: item.a },
-              })),
+              "@graph": [
+                {
+                  "@type": "Service",
+                  name: isFrench
+                    ? `Nettoyage printanier des dejections canines a ${locationName}`
+                    : `Spring dog poop cleanup in ${locationName}`,
+                  serviceType: isFrench
+                    ? "Nettoyage printanier des dejections canines"
+                    : "Spring dog poop cleanup",
+                  provider: {
+                    "@type": "LocalBusiness",
+                    name: "Ca-Ca Canin",
+                    telephone: "+1-438-880-8922",
+                    url: `https://cacacanin.com${baseHref}/${location.slug}`,
+                  },
+                  areaServed: {
+                    "@type": "City",
+                    name: locationName,
+                  },
+                },
+                {
+                  "@type": "FAQPage",
+                  mainEntity: faqItems.map((item) => ({
+                    "@type": "Question",
+                    name: item.q,
+                    acceptedAnswer: { "@type": "Answer", text: item.a },
+                  })),
+                }
+              ]
             }),
           }}
         />
@@ -504,7 +526,7 @@ export default function SpringCleanupLocationPage({
               {copy.heroTitle}
             </h1>
             <p className="mb-4 text-lg text-gray-600 sm:text-xl md:text-2xl">{copy.heroSubtitle}</p>
-            <p className="mx-auto mb-6 max-w-3xl text-base leading-8 text-gray-600 sm:text-lg">{isFrench ? location.introFr : location.introEn}</p>
+            <p className="mx-auto mb-6 max-w-3xl text-base leading-8 text-gray-600 sm:text-lg">{isFrench ? location.fitFr : location.fitEn}</p>
             <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form">{isFrench ? "Obtenir mon devis de printemps" : "Get My Spring Quote"}</Link>
@@ -552,9 +574,13 @@ export default function SpringCleanupLocationPage({
           <div className="mx-auto max-w-5xl">
             <div className="mb-10 text-center scroll-animation">
               <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.testimonials.title}</h2>
-              <p className="text-lg text-gray-600">{copy.testimonials.subtitle}</p>
+              <p className="text-lg text-gray-600">
+                {isFrench
+                  ? "Avis de proprietaires qui voulaient remettre leur cour en ordre rapidement apres l'hiver."
+                  : "Reviews from homeowners who wanted the yard reset quickly after winter."}
+              </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-3">
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
@@ -564,7 +590,7 @@ export default function SpringCleanupLocationPage({
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-8 text-gray-600">
-                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn, which let me tell you was a doozy and a half to say the least. Micheal came out and meticulously lifted everything and got most of the buildup. For 80$ I couldn&apos;t have spent my money more wisely.
+                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN 💪💯
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -578,6 +604,19 @@ export default function SpringCleanupLocationPage({
                 <CardContent>
                   <CardDescription className="text-base leading-8 text-gray-600">
                     Excellent service provided by Michael Atallah. He shows up on time, professional and courteous. Very thorough inspection of the back lawn and pickup of our dog&apos;s poop.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Avis 5 etoiles" : "5-star review"}
+                  </div>
+                  <CardTitle className="text-xl">Daniella H.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-8 text-gray-600">
+                    Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -820,40 +859,26 @@ export default function SpringCleanupLocationPage({
               <p className="text-lg text-gray-600">{copy.serviceAreaSubtitle}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              <Card className="border-2 border-brand-green bg-white shadow-[0_18px_45px_rgba(48,121,68,0.10)]">
-                <CardHeader className="items-center text-center">
-                  <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
-                    <MapPin className="h-7 w-7 text-brand-green" />
-                  </div>
-                  <CardTitle className="text-xl">{copy.areaCardTitle}</CardTitle>
-                </CardHeader>
-                <CardContent className="pt-0 text-center">
-                  <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                    FSA: {location.fsaPrefixes.join(", ")}
-                  </p>
-                  <p className="mt-2 text-sm text-gray-600">{copy.areaCardNote}</p>
-                </CardContent>
-              </Card>
-              {SPRING_CLEANUP_LOCATIONS.filter((item) => item.slug !== location.slug).map((relatedLocation) => {
-                const relatedName = isFrench ? relatedLocation.nameFr : relatedLocation.name;
-                const relatedHref = `${baseHref}/${relatedLocation.slug}`;
+              {SPRING_CLEANUP_LOCATIONS.map((areaLocation) => {
+                const areaName = isFrench ? areaLocation.nameFr : areaLocation.name;
+                const areaHref = `${baseHref}/${areaLocation.slug}`;
+                const isCurrent = areaLocation.slug === location.slug;
                 return (
-                  <Card key={relatedLocation.slug} className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                    <CardHeader className="items-center text-center">
-                      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
-                        <MapPin className="h-7 w-7 text-brand-green" />
-                      </div>
-                      <CardTitle className="text-xl">{relatedName}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="pt-0 text-center">
-                      <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                        FSA: {relatedLocation.fsaPrefixes.join(", ")}
-                      </p>
-                      <Button variant="outline" className="mt-3 w-full border-brand-green text-brand-green hover:bg-[#eef7f0]" asChild>
-                        <Link href={relatedHref}>{copy.relatedButton}</Link>
-                      </Button>
-                    </CardContent>
-                  </Card>
+                  <Link key={areaLocation.slug} href={areaHref} className="block h-full">
+                    <Card className={`h-full border bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] ${isCurrent ? "border-2 border-brand-green" : "border-[#d7e6da]"}`}>
+                      <CardHeader className="items-center text-center">
+                        <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
+                          <MapPin className="h-7 w-7 text-brand-green" />
+                        </div>
+                        <CardTitle className="text-xl">{areaName}</CardTitle>
+                      </CardHeader>
+                      <CardContent className="pt-0 text-center">
+                        <p className="text-sm text-gray-600">
+                          {isCurrent ? copy.areaCardNote : copy.relatedIntro}
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
                 );
               })}
             </div>

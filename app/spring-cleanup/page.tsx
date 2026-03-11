@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import SiteFooter from "@/components/site-footer"
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
+import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Camera, MapPin, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
@@ -294,9 +295,11 @@ export default function SpringCleanupPage() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Primary">
           <div className="flex items-center justify-between h-16">
             <Link href="/" className="flex min-w-0 items-center space-x-3">
-              <img
+              <Image
                 src="/images/cacacaninlogo.jpg"
                 alt="Ca-Ca Canin logo"
+                width={40}
+                height={40}
                 className="h-10 w-10"
               />
               <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
@@ -353,15 +356,47 @@ export default function SpringCleanupPage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                "@type": "Question",
-                name: item.q,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: item.a,
+              "@graph": [
+                {
+                  "@type": "Service",
+                  name: "Spring dog poop cleanup",
+                  serviceType: "Spring dog poop cleanup",
+                  provider: {
+                    "@type": "LocalBusiness",
+                    name: "Ca-Ca Canin",
+                    telephone: "+1-438-880-8922",
+                    url: "https://cacacanin.com/spring-cleanup",
+                  },
+                  areaServed: [
+                    "Laval, QC",
+                    "Blainville, QC",
+                    "Bois-des-Filion, QC",
+                    "Boisbriand, QC",
+                    "Deux-Montagnes, QC",
+                    "Lorraine, QC",
+                    "Mirabel, QC",
+                    "Oka, QC",
+                    "Pointe-Calumet, QC",
+                    "Rosemere, QC",
+                    "Saint-Eustache, QC",
+                    "Saint-Joseph-du-Lac, QC",
+                    "Sainte-Anne-des-Plaines, QC",
+                    "Sainte-Marthe-sur-le-Lac, QC",
+                    "Sainte-Therese, QC"
+                  ]
                 },
-              })),
+                {
+                  "@type": "FAQPage",
+                  mainEntity: faqItems.map((item) => ({
+                    "@type": "Question",
+                    name: item.q,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: item.a,
+                    },
+                  })),
+                }
+              ]
             })
           }}
         />
@@ -372,10 +407,10 @@ export default function SpringCleanupPage() {
               Laval and North Shore, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              SPRING DOG POOP CLEANUP IN LAVAL AND THE NORTH SHORE
+              SPRING DOG POOP CLEANUP FOR LAVAL AND THE NORTH SHORE
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              One-time yard cleanup starting at $60. Limited spring spots.
+              One-time dog waste removal starting at $60 for yards that need a full post-winter reset.
             </p>
             {/* RESPONSIVE: keep hero actions full-width on phones for easier tapping. */}
             <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
@@ -412,7 +447,7 @@ export default function SpringCleanupPage() {
                 How it works
               </h2>
               <p className="text-lg text-gray-600">
-                Fast, clear, and built for one-time spring cleanup across Laval and select North Shore locations.
+                Fast quote, one-time cleanup, and no ongoing plan required to book a spring yard reset.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -445,10 +480,10 @@ export default function SpringCleanupPage() {
                 Testimonials
               </h2>
               <p className="text-lg text-gray-600">
-                Reviews from Ca-Ca Canin customers.
+                Reviews from homeowners who booked dog poop cleanup and spring yard reset service.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-3">
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
@@ -458,7 +493,7 @@ export default function SpringCleanupPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-8 text-gray-600">
-                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN
+                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN 💪💯
                 </CardDescription>
               </CardContent>
             </Card>
@@ -475,6 +510,19 @@ export default function SpringCleanupPage() {
                 </CardDescription>
               </CardContent>
             </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    5-star review
+                  </div>
+                  <CardTitle className="text-xl">Daniella H.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-8 text-gray-600">
+                    Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
+                  </CardDescription>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -486,7 +534,7 @@ export default function SpringCleanupPage() {
                 Spring Cleanup Pricing Calculator
               </h2>
               <p className="text-lg text-gray-600">
-                Estimate your one-time cleanup price. Final pricing is confirmed after review.
+                Estimate a one-time dog waste cleanup visit. Final pricing is confirmed after review.
               </p>
             </div>
 
@@ -807,7 +855,7 @@ export default function SpringCleanupPage() {
                 Why Book Your Spring Cleanup With Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                A simple way to reset your yard after winter across Laval and the North Shore.
+                A one-time pooper scooper visit that clears winter buildup without locking you into recurring service.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -839,31 +887,21 @@ export default function SpringCleanupPage() {
                 Service area
               </h2>
               <p className="text-lg text-gray-600">
-                One-time spring cleanup service for Laval and select North Shore locations.
+                Serving Laval plus select North Shore cities for one-time spring dog waste cleanup.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SPRING_CLEANUP_LOCATIONS.map((location) => (
-                <Card
-                  key={location.slug}
-                  className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]"
-                >
-                  <CardHeader className="items-center text-center">
-                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
-                      <MapPin className="h-7 w-7 text-brand-green" />
-                    </div>
-                    <CardTitle className="text-xl">
-                      <Link href={`/spring-cleanup/${location.slug}`} className="hover:text-brand-green">
-                        {location.name}
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 text-center">
-                    <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                      FSA: {location.fsaPrefixes.join(", ")}
-                    </p>
-                  </CardContent>
-                </Card>
+                <Link key={location.slug} href={`/spring-cleanup/${location.slug}`} className="block h-full">
+                  <Card className="h-full border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+                    <CardHeader className="items-center text-center">
+                      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
+                        <MapPin className="h-7 w-7 text-brand-green" />
+                      </div>
+                      <CardTitle className="text-xl">{location.name}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -876,7 +914,7 @@ export default function SpringCleanupPage() {
                 Spring Cleanup FAQs
               </h2>
               <p className="text-lg text-gray-600">
-                Answers about one-time spring cleanup in our spring service area.
+                Answers about booking, pricing, and one-time yard cleanup service.
               </p>
             </div>
             <div className="space-y-4">

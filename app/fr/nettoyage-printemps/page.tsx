@@ -5,6 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import SiteFooter from "@/components/site-footer"
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
+import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Camera, MapPin, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
@@ -294,9 +295,11 @@ export default function SpringCleanupFrenchPage() {
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Principal">
           <div className="flex items-center justify-between h-16">
             <Link href="/fr" className="flex min-w-0 items-center space-x-3">
-              <img
+              <Image
                 src="/images/cacacaninlogo.jpg"
                 alt="Logo Ca-Ca Canin"
+                width={40}
+                height={40}
                 className="h-10 w-10"
               />
               <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
@@ -353,15 +356,47 @@ export default function SpringCleanupFrenchPage() {
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
-              "@type": "FAQPage",
-              mainEntity: faqItems.map((item) => ({
-                "@type": "Question",
-                name: item.q,
-                acceptedAnswer: {
-                  "@type": "Answer",
-                  text: item.a,
+              "@graph": [
+                {
+                  "@type": "Service",
+                  name: "Nettoyage printanier des dejections canines",
+                  serviceType: "Nettoyage printanier des dejections canines",
+                  provider: {
+                    "@type": "LocalBusiness",
+                    name: "Ca-Ca Canin",
+                    telephone: "+1-438-880-8922",
+                    url: "https://cacacanin.com/fr/nettoyage-printemps",
+                  },
+                  areaServed: [
+                    "Laval, QC",
+                    "Blainville, QC",
+                    "Bois-des-Filion, QC",
+                    "Boisbriand, QC",
+                    "Deux-Montagnes, QC",
+                    "Lorraine, QC",
+                    "Mirabel, QC",
+                    "Oka, QC",
+                    "Pointe-Calumet, QC",
+                    "Rosemere, QC",
+                    "Saint-Eustache, QC",
+                    "Saint-Joseph-du-Lac, QC",
+                    "Sainte-Anne-des-Plaines, QC",
+                    "Sainte-Marthe-sur-le-Lac, QC",
+                    "Sainte-Therese, QC"
+                  ]
                 },
-              })),
+                {
+                  "@type": "FAQPage",
+                  mainEntity: faqItems.map((item) => ({
+                    "@type": "Question",
+                    name: item.q,
+                    acceptedAnswer: {
+                      "@type": "Answer",
+                      text: item.a,
+                    },
+                  })),
+                }
+              ]
             })
           }}
         />
@@ -372,10 +407,10 @@ export default function SpringCleanupFrenchPage() {
               Laval et Rive-Nord, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
-              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES À LAVAL ET SUR LA RIVE-NORD
+              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES POUR LAVAL ET LA RIVE-NORD
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Nettoyage ponctuel à partir de 60 $. Places limitées au printemps.
+              Service ponctuel a partir de 60 $ pour les cours qui ont besoin d'une vraie remise en ordre apres l'hiver.
             </p>
             {/* RESPONSIVE: keep hero actions full-width on phones for easier tapping. */}
             <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
@@ -412,7 +447,7 @@ export default function SpringCleanupFrenchPage() {
                 Comment ça fonctionne
               </h2>
               <p className="text-lg text-gray-600">
-                Simple, rapide et pensé pour un nettoyage ponctuel à Laval et dans certaines villes de la Rive-Nord.
+                Devis rapide, visite ponctuelle et aucun abonnement necessaire pour reserver un grand nettoyage printanier.
               </p>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -445,10 +480,10 @@ export default function SpringCleanupFrenchPage() {
                 Témoignages
               </h2>
               <p className="text-lg text-gray-600">
-                Avis de clients Ca-Ca Canin.
+                Avis de proprietaires qui ont reserve un ramassage ponctuel pour remettre leur cour en ordre.
               </p>
             </div>
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-6 md:grid-cols-3">
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
@@ -458,7 +493,7 @@ export default function SpringCleanupFrenchPage() {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base leading-8 text-gray-600">
-                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN
+                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN 💪💯
                 </CardDescription>
               </CardContent>
             </Card>
@@ -475,6 +510,19 @@ export default function SpringCleanupFrenchPage() {
                 </CardDescription>
               </CardContent>
             </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    Avis 5 etoiles
+                  </div>
+                  <CardTitle className="text-xl">Daniella H.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-base leading-8 text-gray-600">
+                    Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
+                  </CardDescription>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>
@@ -486,7 +534,7 @@ export default function SpringCleanupFrenchPage() {
                 Calculateur de prix du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">
-                Estimez le prix de votre nettoyage ponctuel. Le prix final est confirmé après révision.
+                Estimez le prix d'un ramassage ponctuel. Le prix final est confirme apres revision.
               </p>
             </div>
 
@@ -807,7 +855,7 @@ export default function SpringCleanupFrenchPage() {
                 Pourquoi réserver votre nettoyage printanier avec Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                Une façon simple de remettre votre cour en ordre après l&apos;hiver à Laval et sur la Rive-Nord.
+                Une visite ponctuelle pour enlever l'accumulation de l'hiver sans vous engager dans un service recurrent.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
@@ -839,31 +887,21 @@ export default function SpringCleanupFrenchPage() {
                 Zone de service
               </h2>
               <p className="text-lg text-gray-600">
-                Service ponctuel de nettoyage de printemps à Laval et dans certaines villes de la Rive-Nord.
+                Service ponctuel de nettoyage printanier pour Laval et certaines villes de la Rive-Nord.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SPRING_CLEANUP_LOCATIONS.map((location) => (
-                <Card
-                  key={location.slug}
-                  className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]"
-                >
-                  <CardHeader className="items-center text-center">
-                    <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
-                      <MapPin className="h-7 w-7 text-brand-green" />
-                    </div>
-                    <CardTitle className="text-xl">
-                      <Link href={`/fr/nettoyage-printemps/${location.slug}`} className="hover:text-brand-green">
-                        {location.nameFr}
-                      </Link>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-0 text-center">
-                    <p className="text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                      FSA : {location.fsaPrefixes.join(", ")}
-                    </p>
-                  </CardContent>
-                </Card>
+                <Link key={location.slug} href={`/fr/nettoyage-printemps/${location.slug}`} className="block h-full">
+                  <Card className="h-full border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+                    <CardHeader className="items-center text-center">
+                      <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
+                        <MapPin className="h-7 w-7 text-brand-green" />
+                      </div>
+                      <CardTitle className="text-xl">{location.nameFr}</CardTitle>
+                    </CardHeader>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>
@@ -876,7 +914,7 @@ export default function SpringCleanupFrenchPage() {
                 FAQ du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">
-                Reponses sur le nettoyage ponctuel dans notre zone de service printaniere.
+                Reponses sur la reservation, la tarification et le nettoyage ponctuel de cour.
               </p>
             </div>
             <div className="space-y-4">

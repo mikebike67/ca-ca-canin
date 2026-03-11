@@ -3,12 +3,26 @@ import LegalPageShell from "@/components/legal-page-shell";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
+  title: "Conditions d'utilisation | Ca-Ca Canin",
+  description: "Consultez les conditions d'utilisation de Ca-Ca Canin pour le ramassage de dejections canines a Laval et le nettoyage printanier.",
   alternates: {
     canonical: "/fr/terms",
     languages: {
       en: "/terms",
       fr: "/fr/terms",
     },
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    title: "Conditions d'utilisation | Ca-Ca Canin",
+    description: "Consultez les conditions d'utilisation de Ca-Ca Canin pour le ramassage de dejections canines a Laval et le nettoyage printanier.",
+    url: "https://cacacanin.com/fr/terms",
+    siteName: "Ca-Ca Canin",
+    locale: "fr_CA",
+    type: "website",
   },
 };
 

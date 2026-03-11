@@ -11,23 +11,32 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cacacanin.com"),
-  title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
-  description: "Dog waste removal and pooper scooper service in Laval, QC. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
+  title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
+  description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
+  applicationName: "Ca-Ca Canin",
   alternates: {
+    canonical: "/",
     languages: {
       en: "/",
       fr: "/fr"
     }
   },
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
-    title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
-    description: "Dog waste removal and pooper scooper service in Laval, QC with clear pricing and flexible scheduling.",
-    type: "website"
+    title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
+    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC with clear pricing and flexible scheduling.",
+    type: "website",
+    url: "/",
+    siteName: "Ca-Ca Canin",
+    locale: "en_CA"
   },
   twitter: {
     card: "summary",
-    title: "Dog Waste Removal in Laval, QC | Ca-Ca Canin",
-    description: "Dog waste removal and pooper scooper service in Laval, QC with clear pricing and flexible scheduling."
+    title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
+    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC with clear pricing and flexible scheduling."
   },
   icons: {
     icon: [
@@ -69,12 +78,6 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="bg-white">
-      <head>
-        <link rel="icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
-        <link rel="shortcut icon" type="image/x-icon" href="/images/caca-caninfavicon.ico" />
-        <link rel="apple-touch-icon" sizes="180x180" href="/images/cacacaninlogo.jpg" />
-        <link rel="manifest" href="/manifest.json" />
-      </head>
       <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>{children}</body>
     </html>
   );
