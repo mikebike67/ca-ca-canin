@@ -3,14 +3,14 @@
   "short_name": "Ca-Ca Canin",
   "icons": [
     {
-      "src": "/images/cacacaninlogo.jpg",
-      "sizes": "180x180",
-      "type": "image/jpeg"
+      "src": "/images/caca-caninfavicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
     },
     {
-      "src": "/images/cacacaninlogo.jpg",
-      "sizes": "180x180",
-      "type": "image/jpeg"
+      "src": "/images/caca-caninfavicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
     }
   ],
   "theme_color": "#ffffff",

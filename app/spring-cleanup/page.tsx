@@ -51,6 +51,7 @@ const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(n
 
 export default function SpringCleanupPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('onetime');
   const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
@@ -227,6 +228,15 @@ export default function SpringCleanupPage() {
     return () => observerRef.current?.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (bookingStatus !== 'success' || !quoteThankYouRef.current) return;
+
+    requestAnimationFrame(() => {
+      quoteThankYouRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      quoteThankYouRef.current?.focus();
+    });
+  }, [bookingStatus]);
+
   const handleCtaClick = (label: string) => {
     console.log(`[cta] ${label}`);
   };
@@ -311,6 +321,7 @@ export default function SpringCleanupPage() {
               <Link href="#how-it-works" className="text-gray-700 hover:text-brand-green transition-colors">How it works</Link>
               <Link href="#quote-form" className="text-gray-700 hover:text-brand-green transition-colors">Pricing</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
+              <Link href="/contact" className="text-gray-700 hover:text-brand-green transition-colors">Contact</Link>
               <Link href="/fr/nettoyage-printemps" className="text-brand-brown hover:text-brand-brown/80 transition-colors">Français</Link>
               <Button size="lg" className="bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link href="#quote-form" data-cta="spring-quote" onClick={() => handleCtaClick("nav-quote")}>
@@ -339,6 +350,7 @@ export default function SpringCleanupPage() {
               <Link href="#how-it-works" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">How it works</Link>
               <Link href="#quote-form" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Pricing</Link>
               <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
+              <Link href="/contact" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Contact</Link>
               <Link href="/fr/nettoyage-printemps" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">Français</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link href="#quote-form" data-cta="spring-quote" onClick={() => handleCtaClick("mobile-quote")}>
@@ -732,7 +744,7 @@ export default function SpringCleanupPage() {
                         <div className="text-sm text-red-600" role="status" aria-live="polite">
                           {postalCode && !isCanadianPostalCode(postalCode)
                             ? 'Please enter a valid Canadian postal code.'
-                            : 'Sorry, that postal code is outside our spring cleanup service area.'}
+                            : <>Sorry, that postal code is outside our spring cleanup service area. We don&apos;t service your location? <Link href="/contact" className="font-semibold underline">Reach out to us</Link>.</>}
                         </div>
                       )}
                     </div>
@@ -804,7 +816,7 @@ export default function SpringCleanupPage() {
                       </>
                     )}
                     {bookingStatus === 'success' && (
-                      <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                      <div id="spring-quote-thank-you" ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">Your spring cleanup request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">

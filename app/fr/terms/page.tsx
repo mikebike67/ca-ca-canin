@@ -29,7 +29,7 @@ export const metadata: Metadata = {
 export default function FrenchTermsPage() {
   return (
     <LegalPageShell locale="fr">
-      <main className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
+      <div className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
           <div className="mb-10 border-b border-[#d7e6da] pb-6">
             <Link href="/fr" className="text-sm font-semibold text-[#307944] hover:underline">
@@ -165,7 +165,7 @@ export default function FrenchTermsPage() {
             </section>
           </div>
         </div>
-      </main>
+      </div>
     </LegalPageShell>
   );
 }

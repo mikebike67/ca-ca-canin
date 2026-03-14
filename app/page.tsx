@@ -51,6 +51,7 @@ const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWi
 
 export default function Page() {
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('weekly');
   const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
@@ -230,6 +231,15 @@ export default function Page() {
     return () => observerRef.current?.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (bookingStatus !== 'success' || !quoteThankYouRef.current) return;
+
+    requestAnimationFrame(() => {
+      quoteThankYouRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      quoteThankYouRef.current?.focus();
+    });
+  }, [bookingStatus]);
+
   return (
     <div className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
       <a
@@ -308,6 +318,7 @@ export default function Page() {
             <div className="hidden md:flex items-center space-x-8">
               <Link href="#about" className="text-gray-700 hover:text-brand-green transition-colors">About</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
+              <Link href="/contact" className="text-gray-700 hover:text-brand-green transition-colors">Contact</Link>
               <Link href="/fr" className="text-brand-brown hover:text-brand-brown/80 transition-colors">Français</Link>
               <Button
                 size="lg"
@@ -343,6 +354,7 @@ export default function Page() {
             <div id="mobile-nav" className="space-y-2 border-t border-gray-200 py-4 md:hidden">
               <Link href="#about" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">About</Link>
               <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
+              <Link href="/contact" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Contact</Link>
               <Link href="/fr" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">Français</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link
@@ -426,10 +438,10 @@ export default function Page() {
                     height={1200}
                     priority
                     sizes="(min-width: 1024px) 34rem, 0px"
-                    className="relative z-10 mx-auto h-auto w-full max-w-[21rem] object-contain sm:max-w-[30rem] lg:max-w-[34rem]"
+                    className="relative z-10 mx-auto h-auto w-full max-w-[21rem] -translate-y-6 object-contain sm:max-w-[30rem] sm:-translate-y-8 lg:max-w-[34rem] lg:-translate-y-10"
                   />
                   <div
-                    className="absolute inset-x-0 bottom-0 z-20 h-20 bg-white sm:h-24 lg:h-28"
+                    className="absolute inset-x-0 bottom-0 z-20 h-14 bg-white sm:h-16 lg:h-20"
                     style={{ clipPath: "ellipse(70% 100% at 50% 100%)" }}
                   />
                 </div>
@@ -859,7 +871,7 @@ export default function Page() {
                         <div className="text-sm text-red-600" role="status" aria-live="polite">
                           {postalCode && !isCanadianPostalCode(postalCode)
                             ? 'Please enter a valid Canadian postal code.'
-                            : 'Sorry, we currently only serve Laval, QC.'}
+                            : <>Sorry, we currently only serve Laval, QC. We don&apos;t service your location? <Link href="/contact" className="font-semibold underline">Reach out to us</Link>.</>}
                         </div>
                       )}
                     </div>
@@ -960,7 +972,7 @@ export default function Page() {
                       </>
                     )}
                     {bookingStatus === 'success' && (
-                      <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                      <div id="quote-thank-you" ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">Your quote request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">

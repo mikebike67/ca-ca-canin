@@ -47,9 +47,9 @@ export const metadata: Metadata = {
     ],
     apple: [
       {
-        url: "/images/cacacaninlogo.jpg",
-        type: "image/jpeg",
-        sizes: "180x180"
+        url: "/images/caca-caninfavicon.ico",
+        type: "image/x-icon",
+        sizes: "32x32"
       }
     ],
     shortcut: [{ url: "/images/caca-caninfavicon.ico", type: "image/x-icon" }],

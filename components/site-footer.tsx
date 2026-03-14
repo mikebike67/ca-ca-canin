@@ -11,6 +11,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
   const copy = {
     en: {
       description: "Dog waste removal in Laval and spring cleanup across Laval plus select North Shore locations.",
+      socialHeading: "Socials",
       servicesHeading: "Services",
       services: [
         { href: isHome ? "#services" : "/#services", label: "Residential" },
@@ -20,6 +21,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
       about: [
         { href: isHome ? "#about" : "/#about", label: "About" },
         { href: isHome ? "#faq" : "/#faq", label: "FAQ" },
+        { href: "/contact", label: "Contact" },
       ],
       contactHeading: "Contact",
       legalHeading: "Legal",
@@ -31,6 +33,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
     },
     fr: {
       description: "Service de ramassage de déjections canines a Laval et nettoyage printanier a Laval ainsi que dans certaines villes de la Rive-Nord.",
+      socialHeading: "Reseaux sociaux",
       servicesHeading: "Services",
       services: [
         { href: isHome ? "#services" : "/fr#services", label: "Résidentiel" },
@@ -40,6 +43,7 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
       about: [
         { href: isHome ? "#about" : "/fr#about", label: "À propos" },
         { href: isHome ? "#faq" : "/fr#faq", label: "FAQ" },
+        { href: "/fr/contact", label: "Contact" },
       ],
       contactHeading: "Nous joindre",
       legalHeading: "Mentions légales",
@@ -51,10 +55,19 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
     },
   }[locale];
 
+  const socialLinks = [
+    { href: "https://ca.pinterest.com/cacacanin/", label: "Pinterest" },
+    { href: "https://www.tiktok.com/@cacacanin", label: "TikTok" },
+    { href: "https://www.youtube.com/@CaCaCanin", label: "YouTube" },
+    { href: "https://x.com/cacacanin", label: "X" },
+    { href: "https://www.facebook.com/CaCaCanin", label: "Facebook" },
+    { href: "https://www.instagram.com/caca.canin/", label: "Instagram" },
+  ] as const;
+
   return (
     <footer className="bg-gray-900 px-4 py-12 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
-        <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-5">
+        <div className="mb-8 grid gap-8 text-center sm:grid-cols-2 sm:text-left xl:grid-cols-6">
           <div>
             <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
               <Image src="/images/cacacaninlogo.jpg" alt={copy.logoAlt} width={32} height={32} className="h-8 w-8" />
@@ -119,6 +132,19 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
                   <Link href={item.href} className="hover:text-white">
                     {item.label}
                   </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h3 className="mb-4 font-semibold">{copy.socialHeading}</h3>
+            <ul className="space-y-2 text-gray-400">
+              {socialLinks.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} target="_blank" rel="noreferrer" className="hover:text-white">
+                    {item.label}
+                  </a>
                 </li>
               ))}
             </ul>

@@ -99,6 +99,7 @@ export default function SpringCleanupLocationPage({
   const [consentError, setConsentError] = useState("");
   const [websiteField, setWebsiteField] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
+  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
 
   const yardCategory = useMemo<"small" | "medium" | "large" | "xlarge">(() => {
     if (yardSqft <= 3000) return "small";
@@ -152,6 +153,15 @@ export default function SpringCleanupLocationPage({
 
     return () => observerRef.current?.disconnect();
   }, []);
+
+  useEffect(() => {
+    if (bookingStatus !== "success" || !quoteThankYouRef.current) return;
+
+    requestAnimationFrame(() => {
+      quoteThankYouRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      quoteThankYouRef.current?.focus();
+    });
+  }, [bookingStatus]);
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -352,6 +362,7 @@ export default function SpringCleanupLocationPage({
     languageLink: isFrench ? "English" : "Français",
     pricingNav: isFrench ? "Tarifs" : "Pricing",
     faqNav: "FAQ",
+    contactNav: isFrench ? "Contact" : "Contact",
     cta: isFrench ? "Obtenir un devis gratuit" : "Get a Free Quote",
     heroEyebrow: `${locationName}, QC`,
     heroTitle: isFrench
@@ -445,6 +456,7 @@ export default function SpringCleanupLocationPage({
               <Link href="#how-it-works" className="text-gray-700 hover:text-brand-green transition-colors">{copy.howItWorks.title}</Link>
               <Link href="#quote-form" className="text-gray-700 hover:text-brand-green transition-colors">{copy.pricingNav}</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">{copy.faqNav}</Link>
+              <Link href={isFrench ? "/fr/contact" : "/contact"} className="text-gray-700 hover:text-brand-green transition-colors">{copy.contactNav}</Link>
               <Link href={altHref} className="text-brand-brown hover:text-brand-brown/80 transition-colors">{copy.languageLink}</Link>
               <Button size="lg" className="bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link href="#quote-form">{copy.cta}</Link>
@@ -469,6 +481,7 @@ export default function SpringCleanupLocationPage({
               <Link href="#how-it-works" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">{copy.howItWorks.title}</Link>
               <Link href="#quote-form" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">{copy.pricingNav}</Link>
               <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">{copy.faqNav}</Link>
+              <Link href={isFrench ? "/fr/contact" : "/contact"} className="block rounded-md py-2 text-gray-700 hover:text-brand-green">{copy.contactNav}</Link>
               <Link href={altHref} className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">{copy.languageLink}</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link href="#quote-form">{copy.cta}</Link>
@@ -813,7 +826,7 @@ export default function SpringCleanupLocationPage({
                     )}
 
                     {bookingStatus === "success" && (
-                      <div className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                      <div id={`spring-location-thank-you-${locale}-${location.slug}`} ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">{isFrench ? "Merci" : "Thank you"}</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">{copy.thankYou}</h3>
                         <p className="mt-3 text-base text-gray-600">{copy.thankYouBody}</p>
