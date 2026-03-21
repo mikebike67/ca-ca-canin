@@ -19,7 +19,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const staticEntries = staticPages.map((path) => ({
     url: `${siteUrl}${path}`,
-    lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: path === "" || path === "/fr" ? 1 : 0.8,
   }));
@@ -27,13 +26,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const locationEntries = SPRING_CLEANUP_LOCATIONS.flatMap((location) => [
     {
       url: `${siteUrl}/spring-cleanup/${location.slug}`,
-      lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.7,
     },
     {
       url: `${siteUrl}/fr/nettoyage-printemps/${location.slug}`,
-      lastModified: new Date(),
       changeFrequency: "weekly" as const,
       priority: 0.7,
     },

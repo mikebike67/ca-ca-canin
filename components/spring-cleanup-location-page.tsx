@@ -16,6 +16,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import SiteFooter from "@/components/site-footer";
+import { BASE_PRICING, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount } from "@/lib/booking";
 import type { SpringCleanupLocation } from "@/lib/spring-cleanup-service-area";
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
 
@@ -25,13 +26,6 @@ const montserrat = Montserrat({
   weight: ["400", "500", "600", "700", "800", "900"],
   style: ["normal"],
 });
-
-const basePricing: Record<"weekly" | "biweekly" | "monthly" | "onetime", Record<"1" | "2" | "3plus", number>> = {
-  weekly: { "1": 20, "2": 25, "3plus": 30 },
-  biweekly: { "1": 30, "2": 35, "3plus": 40 },
-  monthly: { "1": 50, "2": 55, "3plus": 60 },
-  onetime: { "1": 60, "2": 60, "3plus": 60 },
-};
 
 const yardOptions = {
   en: [
@@ -64,9 +58,6 @@ const frequencyNotes = {
 } as const;
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
-const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
-
 type SpringCleanupLocationPageProps = {
   locale: "en" | "fr";
   location: SpringCleanupLocation;
@@ -85,7 +76,7 @@ export default function SpringCleanupLocationPage({
   const privacyHref = isFrench ? "/fr/privacy" : "/privacy";
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [dogs, setDogs] = useState<"1" | "2" | "3plus">("1");
+  const [dogs, setDogs] = useState<DogCount>("1");
   const [yardSqft, setYardSqft] = useState(3000);
   const [displayPrice, setDisplayPrice] = useState(0);
   const [postalCode, setPostalCode] = useState("");
@@ -101,15 +92,10 @@ export default function SpringCleanupLocationPage({
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
 
-  const yardCategory = useMemo<"small" | "medium" | "large" | "xlarge">(() => {
-    if (yardSqft <= 3000) return "small";
-    if (yardSqft <= 6000) return "medium";
-    if (yardSqft < 10000) return "large";
-    return "xlarge";
-  }, [yardSqft]);
+  const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
   const pricingDetails = useMemo(() => {
-    const base = basePricing.onetime[dogs];
+    const base = BASE_PRICING.onetime[dogs];
     return {
       perVisit: base,
       note: frequencyNotes[locale].onetime,
@@ -363,7 +349,7 @@ export default function SpringCleanupLocationPage({
     pricingNav: isFrench ? "Tarifs" : "Pricing",
     faqNav: "FAQ",
     contactNav: isFrench ? "Contact" : "Contact",
-    cta: isFrench ? "Obtenir un devis gratuit" : "Get a Free Quote",
+    cta: isFrench ? "Vérifier ma disponibilité" : "Check Availability",
     heroEyebrow: `${locationName}, QC`,
     heroTitle: isFrench
       ? "NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES"
@@ -373,8 +359,8 @@ export default function SpringCleanupLocationPage({
     testimonials: testimonialsCopy,
     pricingTitle: isFrench ? "Calculateur de prix" : "Spring Cleanup Pricing Calculator",
     pricingSubtitle: isFrench
-      ? "Estimez le prix d'un nettoyage ponctuel avec une tarification claire selon le temps et une confirmation rapide des disponibilites."
-      : "Estimate the price of a one-time cleanup with clear time-based pricing and a fast availability check.",
+      ? "Entrez vos détails, voyez le prix de départ et demandez votre nettoyage avant que la prochaine place de printemps disparaisse."
+      : "Enter your details, see the starting price, and request your cleanup before the next spring spot is gone.",
     serviceAreaTitle: isFrench ? "Zone de service" : "Service area",
     serviceAreaSubtitle: isFrench
       ? "Consultez cette page locale puis explorez les autres villes desservies pour le nettoyage printanier."
@@ -396,8 +382,8 @@ export default function SpringCleanupLocationPage({
       ? "J'accepte les conditions et la politique de confidentialité et j'autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis."
       : "I agree to the Terms and Privacy Policy and allow Ca-Ca Canin to contact me about my quote request.",
     note: isFrench
-      ? "Le prix dépend de la taille de la cour et du nombre de chiens. Demandez un devis gratuit pour le prix final."
-      : "Pricing depends on yard size and number of dogs. Request a free quote for final pricing.",
+      ? "Le nettoyage commence à 60 $ pour les 30 premières minutes. Le prix final dépend de la taille de la cour et du nombre de chiens."
+      : "Cleanup starts at $60 for the first 30 minutes. Final pricing depends on yard size and number of dogs.",
     estimate: isFrench ? "Estimation du nettoyage de printemps" : "Spring Cleanup Estimate",
     thankYou: isFrench ? "Votre demande de nettoyage de printemps est envoyée." : "Your spring cleanup request is in.",
     thankYouBody: isFrench
@@ -406,7 +392,7 @@ export default function SpringCleanupLocationPage({
     thankYouFoot: isFrench
       ? "Vous ne l'avez pas reçu? Vérifiez vos courriels indésirables."
       : "Didn't receive it? Check your junk folder.",
-    submit: isFrench ? "Demander mon devis de printemps" : "Request My Spring Quote",
+    submit: isFrench ? "Réserver mon nettoyage de printemps" : "Book My Spring Cleanup",
     sending: isFrench ? "Envoi..." : "Sending...",
     replyTime: isFrench ? "Nous répondons habituellement en 1 jour ouvrable." : "We usually reply within 1 business day.",
     areaCardTitle: locationName,
@@ -540,14 +526,19 @@ export default function SpringCleanupLocationPage({
             </h1>
             <p className="mb-4 text-lg text-gray-600 sm:text-xl md:text-2xl">{copy.heroSubtitle}</p>
             <p className="mx-auto mb-6 max-w-3xl text-base leading-8 text-gray-600 sm:text-lg">{isFrench ? location.fitFr : location.fitEn}</p>
-            <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center">
+            <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#quote-form">{isFrench ? "Obtenir mon devis de printemps" : "Get My Spring Quote"}</Link>
+                <Link href="#quote-form">{isFrench ? "Réserver mon nettoyage de printemps" : "Book My Spring Cleanup"}</Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#how-it-works">{copy.howItWorks.title}</Link>
               </Button>
             </div>
+            <p className="mt-4 text-sm font-semibold text-brand-green">
+              {isFrench
+                ? "Les places de printemps sont limitées. La plupart des demandes sont confirmées en 1 jour ouvrable lorsqu'une place est ouverte."
+                : "Spring spots are limited. Most requests are confirmed within 1 business day when availability is open."}
+            </p>
             <ul className="mx-auto mt-8 grid max-w-2xl gap-3 text-left text-gray-700">
               {heroBullets.map((item) => (
                 <li key={item} className="flex items-start gap-3">
@@ -556,83 +547,19 @@ export default function SpringCleanupLocationPage({
                 </li>
               ))}
             </ul>
-          </div>
-        </section>
-
-        <section id="how-it-works" className="scroll-mt-12 bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.howItWorks.title}</h2>
-              <p className="text-lg text-gray-600">{copy.howItWorks.subtitle}</p>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              {copy.howItWorks.steps.map((step) => (
-                <Card key={step.title} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                  <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
-                      <step.icon className="h-6 w-6 text-brand-green" />
-                    </div>
-                    <CardTitle className="text-xl">{step.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base leading-7 text-gray-600">{step.desc}</CardDescription>
-                  </CardContent>
-                </Card>
+            <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
+              {(
+                isFrench
+                  ? ["À partir de 60 $", "Aucun abonnement requis", "Confirmation après le service"]
+                  : ["Starting at $60", "No recurring plan required", "Gate confirmation after service"]
+              ).map((item) => (
+                <div
+                  key={item}
+                  className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
+                >
+                  {item}
+                </div>
               ))}
-            </div>
-          </div>
-        </section>
-
-        <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-5xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.testimonials.title}</h2>
-              <p className="text-lg text-gray-600">
-                {isFrench
-                  ? "Avis de proprietaires qui voulaient remettre leur cour en ordre rapidement apres l'hiver."
-                  : "Reviews from homeowners who wanted the yard reset quickly after winter."}
-              </p>
-            </div>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    {isFrench ? "Avis 5 etoiles" : "5-star review"}
-                  </div>
-                  <CardTitle className="text-xl">Zander M.</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base leading-8 text-gray-600">
-                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN 💪💯
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
-                  </div>
-                  <CardTitle className="text-xl">Julie B.</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base leading-8 text-gray-600">
-                    Excellent service provided by Michael Atallah. He shows up on time, professional and courteous. Very thorough inspection of the back lawn and pickup of our dog&apos;s poop.
-                  </CardDescription>
-                </CardContent>
-              </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    {isFrench ? "Avis 5 etoiles" : "5-star review"}
-                  </div>
-                  <CardTitle className="text-xl">Daniella H.</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-base leading-8 text-gray-600">
-                    Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
-                  </CardDescription>
-                </CardContent>
-              </Card>
             </div>
           </div>
         </section>
@@ -694,7 +621,7 @@ export default function SpringCleanupLocationPage({
                         className="w-full accent-brand-green"
                         required
                       />
-                      <div className="flex flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
                         <span className="font-semibold text-brand-green">
                           {yardSqft >= 10000
                             ? isFrench ? "10 000+ pi²" : "10,000+ sq ft"
@@ -837,6 +764,86 @@ export default function SpringCleanupLocationPage({
                   </form>
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="how-it-works" className="scroll-mt-12 bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-10 text-center scroll-animation">
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.howItWorks.title}</h2>
+              <p className="text-lg text-gray-600">{copy.howItWorks.subtitle}</p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {copy.howItWorks.steps.map((step) => (
+                <Card key={step.title} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <CardHeader>
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                      <step.icon className="h-6 w-6 text-brand-green" />
+                    </div>
+                    <CardTitle className="text-xl">{step.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <CardDescription className="text-base leading-7 text-gray-600">{step.desc}</CardDescription>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl">
+            <div className="mb-10 text-center scroll-animation">
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>
+                {isFrench ? "Pourquoi les propriétaires réservent maintenant" : "Why homeowners book now"}
+              </h2>
+              <p className="text-lg text-gray-600">
+                {isFrench
+                  ? "Quelques preuves courtes de propriétaires qui voulaient remettre leur cour en ordre rapidement après l'hiver."
+                  : "Short proof points from homeowners who wanted the yard reset quickly after winter."}
+              </p>
+            </div>
+            <div className="grid gap-6 lg:grid-cols-3">
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Avis 5 etoiles" : "5-star review"}
+                  </div>
+                  <CardTitle className="text-xl">Zander M.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Wanted to share my experience with Micheal from Ca-Ca Canin, very professional, he came over to asses our lawn , which let me tell you was a doozy and a half to say the least , old tenants left garbage in thw yard the grass was almost 4 feet tall with random shrubs and over growth literally everywhere , yoy couldn&apos;t see the ground, they hadn&apos;t cleaned the yard in years there dog made basically a layer of poop , Micheal came out and meticulously lifted everything and got most of turd mines . For 80$ I couldn&apos;t have spent my money more wisely , I recommend Micheal to everyone who owns a dog and needs some help with their yard . KEEP IT UP MAN 💪💯
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
+                  </div>
+                  <CardTitle className="text-xl">Julie B.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Excellent service provided by Michael Atallah. He shows up on time, professional and courteous. Very thorough inspection of the back lawn and pickup of our dog&apos;s poop. He also disposes the matter in an environmentally friendly way. I would definitely and highly recommend his services.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Avis 5 etoiles" : "5-star review"}
+                  </div>
+                  <CardTitle className="text-xl">Daniella H.</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
+                  </CardDescription>
+                </CardContent>
+              </Card>
             </div>
           </div>
         </section>

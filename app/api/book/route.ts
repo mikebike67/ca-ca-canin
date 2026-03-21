@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
+import { calculateBookingPrice, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency } from "@/lib/booking";
 import { isLavalPostalCode, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
 
 declare global {
@@ -30,26 +31,9 @@ type BookingPayload = {
   locale?: "en" | "fr";
 };
 
-const basePricing: Record<"weekly" | "biweekly" | "monthly" | "onetime", Record<"1" | "2" | "3plus", number>> = {
-  weekly: { "1": 20, "2": 25, "3plus": 30 },
-  biweekly: { "1": 30, "2": 35, "3plus": 40 },
-  monthly: { "1": 50, "2": 55, "3plus": 60 },
-  onetime: { "1": 60, "2": 60, "3plus": 60 },
-};
-
-const yardModifiers = {
-  small: 1,
-  medium: 1.12,
-  large: 1.24,
-  xlarge: 1.36,
-} as const;
-
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
 const RATE_LIMIT_MAX = 5;
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
-
-const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, "");
-const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phonePattern = /^[0-9+\-()\s]{10,20}$/;
 
@@ -94,32 +78,6 @@ function checkRateLimit(key: string) {
   current.count += 1;
   rateLimitStore.set(key, current);
   return true;
-}
-
-function calculateServerPrice(
-  frequency: "weekly" | "biweekly" | "monthly" | "onetime",
-  dogs: "1" | "2" | "3plus",
-  yardSqft: number
-) {
-  const yardCategory =
-    yardSqft <= 3000 ? "small" :
-    yardSqft <= 6000 ? "medium" :
-    yardSqft < 10000 ? "large" :
-    "xlarge";
-  const base = basePricing[frequency][dogs];
-
-  if (frequency === "onetime") {
-    return base;
-  }
-
-  const modifier = yardModifiers[yardCategory];
-  const extraSqft = Math.max(0, yardSqft - 3000);
-  const increments = Math.floor(extraSqft / 100);
-  const midIncrements = Math.min(increments, 20);
-  const largeIncrements = Math.max(0, increments - 20);
-  const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
-
-  return Math.round(base * modifier * multiplier * 100) / 100;
 }
 
 async function getMailConfig() {
@@ -223,9 +181,9 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const serverPrice = calculateServerPrice(
-      frequency as "weekly" | "biweekly" | "monthly" | "onetime",
-      dogs as "1" | "2" | "3plus",
+    const serverPrice = calculateBookingPrice(
+      frequency as ServiceFrequency,
+      dogs as DogCount,
       yardSqft
     );
 

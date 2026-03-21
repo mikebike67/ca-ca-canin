@@ -3,41 +3,28 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
 import Link from "next/link"
 import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   weight: ['400', '500', '600', '700', '800', '900'],
   style: ['normal'],
 })
 
-const basePricing: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', Record<'1' | '2' | '3plus', number>> = {
-  weekly: { '1': 20, '2': 25, '3plus': 30 },
-  biweekly: { '1': 30, '2': 35, '3plus': 40 },
-  monthly: { '1': 50, '2': 55, '3plus': 60 },
-  onetime: { '1': 60, '2': 60, '3plus': 60 },
-};
-
-const yardModifiers = {
-  small: 1,
-  medium: 1.12,
-  large: 1.24,
-  xlarge: 1.36,
-};
-
-const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string; detail: string }[] = [
+const yardOptions: { key: YardCategory; label: string; detail: string }[] = [
   { key: 'small', label: 'Standard / Small', detail: '~1,000-3,000 sq ft' },
   { key: 'medium', label: 'Medium', detail: '~3,000-6,000 sq ft' },
   { key: 'large', label: 'Large', detail: '~6,000-10,000 sq ft' },
   { key: 'xlarge', label: 'X-Large', detail: '10,000+ sq ft' },
 ];
 
-const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
+const frequencyNotes: Record<ServiceFrequency, string> = {
   weekly: "Best for keeping your yard clean week after week.",
   biweekly: "A practical balance of price and upkeep.",
   monthly: "A simple option for lighter maintenance.",
@@ -45,16 +32,14 @@ const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', stri
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
-const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
 const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
 
 export default function Page() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('weekly');
-  const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
+  const [frequency, setFrequency] = useState<ServiceFrequency>('weekly');
+  const [dogs, setDogs] = useState<DogCount>('1');
   const [yardSqft, setYardSqft] = useState(3000);
   const [displayPrice, setDisplayPrice] = useState(0);
   const [postalCode, setPostalCode] = useState('');
@@ -68,39 +53,15 @@ export default function Page() {
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
 
-  const yardCategory = useMemo<'small' | 'medium' | 'large' | 'xlarge'>(() => {
-    if (yardSqft <= 3000) return 'small';
-    if (yardSqft <= 6000) return 'medium';
-    if (yardSqft < 10000) return 'large';
-    return 'xlarge';
-  }, [yardSqft]);
+  const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
   const pricingDetails = useMemo(() => {
-    const base = basePricing[frequency][dogs];
-    const modifier = yardModifiers[yardCategory];
-    const baseWithMod = base * modifier;
-
-    if (frequency === 'onetime') {
-      return { perVisit: base, note: frequencyNotes[frequency] };
-    }
-
-    const extraSqft = Math.max(0, yardSqft - 3000);
-    const increments = Math.floor(extraSqft / 100);
-    const midIncrements = Math.min(increments, 20);
-    const largeIncrements = Math.max(0, increments - 20);
-    const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
-
-    const perVisit = Math.round(baseWithMod * multiplier * 100) / 100;
+    const perVisit = calculateBookingPrice(frequency, dogs, yardSqft);
     return { perVisit, note: frequencyNotes[frequency] };
-  }, [dogs, frequency, yardCategory, yardSqft]);
+  }, [dogs, frequency, yardSqft]);
 
   const monthlyTotal = useMemo(() => {
-    const visitsPerMonth =
-      frequency === 'weekly' ? 4 :
-      frequency === 'biweekly' ? 2 :
-      frequency === 'monthly' ? 1 :
-      0;
-
+    const visitsPerMonth = getMonthlyVisits(frequency);
     return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
   }, [frequency, pricingDetails.perVisit]);
 
@@ -122,10 +83,6 @@ export default function Page() {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [pricingDetails.perVisit]);
-
-  const handleCtaClick = (label: string) => {
-    console.log(`[cta] ${label}`);
-  };
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -325,14 +282,13 @@ export default function Page() {
                 className="bg-brand-green hover:bg-brand-green-dark text-white"
                 asChild
               >
-                <Link
-                  href="#quote-form"
-                  data-cta="spring-quote"
-                  onClick={() => handleCtaClick("nav-quote")}
-                >
-                  Get a Quote
-                </Link>
-              </Button>
+                  <Link
+                      href="#quote-form"
+                      data-cta="spring-quote"
+                    >
+                      Check Availability
+                    </Link>
+                  </Button>
             </div>
 
             {/* RESPONSIVE: enlarge the mobile menu trigger to a comfortable 44px touch target. */}
@@ -360,9 +316,8 @@ export default function Page() {
                 <Link
                   href="#quote-form"
                   data-cta="spring-quote"
-                  onClick={() => handleCtaClick("mobile-quote")}
                 >
-                  Get a Quote
+                  Check Availability
                 </Link>
               </Button>
             </div>
@@ -453,10 +408,10 @@ export default function Page() {
                   <span className="text-brand-green">dog poop cleanup</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Dog waste removal in Laval with flexible scheduling, clear pricing, and a fast quote.
+                  Stop stepping around dog waste every time you use the yard. Get a fast quote, clear pricing, and a simple local service that gets the mess off your weekend list.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
-                <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
+                <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center lg:justify-start">
                   <Button
                     size="lg"
                     className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
@@ -465,14 +420,26 @@ export default function Page() {
                     <Link
                       href="#quote-form"
                       data-cta="spring-quote"
-                      onClick={() => handleCtaClick("hero-quote")}
                     >
-                      Get a Quote
+                      Check Availability in Laval
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
+                    asChild
+                  >
+                    <Link href="/spring-cleanup">
+                      Book Spring Cleanup
                     </Link>
                   </Button>
                 </div>
                 <p className="mt-3 text-sm font-medium text-gray-600 lg:max-w-md">
-                  Free quote in under a minute.
+                  No contract. No back-and-forth. Just a quick quote and a clean yard.
+                </p>
+                <p className="mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
+                  Spring spots are limited. Most requests are confirmed within 1 business day.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
@@ -488,6 +455,20 @@ export default function Page() {
                     Arrival text
                   </div>
                 </div>
+                <div className="mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
+                  {[
+                    "Local Laval service",
+                    "Usually replies within 1 business day",
+                    "Gate photo after each visit",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 text-sm font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
+                    >
+                      {item}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -499,7 +480,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                What You Can Expect
+                What You Get Instead of Another Messy Weekend
               </h2>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -509,11 +490,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Reliable Dog Poop Cleanup</CardTitle>
+                  <CardTitle className="text-xl">Stop Stepping In It</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    We show up, clean the yard thoroughly, and make dog waste removal simple from quote to service day.
+                    You stop checking the yard before every dog walk, and we take the cleanup off your list.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -523,11 +504,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Simple Pooper Scooper Service</CardTitle>
+                  <CardTitle className="text-xl">Simple, Fast, Local Service</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Clear communication, flexible scheduling, and no long-term contract. It is easy to start and easy to manage.
+                    Ask for a quote, get a fast answer, and start service without a long-term commitment.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -537,11 +518,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Cleaner Yard for Dogs and Families</CardTitle>
+                  <CardTitle className="text-xl">A Yard You Actually Want to Use</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    We use careful cleanup practices so the yard feels cleaner, safer, and easier to enjoy again.
+                    Your lawn stops smelling like a chore, and your backyard feels usable again.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -556,7 +537,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-1">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  About Ca-Ca Canin
+                  Why Laval Homeowners Call Us
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -568,10 +549,10 @@ export default function Page() {
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin is a local Laval dog waste removal service built for dog owners who want a clean yard without adding another chore to the week.
+                  Ca-Ca Canin is for Laval homeowners who are tired of the smell, tired of the mess, and tired of spending their own time cleaning up after the dog.
                 </p>
                 <p className="text-lg text-gray-700">
-                  We keep scheduling simple, pricing clear, and every pooper scooper visit focused on leaving the property cleaner than we found it.
+                  You get a local team, clear pricing, and a simple way to keep the yard ready for kids, guests, and everyday use.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
@@ -595,7 +576,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Residential Dog Waste Removal
+                  Keep Your Yard Clean Without Doing It Yourself
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -609,15 +590,15 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Choose weekly, bi-weekly, monthly, or one-time dog poop cleanup.</span>
+                    <span>Choose the schedule that keeps the mess from piling up.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Get detail-focused dog waste removal in the areas your dog uses most.</span>
+                    <span>We clean the spots your dog uses most, so you do not have to think about it.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Pick the pooper scooper plan that fits your yard and schedule.</span>
+                    <span>Book one-time or recurring cleanup with a local Laval service that actually shows up.</span>
                   </li>
                 </ul>
               </div>
@@ -640,10 +621,10 @@ export default function Page() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Dog Waste Removal Pricing Calculator
+                Check Availability and See Your Price
               </h2>
               <p className="text-lg text-gray-600">
-                Estimate your dog poop cleanup price per visit and per month based on service frequency, number of dogs, and yard size.
+                Pick your yard size, dog count, and schedule to get a real estimate and request service right away.
               </p>
             </div>
 
@@ -736,7 +717,7 @@ export default function Page() {
                         className="w-full accent-brand-green"
                         required
                       />
-                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
                         <span className="font-semibold text-brand-green">
                           {yardSqft >= 10000 ? '10,000+ sq ft' : `${yardSqft.toLocaleString()} sq ft`}
                         </span>
@@ -751,16 +732,16 @@ export default function Page() {
                 </div>
 
                 <div className="order-1 min-w-0 md:order-2 md:col-span-2">
-                  <div className="mx-auto h-[16.5rem] min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:h-auto md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <div className="mx-auto min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
                     </p>
-                    <p className="mb-2 h-[3rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:h-[2.75rem] sm:text-3xl">
+                    <p className="mb-2 text-2xl font-extrabold tabular-nums text-gray-900 sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / first 30 mins`
                         : `${formatMoney(displayPrice)}/visit`}
                     </p>
-                    <div className="mt-3 h-[6.75rem] min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:h-auto md:text-left">
+                    <div className="mt-3 min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:text-left">
                       {frequency !== 'onetime' ? (
                         <div className="space-y-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
@@ -782,7 +763,7 @@ export default function Page() {
                         </div>
                       )}
                     </div>
-                    <p className="mt-3 h-[3.75rem] text-sm font-semibold text-brand-green sm:h-[2.5rem] sm:text-base">
+                    <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -790,7 +771,7 @@ export default function Page() {
 
                 <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Pricing is based on yard size, number of dogs, and visit frequency. Request a free quote for final dog waste removal pricing.
+                    This is the fastest way to see if the service fits your budget and lock in your next step. Final pricing is confirmed after we review your request.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -953,7 +934,7 @@ export default function Page() {
                           className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
                           disabled={bookingStatus === 'loading'}
                         >
-                          {bookingStatus === 'loading' ? 'Sending...' : 'Request My Quote'}
+                          {bookingStatus === 'loading' ? 'Sending...' : 'Get My Quote'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -976,7 +957,7 @@ export default function Page() {
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">Your quote request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          We received your details and will follow up shortly. No need to send the form again.
+                          You are one step closer to a clean yard. We will follow up shortly, usually within 1 business day.
                         </p>
                         <p className="mt-2 text-sm text-gray-600">
                           Didn&apos;t receive it? Check your junk folder.
@@ -1016,15 +997,15 @@ export default function Page() {
 
             <Link
               href="/spring-cleanup#quote-form"
-              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
+              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Need a one-time reset?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Need a one-time spring dog poop cleanup?</p>
-                <p className="mt-1 text-sm text-gray-600">Use the spring cleanup calculator for time-based pricing on one-time yard cleanup in Laval.</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Spring cleanup</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">If winter left your yard a mess, book the reset now.</p>
+                <p className="mt-1 text-sm text-gray-600">Starting at $60. No recurring plan required. Most spring requests are confirmed within 1 business day.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Go to spring cleanup
+                Book spring cleanup
               </span>
             </Link>
           </div>
@@ -1035,19 +1016,19 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Why Homeowners Choose Ca-Ca Canin
+                Why Laval Homeowners Stick With Us
               </h2>
               <p className="text-xl text-gray-600">
-                Built for homeowners who want dog waste removal in Laval that is simple, consistent, and easy to book.
+                Built for homeowners who want the smell gone, the mess gone, and one less thing to worry about.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               {[
-                { icon: Heart, title: "Pet-Conscious Visits", desc: "We use sanitary cleanup practices designed for homes with dogs, kids, and everyday backyard use." },
-                { icon: Smartphone, title: "Easy Scheduling", desc: "Request service, make updates, and ask questions directly by phone or email." },
-                { icon: FileText, title: "No Contracts", desc: "Start, pause, or stop service without being locked into a long-term contract." },
-                { icon: Camera, title: "Gate Photos", desc: "Get a photo confirmation after each visit so you know the gate is closed." },
-                { icon: Bell, title: "Arrival Updates", desc: "Stay informed with service updates before and after your scheduled visit." },
+                { icon: Heart, title: "Built for Busy Families", desc: "We clean carefully so your yard feels ready for kids, pets, and guests again." },
+                { icon: Smartphone, title: "Fast, Local Communication", desc: "Ask for a quote, book service, and get answers without waiting around." },
+                { icon: FileText, title: "No Long-Term Lock-In", desc: "Start when you need it and stop when you do not. Simple." },
+                { icon: Camera, title: "Gate Photos", desc: "See the proof after each visit so you know the job was done." },
+                { icon: Bell, title: "Arrival Updates", desc: "Know when we are coming so you are not left wondering." },
               ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
@@ -1075,7 +1056,7 @@ export default function Page() {
                 Service Area
               </h2>
               <p className="text-xl text-gray-600">
-                Dog waste removal service across Laval, Quebec.
+                Serving Laval neighborhoods that actually need this done.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
@@ -1088,10 +1069,10 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Residential dog waste removal
+                    Same local service. Cleaner yard. Less hassle.
                   </p>
                   <p className="text-gray-600">
-                    Serving Laval homeowners with recurring and one-time cleanup service
+                    Recurring and one-time cleanup for Laval homeowners who want the job handled properly.
                   </p>
                 </CardContent>
               </Card>
@@ -1104,10 +1085,10 @@ export default function Page() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Dog Waste Removal FAQs
+                Questions Homeowners Ask Before They Book
               </h2>
               <p className="text-xl text-gray-600">
-                Answers about dog poop cleanup, pricing, and recurring pooper scooper service in Laval.
+                Straight answers about pricing, scheduling, and what happens when you book.
               </p>
             </div>
             <div className="space-y-4">

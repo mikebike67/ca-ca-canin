@@ -3,41 +3,28 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
 import Link from "next/link"
 import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
 
-const montserrat = Montserrat({ 
+const montserrat = Montserrat({
   subsets: ['latin'],
   display: 'swap',
   weight: ['400', '500', '600', '700', '800', '900'],
   style: ['normal'],
 })
 
-const basePricing: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', Record<'1' | '2' | '3plus', number>> = {
-  weekly: { '1': 20, '2': 25, '3plus': 30 },
-  biweekly: { '1': 30, '2': 35, '3plus': 40 },
-  monthly: { '1': 50, '2': 55, '3plus': 60 },
-  onetime: { '1': 60, '2': 60, '3plus': 60 },
-};
-
-const yardModifiers = {
-  small: 1,
-  medium: 1.12,
-  large: 1.24,
-  xlarge: 1.36,
-};
-
-const yardOptions: { key: 'small' | 'medium' | 'large' | 'xlarge'; label: string; detail: string }[] = [
+const yardOptions: { key: YardCategory; label: string; detail: string }[] = [
   { key: 'small', label: 'Standard / Petit', detail: '~1 000-3 000 pi²' },
   { key: 'medium', label: 'Moyen', detail: '~3 000-6 000 pi²' },
   { key: 'large', label: 'Grand', detail: '~6 000-10 000 pi²' },
   { key: 'xlarge', label: 'Très grand', detail: '10 000+ pi²' },
 ];
 
-const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', string> = {
+const frequencyNotes: Record<ServiceFrequency, string> = {
   weekly: "Le meilleur choix pour garder la cour propre chaque semaine.",
   biweekly: "Un bon équilibre entre prix et entretien.",
   monthly: "Une option simple pour un entretien léger.",
@@ -45,16 +32,14 @@ const frequencyNotes: Record<'weekly' | 'biweekly' | 'monthly' | 'onetime', stri
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
-const normalizePostalCode = (value: string) => value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-const isCanadianPostalCode = (value: string) => /^[A-Z]\d[A-Z]\d[A-Z]\d$/.test(normalizePostalCode(value));
 const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
 
 export default function Page() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [frequency, setFrequency] = useState<'weekly' | 'biweekly' | 'monthly' | 'onetime'>('weekly');
-  const [dogs, setDogs] = useState<'1' | '2' | '3plus'>('1');
+  const [frequency, setFrequency] = useState<ServiceFrequency>('weekly');
+  const [dogs, setDogs] = useState<DogCount>('1');
   const [yardSqft, setYardSqft] = useState(3000);
   const [displayPrice, setDisplayPrice] = useState(0);
   const [postalCode, setPostalCode] = useState('');
@@ -68,39 +53,15 @@ export default function Page() {
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
 
-  const yardCategory = useMemo<'small' | 'medium' | 'large' | 'xlarge'>(() => {
-    if (yardSqft <= 3000) return 'small';
-    if (yardSqft <= 6000) return 'medium';
-    if (yardSqft < 10000) return 'large';
-    return 'xlarge';
-  }, [yardSqft]);
+  const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
   const pricingDetails = useMemo(() => {
-    const base = basePricing[frequency][dogs];
-    const modifier = yardModifiers[yardCategory];
-    const baseWithMod = base * modifier;
-
-    if (frequency === 'onetime') {
-      return { perVisit: base, note: frequencyNotes[frequency] };
-    }
-
-    const extraSqft = Math.max(0, yardSqft - 3000);
-    const increments = Math.floor(extraSqft / 100);
-    const midIncrements = Math.min(increments, 20);
-    const largeIncrements = Math.max(0, increments - 20);
-    const multiplier = Math.pow(1.004, midIncrements) * Math.pow(1.0025, largeIncrements);
-
-    const perVisit = Math.round(baseWithMod * multiplier * 100) / 100;
+    const perVisit = calculateBookingPrice(frequency, dogs, yardSqft);
     return { perVisit, note: frequencyNotes[frequency] };
-  }, [dogs, frequency, yardCategory, yardSqft]);
+  }, [dogs, frequency, yardSqft]);
 
   const monthlyTotal = useMemo(() => {
-    const visitsPerMonth =
-      frequency === 'weekly' ? 4 :
-      frequency === 'biweekly' ? 2 :
-      frequency === 'monthly' ? 1 :
-      0;
-
+    const visitsPerMonth = getMonthlyVisits(frequency);
     return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
   }, [frequency, pricingDetails.perVisit]);
 
@@ -122,10 +83,6 @@ export default function Page() {
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [pricingDetails.perVisit]);
-
-  const handleCtaClick = (label: string) => {
-    console.log(`[cta] ${label}`);
-  };
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -324,14 +281,13 @@ export default function Page() {
                 className="bg-brand-green hover:bg-brand-green-dark text-white"
                 asChild
               >
-                <Link
-                  href="#quote-form"
-                  data-cta="spring-quote"
-                  onClick={() => handleCtaClick("nav-quote")}
-                >
-                  Obtenir un devis
-                </Link>
-              </Button>
+                    <Link
+                      href="#quote-form"
+                      data-cta="spring-quote"
+                    >
+                      Vérifier ma disponibilité
+                    </Link>
+                  </Button>
             </div>
 
             {/* RESPONSIVE: enlarge the mobile menu trigger to a comfortable 44px touch target. */}
@@ -359,9 +315,8 @@ export default function Page() {
                 <Link
                   href="#quote-form"
                   data-cta="spring-quote"
-                  onClick={() => handleCtaClick("mobile-quote")}
                 >
-                  Obtenir un devis
+                  Vérifier ma disponibilité
                 </Link>
               </Button>
             </div>
@@ -452,37 +407,66 @@ export default function Page() {
                   <span className="text-brand-green">canines à Laval</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Un service de ramassage de déjections canines à Laval avec tarifs clairs, horaires flexibles et devis rapide.
+                  Arrêtez de contourner les dégâts chaque fois que vous sortez dans la cour. Obtenez un devis rapide, des tarifs clairs et un service local simple qui enlève cette corvée de votre semaine.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
-                <div className="flex flex-col items-stretch justify-center gap-4 sm:flex-row sm:items-center lg:justify-start">
+                <div className="flex flex-col items-stretch justify-center gap-4 lg:items-start">
                   <Button
                     size="lg"
-                    className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
+                    className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
                     asChild
                   >
                     <Link
                       href="#quote-form"
                       data-cta="spring-quote"
-                      onClick={() => handleCtaClick("hero-quote")}
                     >
-                      Obtenir un devis
+                      Vérifier ma disponibilité à Laval
+                    </Link>
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
+                    asChild
+                  >
+                    <Link href="/fr/nettoyage-printemps" className="block w-full text-center sm:w-auto">
+                      Nettoyage de printemps
                     </Link>
                   </Button>
                 </div>
+                <p className="mt-3 text-sm font-medium text-gray-600 lg:max-w-md">
+                  Aucun contrat. Aucun va-et-vient inutile. Juste un devis rapide et une cour propre.
+                </p>
+                <p className="mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
+                  Les places de printemps sont limitées. La plupart des demandes sont confirmées en 1 jour ouvrable.
+                </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <CheckCircle2 className="h-4 w-4 text-brand-green" />
-                    Aucun contrat
+                  Aucun contrat
                   </div>
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <Camera className="h-4 w-4 text-brand-green" />
-                    Photo du portail après chaque visite
+                  Photo du portail après chaque visite
                   </div>
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <Bell className="h-4 w-4 text-brand-green" />
-                    Textos avant l&apos;arrivée
+                  Textos avant l’arrivée
                   </div>
+                </div>
+                <div className="mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
+                  {[
+                    "Service local à Laval",
+                    "Réponse habituelle en 1 jour ouvrable",
+                    "Photo du portail après la visite",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 text-sm font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
+                    >
+                      {item}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -495,7 +479,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Ce que vous obtenez
+                Ce que vous évitez avec un service régulier
               </h2>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
@@ -505,11 +489,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Ramassage fiable</CardTitle>
+                  <CardTitle className="text-xl">Finis les dégâts dans la cour</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Nous passons, nous nettoyons soigneusement, puis nous laissons une cour plus propre sans compliquer votre semaine.
+                    Vous n’avez plus à vérifier la cour avant chaque sortie du chien ni à penser au nettoyage en rentrant.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -519,11 +503,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Service simple de ramassage</CardTitle>
+                  <CardTitle className="text-xl">Service simple et rapide</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Communication claire, planification simple et aucun contrat à long terme. Le service est facile a demarrer et facile a ajuster.
+                    Demandez un devis, recevez une réponse rapide et commencez sans contrat à long terme.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -533,11 +517,11 @@ export default function Page() {
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
-                  <CardTitle className="text-xl">Cour plus propre pour toute la famille</CardTitle>
+                  <CardTitle className="text-xl">Une cour qu’on a envie d’utiliser</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="text-base leading-7 text-gray-600">
-                    Nous misons sur un nettoyage soigne pour rendre votre cour plus agreable pour votre famille et votre chien.
+                    Votre cour sent meilleur, paraît plus propre et redevient un espace agréable pour la famille.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -552,7 +536,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-1">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  À propos de Ca-Ca Canin
+                  Pourquoi les propriétaires de Laval nous appellent
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -564,13 +548,13 @@ export default function Page() {
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin est une entreprise locale de ramassage de dejections canines a Laval. Nous avons cree ce service pour aider les proprietaires de chiens occupes a garder leur cour propre sans ajouter une corvee de plus.
+                  Ca-Ca Canin est pour les propriétaires de Laval qui en ont assez de l’odeur, du désordre et du temps perdu à tout nettoyer eux-mêmes.
                 </p>
                 <p className="text-lg text-gray-700 mb-4">
-                  Notre service residentiel est concu pour les proprietaires qui veulent un nettoyage fiable, des tarifs clairs et une planification souple. Que vous ayez besoin d'un passage chaque semaine ou d'une aide occasionnelle, nous visons des resultats constants et une communication directe.
+                  Vous obtenez une équipe locale, des tarifs clairs et un service simple qui garde la cour prête pour les enfants, les invités et la vraie vie.
                 </p>
                 <p className="text-lg text-gray-700">
-                  L'objectif est simple : laisser chaque propriete plus propre et rendre le service facile a faire confiance.
+                  L’objectif est simple : vous faire gagner du temps et enlever une corvée de plus de votre semaine.
                 </p>
               </div>
               <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
@@ -594,7 +578,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Service residentiel de ramassage de dejections canines
+                  Gardez votre cour propre sans le faire vous-même
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -608,15 +592,15 @@ export default function Page() {
                 <ul className="space-y-4 text-lg text-gray-700 mb-6">
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Choisissez un passage hebdomadaire, aux deux semaines, mensuel ou ponctuel.</span>
+                    <span>Choisissez la fréquence qui empêche la saleté de s’accumuler.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Obtenez un nettoyage soigne dans les zones que votre chien utilise le plus.</span>
+                    <span>Nous nettoyons les zones que votre chien utilise le plus, sans que vous ayez à y penser.</span>
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Reservez un nettoyage ponctuel ou un service recurrent selon votre cour et votre horaire.</span>
+                    <span>Réservez un service ponctuel ou récurrent avec une entreprise locale qui se présente vraiment.</span>
                   </li>
                 </ul>
               </div>
@@ -639,10 +623,10 @@ export default function Page() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-10">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Calculateur de prix du ramassage de dejections canines
+                Vérifiez votre disponibilité et voyez votre prix
               </h2>
               <p className="text-lg text-gray-600">
-                Estimez votre prix par visite et par mois selon la frequence, le nombre de chiens et la taille de votre cour.
+                Choisissez la taille de votre cour, le nombre de chiens et la fréquence pour obtenir une estimation réelle et demander le service tout de suite.
               </p>
             </div>
 
@@ -723,7 +707,7 @@ export default function Page() {
                         className="w-full accent-brand-green"
                         required
                       />
-                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
                         <span className="font-semibold text-brand-green">
                           {yardSqft >= 10000 ? '10 000+ pi²' : `${yardSqft.toLocaleString()} pi²`}
                         </span>
@@ -738,16 +722,16 @@ export default function Page() {
                 </div>
 
                 <div className="order-1 min-w-0 md:order-2 md:col-span-2">
-                  <div className="mx-auto h-[16.5rem] min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:h-auto md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                  <div className="mx-auto min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                       {frequency === 'onetime' ? 'Visite estimée' : 'Estimation par visite'}
                     </p>
-                    <p className="mb-2 h-[3rem] text-2xl font-extrabold tabular-nums text-gray-900 sm:h-[2.75rem] sm:text-3xl">
+                    <p className="mb-2 text-2xl font-extrabold tabular-nums text-gray-900 sm:text-3xl">
                       {frequency === 'onetime'
                         ? `${formatMoney(displayPrice)} / premières 30 min`
                         : `${formatMoney(displayPrice)}/visite`}
                     </p>
-                    <div className="mt-3 h-[6.75rem] min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:h-auto md:text-left">
+                    <div className="mt-3 min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:text-left">
                       {frequency !== 'onetime' ? (
                         <div className="space-y-1">
                           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
@@ -769,7 +753,7 @@ export default function Page() {
                         </div>
                       )}
                     </div>
-                    <p className="mt-3 h-[3.75rem] text-sm font-semibold text-brand-green sm:h-[2.5rem] sm:text-base">
+                    <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
                       {pricingDetails.note}
                     </p>
                   </div>
@@ -777,7 +761,7 @@ export default function Page() {
 
                 <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Le prix depend de la taille de la cour, du nombre de chiens et de la frequence. Demandez un devis gratuit pour le prix final.
+                    C’est la façon la plus rapide de voir si le service entre dans votre budget et de passer à l’étape suivante. Le prix final est confirmé après vérification.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
@@ -825,7 +809,7 @@ export default function Page() {
                             className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-green focus:ring-brand-green"
                           />
                           <span>
-                            J&apos;accepte les{" "}
+                            J’accepte les{" "}
                             <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
                               conditions
                             </Link>{" "}
@@ -833,7 +817,7 @@ export default function Page() {
                             <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
                               politique de confidentialité
                             </Link>{" "}
-                            et j&apos;autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
+                            et j’autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
                           </span>
                         </label>
                         {consentError && (
@@ -851,7 +835,7 @@ export default function Page() {
                       </Button>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Nous desservons ce code postal de Laval. Passez à l&apos;étape 2.
+                          Nous desservons ce code postal de Laval. Passez à l’étape 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
@@ -940,7 +924,7 @@ export default function Page() {
                           className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
                           disabled={bookingStatus === 'loading'}
                         >
-                          {bookingStatus === 'loading' ? 'Envoi...' : 'Demander mon devis'}
+                          {bookingStatus === 'loading' ? 'Envoi...' : 'Obtenir mon devis'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -963,10 +947,10 @@ export default function Page() {
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Merci</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de devis est envoyée.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          Nous avons bien reçu vos informations et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
+                          Vous êtes un pas plus près d’une cour propre. Nous vous contacterons sous peu, généralement dans un délai d’un jour ouvrable.
                         </p>
                         <p className="mt-2 text-sm text-gray-600">
-                          Vous ne l&apos;avez pas reçu? Vérifiez vos courriels indésirables.
+                          Vous ne l’avez pas reçu? Vérifiez vos courriels indésirables.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -1003,15 +987,15 @@ export default function Page() {
 
             <Link
               href="/fr/nettoyage-printemps#quote-form"
-              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] sm:flex-row sm:items-center sm:justify-between"
+              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Besoin d&apos;un grand nettoyage?</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Besoin d&apos;un nettoyage printanier ponctuel?</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Nettoyage de printemps</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Si l’hiver a laissé votre cour en désordre, réservez le grand nettoyage maintenant.</p>
                 <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour une tarification selon le temps et un devis rapide à Laval.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Aller au nettoyage de printemps
+                Obtenir un devis de printemps
               </span>
             </Link>
           </div>
@@ -1022,19 +1006,19 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Pourquoi les propriétaires choisissent Ca-Ca Canin
+                Pourquoi les propriétaires de Laval restent avec nous
               </h2>
               <p className="text-xl text-gray-600">
-                Un service pensé pour les propriétaires qui veulent un ramassage simple, régulier et facile à réserver à Laval.
+                Pensé pour les propriétaires qui veulent enlever l’odeur, le désordre et une corvée de plus.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
               {[
-                { icon: Heart, title: "Visites pensées pour les chiens", desc: "Nous utilisons des pratiques de nettoyage sanitaires adaptées aux cours familiales avec chiens." },
-                { icon: Smartphone, title: "Planification facile", desc: "Demandez le service, faites des changements et posez vos questions par téléphone ou par courriel." },
-                { icon: FileText, title: "Aucun contrat", desc: "Commencez, mettez en pause ou arrêtez le service sans engagement à long terme." },
-                { icon: Camera, title: "Photos du portail", desc: "Recevez une photo de confirmation après la visite pour savoir que le portail est bien fermé." },
-                { icon: Bell, title: "Mises à jour de visite", desc: "Restez informé avec des mises à jour avant et après votre passage prévu." },
+                { icon: Heart, title: "Pensé pour les familles occupées", desc: "Nous nettoyons avec soin pour que la cour redevienne prête pour les enfants, les chiens et les invités." },
+                { icon: Smartphone, title: "Réponse rapide et locale", desc: "Demandez un devis, réservez le service et obtenez des réponses sans attendre inutilement." },
+                { icon: FileText, title: "Sans engagement", desc: "Commencez quand vous en avez besoin et arrêtez quand ce n’est plus utile." },
+                { icon: Camera, title: "Photos du portail", desc: "Vous voyez la preuve après chaque visite pour savoir que le travail a été fait." },
+                { icon: Bell, title: "Mises à jour de visite", desc: "Vous savez quand nous arrivons, sans vous demander où on en est." },
               ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
@@ -1062,7 +1046,7 @@ export default function Page() {
                 Zones desservies
               </h2>
               <p className="text-xl text-gray-600">
-                Service de ramassage de déjections canines partout à Laval, Québec.
+                Service local pour les quartiers de Laval qui ont vraiment besoin que ce soit fait.
               </p>
             </div>
             <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
@@ -1075,10 +1059,10 @@ export default function Page() {
                 </CardHeader>
                 <CardContent className="text-center">
                   <p className="text-lg text-gray-700 mb-4">
-                    Ramassage résidentiel de déjections canines
+                    Même service local. Moins de désordre. Moins de tracas.
                   </p>
                   <p className="text-gray-600">
-                    Service récurrent et ponctuel pour les propriétaires de Laval
+                    Service ponctuel et récurrent pour les propriétaires de Laval qui veulent que ce soit bien fait.
                   </p>
                 </CardContent>
               </Card>
@@ -1091,20 +1075,20 @@ export default function Page() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                FAQ sur le ramassage de déjections canines
+                Questions que les propriétaires posent avant de réserver
               </h2>
               <p className="text-xl text-gray-600">
-                Reponses aux questions sur le ramassage de dejections canines, les prix et le service recurrent a Laval.
+                Réponses claires sur les prix, la planification et ce qui se passe après la réservation.
               </p>
             </div>
             <div className="space-y-4">
               {[
                 { q: "Nettoyez-vous toute la cour?", a: "Oui. Nous nettoyons les zones de la propriété où il y a des déjections, y compris l'avant, l'arrière, les côtés et les espaces comme les enclos à chiens." },
-                { q: "Offrez-vous le service toute l&apos;année?", a: "Oui. Ca-Ca Canin offre le service à Laval toute l&apos;année, y compris en hiver lorsque le nettoyage demeure accessible." },
+                { q: "Offrez-vous le service toute l’année?", a: "Oui. Ca-Ca Canin offre le service à Laval toute l’année, y compris en hiver lorsque le nettoyage demeure accessible." },
                 { q: "Comment le prix est-il calculé?", a: "Le prix dépend de la taille de la cour, de la fréquence du service et du nombre de chiens. Utilisez le calculateur pour une estimation, puis demandez un devis pour le prix final." },
                 { q: "Dois-je signer un contrat?", a: "Non. Vous pouvez commencer, mettre en pause ou annuler le service en communiquant avec notre équipe." },
                 { q: "Que se passe-t-il après chaque visite?", a: "Vous recevez une confirmation de service et, au besoin, une photo du portail après la visite." },
-                { q: "Comment les déchets sont-ils disposés?", a: "Les déchets sont mis dans des sacs et déposés dans la poubelle extérieure lorsqu&apos;elle est accessible. Sinon, la disposition suit l&apos;entente prévue pour le service." },
+                { q: "Comment les déchets sont-ils disposés?", a: "Les déchets sont mis dans des sacs et déposés dans la poubelle extérieure lorsqu’elle est accessible. Sinon, la disposition suit l’entente prévue pour le service." },
               ].map((faq, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>

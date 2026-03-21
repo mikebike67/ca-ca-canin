@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import DocumentLanguage from "@/components/document-language";
 
 export const metadata: Metadata = {
   title: "Ramassage de déjections canines à Laval, QC | Ca-Ca Canin",
@@ -30,5 +31,10 @@ export default function FrenchLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <DocumentLanguage lang="fr" />
+      {children}
+    </>
+  );
 }
