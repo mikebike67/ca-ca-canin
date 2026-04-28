@@ -403,6 +403,21 @@ export default function SpringCleanupLocationPage({
       : "Click any card to open another local service page.",
   };
 
+  const breadcrumbItems = [
+    {
+      name: isFrench ? "Accueil" : "Home",
+      url: `https://cacacanin.com${homeHref}`,
+    },
+    {
+      name: isFrench ? "Nettoyage printanier" : "Spring cleanup",
+      url: `https://cacacanin.com${baseHref}`,
+    },
+    {
+      name: locationName,
+      url: `https://cacacanin.com${baseHref}/${location.slug}`,
+    },
+  ];
+
   return (
     <div lang={isFrench ? "fr" : "en"} className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
       <a
@@ -510,6 +525,15 @@ export default function SpringCleanupLocationPage({
                     name: item.q,
                     acceptedAnswer: { "@type": "Answer", text: item.a },
                   })),
+                },
+                {
+                  "@type": "BreadcrumbList",
+                  itemListElement: breadcrumbItems.map((item, index) => ({
+                    "@type": "ListItem",
+                    position: index + 1,
+                    name: item.name,
+                    item: item.url,
+                  })),
                 }
               ]
             }),
@@ -518,6 +542,23 @@ export default function SpringCleanupLocationPage({
 
         <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div className="mx-auto max-w-5xl text-center">
+            <nav aria-label={isFrench ? "Fil d'Ariane" : "Breadcrumb"} className="mb-6">
+              <ol className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-500">
+                <li>
+                  <Link href={homeHref} className="hover:text-brand-green">
+                    {isFrench ? "Accueil" : "Home"}
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li>
+                  <Link href={baseHref} className="hover:text-brand-green">
+                    {isFrench ? "Nettoyage printanier" : "Spring cleanup"}
+                  </Link>
+                </li>
+                <li aria-hidden="true">/</li>
+                <li className="font-semibold text-gray-700">{locationName}</li>
+              </ol>
+            </nav>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-brand-brown">
               {copy.heroEyebrow}
             </p>
@@ -810,7 +851,7 @@ export default function SpringCleanupLocationPage({
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     {isFrench ? "Avis 5 etoiles" : "5-star review"}
                   </div>
-                  <CardTitle className="text-xl">Zander M.</CardTitle>
+                  <CardTitle className="text-xl">Zander M. | Laval</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="break-words text-base leading-8 text-gray-600">
@@ -821,13 +862,13 @@ export default function SpringCleanupLocationPage({
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
+                    {isFrench ? "Avis Google" : "Google review"}
                   </div>
-                  <CardTitle className="text-xl">Julie B.</CardTitle>
+                  <CardTitle className="text-xl">Julie B. | Laval</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="break-words text-base leading-8 text-gray-600">
-                    Excellent service provided by Michael Atallah. He shows up on time, professional and courteous. Very thorough inspection of the back lawn and pickup of our dog&apos;s poop. He also disposes the matter in an environmentally friendly way. I would definitely and highly recommend his services.
+                    Michael&apos;s attention to detail is one of his best attributes. He did a thorough job of cleaning up all the doggy poop from this past winter. His attitude is professional, efficient and personable. As a dog owner himself, he understands how much we love our fur babies AND keeping our environment clean. I highly recommend his services, and I will use him again.
                   </CardDescription>
                 </CardContent>
               </Card>
@@ -836,11 +877,63 @@ export default function SpringCleanupLocationPage({
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     {isFrench ? "Avis 5 etoiles" : "5-star review"}
                   </div>
-                  <CardTitle className="text-xl">Daniella H.</CardTitle>
+                  <CardTitle className="text-xl">Daniella H. | Deux-Montagnes</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <CardDescription className="break-words text-base leading-8 text-gray-600">
                     Michael is fantastic! Super professional, clean, and his customer service is 100%. We hired Michael to clean our yard after a long winter and would do so again in a heartbeat! He offers a great service at a great price. Truly can&apos;t recommend him enough!
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Avis 5 étoiles" : "5-star review"}
+                  </div>
+                  <CardTitle className="text-xl">Mohamed L. | Boisbriand</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Service impeccable de Ca-Ca Canin. Rapide, professionnel et ma cour est redevenue parfaitement propre après leur passage. Ça enlève vraiment une grosse corvée quand on a un chien. Le prix est très raisonnable et le travail est très bien fait. Je recommande sans hésiter à tous les propriétaires de chiens. Service 5 étoiles.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
+                  </div>
+                  <CardTitle className="text-xl">Elisa A. | Laval</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    I recently had the pleasure of hiring a young entrepreneur who runs a dog waste removal service, and I couldn&apos;t be more impressed. He arrived right on time, was extremely professional, and got straight to work. Not only did he do a thorough and efficient job, but he also paid attention to detail and left my yard looking spotless. It&apos;s clear he takes pride in his work and is serious about his business. It&apos;s always great to support someone who is motivated and dependable, and he absolutely delivered on both. I would highly recommend Michael&apos;s services to anyone looking for a reliable and hassle-free solution for keeping their yard clean. Thank you !!!
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
+                  </div>
+                  <CardTitle className="text-xl">Pete B. | Lorraine</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Very professional job. Winter snow just melted to reveal all of the winter&apos;s poop. Thankfully I was given Michael&apos;s number. He came super fast with all his equipment and in no time my yard was spotless.
+                  </CardDescription>
+                </CardContent>
+              </Card>
+              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <CardHeader>
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                    {isFrench ? "Recommandation Facebook" : "Facebook recommendation"}
+                  </div>
+                  <CardTitle className="text-xl">Sylvain D. | Mirabel</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="break-words text-base leading-8 text-gray-600">
+                    Excellent travail! Je recommande fortement!
                   </CardDescription>
                 </CardContent>
               </Card>

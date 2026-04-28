@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
 import { calculateBookingPrice, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency } from "@/lib/booking";
-import { isLavalPostalCode, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
+import { isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
+import { isRegularServicePostalCode } from "@/lib/regular-service-area";
 
 declare global {
   interface CloudflareEnv {
@@ -166,7 +167,7 @@ export async function POST(req: NextRequest) {
       const postalCodeIsAllowed =
         source === "spring-cleanup"
           ? isSpringCleanupPostalCode(normalizedPostalCode)
-          : isLavalPostalCode(normalizedPostalCode);
+          : isRegularServicePostalCode(normalizedPostalCode);
 
       if (!postalCodeIsAllowed) {
         return NextResponse.json(

@@ -4,8 +4,14 @@ import LegalPageShell from "@/components/legal-page-shell";
 import ContactForm from "@/components/contact-form";
 
 export const metadata: Metadata = {
-  title: "Contact | Ca-Ca Canin",
-  description: "Contactez Ca-Ca Canin pour les demandes de devis, les questions de zone de service et le nettoyage printanier.",
+  title: "Contacter Ramassage de déjections canines Laval | Ca-Ca Canin",
+  description: "Contactez Ca-Ca Canin pour les demandes de devis, les questions de zone de service, le ramassage de déjections canines et le nettoyage printanier.",
+  keywords: [
+    "contact ramassage de déjections canines Laval",
+    "devis ramassage de crottes de chien Laval",
+    "nettoyage printanier Laval",
+    "Rive-Nord",
+  ],
   alternates: {
     canonical: "/fr/contact",
     languages: {
@@ -18,12 +24,13 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Contact | Ca-Ca Canin",
-    description: "Contactez Ca-Ca Canin pour les demandes de devis, les questions de zone de service et le nettoyage printanier.",
+    title: "Contacter Ramassage de déjections canines Laval | Ca-Ca Canin",
+    description: "Contactez Ca-Ca Canin pour les demandes de devis, les questions de zone de service, le ramassage de déjections canines et le nettoyage printanier.",
     url: "https://cacacanin.com/fr/contact",
     siteName: "Ca-Ca Canin",
     locale: "fr_CA",
     type: "website",
+    images: ["/images/cacacaninlogo.jpg"],
   },
 };
 
@@ -75,7 +82,7 @@ export default function FrenchContactPage() {
           <section className="rounded-[1.75rem] border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
             <h2 className="text-2xl font-bold text-gray-900">Zone de service</h2>
             <p className="mt-3 text-gray-600">
-              Le service regulier de ramassage est concentre sur Laval. Le nettoyage printanier couvre aussi certaines villes de la Rive-Nord affichees sur les pages dediees.
+              Le service regulier de ramassage et le nettoyage printanier sont offerts a Laval ainsi que dans certaines villes de la Rive-Nord affichees sur les pages dediees.
             </p>
           </section>
         </div>

@@ -26,8 +26,15 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
   }
 
   return {
-    title: `Nettoyage printanier des dejections canines a ${location.nameFr}, QC | Ca-Ca Canin`,
-    description: `${location.introFr} Demandez un devis rapide pour un nettoyage ponctuel avec Ca-Ca Canin.`,
+    title: `Nettoyage printanier des déjections canines à ${location.nameFr}, QC | Ca-Ca Canin`,
+    description: `${location.introFr} Demandez un devis rapide pour un nettoyage ponctuel, du ramassage de crottes de chien et du nettoyage de cour avec Ca-Ca Canin.`,
+    keywords: [
+      location.primaryKeywordFr,
+      location.secondaryKeywordFr,
+      `nettoyage printanier ${location.nameFr}`,
+      `ramassage de crottes de chien ${location.nameFr}`,
+      `${location.nameFr} QC`,
+    ],
     alternates: {
       canonical: `/fr/nettoyage-printemps/${location.slug}`,
       languages: {
@@ -36,17 +43,26 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
       },
     },
     openGraph: {
-      title: `Nettoyage printanier des dejections canines a ${location.nameFr}, QC | Ca-Ca Canin`,
+      title: `Nettoyage printanier des déjections canines à ${location.nameFr}, QC | Ca-Ca Canin`,
       description: location.introFr,
       type: "website",
       url: `/fr/nettoyage-printemps/${location.slug}`,
       siteName: "Ca-Ca Canin",
       locale: "fr_CA",
+      images: [
+        {
+          url: "/images/cacacaninlogo.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Nettoyage printanier à ${location.nameFr} par Ca-Ca Canin`,
+        },
+      ],
     },
     twitter: {
       card: "summary",
-      title: `Nettoyage printanier des dejections canines a ${location.nameFr}, QC | Ca-Ca Canin`,
+      title: `Nettoyage printanier des déjections canines à ${location.nameFr}, QC | Ca-Ca Canin`,
       description: location.introFr,
+      images: ["/images/cacacaninlogo.jpg"],
     },
   };
 }

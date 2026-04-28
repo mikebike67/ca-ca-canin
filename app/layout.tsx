@@ -12,8 +12,16 @@ const montserrat = Montserrat({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cacacanin.com"),
-  title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
-  description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
+  title: "Dog Poop Cleanup Laval & North Shore | Ca-Ca Canin",
+  description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval and select North Shore locations. Get clear pricing, flexible scheduling, and a fast quote from Ca-Ca Canin.",
+  keywords: [
+    "dog poop cleanup Laval",
+    "dog waste removal Laval",
+    "pooper scooper service Laval",
+    "pet waste removal Laval",
+    "spring cleanup Laval",
+    "North Shore dog waste removal",
+  ],
   applicationName: "Ca-Ca Canin",
   alternates: {
     canonical: "/",
@@ -27,17 +35,26 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
-    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC with clear pricing and flexible scheduling.",
+    title: "Dog Poop Cleanup Laval & North Shore | Ca-Ca Canin",
+    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval and select North Shore locations with clear pricing and flexible scheduling.",
     type: "website",
     url: "/",
     siteName: "Ca-Ca Canin",
-    locale: "en_CA"
+    locale: "en_CA",
+    images: [
+      {
+        url: "/images/cacacaninlogo.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Ca-Ca Canin dog poop cleanup in Laval and the North Shore",
+      },
+    ],
   },
   twitter: {
     card: "summary",
-    title: "Dog Poop Cleanup in Laval, QC | Ca-Ca Canin",
-    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval, QC with clear pricing and flexible scheduling."
+    title: "Dog Poop Cleanup Laval & North Shore | Ca-Ca Canin",
+    description: "Dog poop cleanup, dog waste removal, and pooper scooper service in Laval and select North Shore locations with clear pricing and flexible scheduling.",
+    images: ["/images/cacacaninlogo.jpg"],
   },
   icons: {
     icon: [
@@ -92,8 +109,33 @@ export default function RootLayout({
             gtag('config', 'G-FHFNJ5L8JM');
           `}
         </Script>
+        <Script id="meta-pixel" strategy="afterInteractive">
+          {`
+            !function(f,b,e,v,n,t,s)
+            {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+            n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+            if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+            n.queue=[];t=b.createElement(e);t.async=!0;
+            t.src=v;s=b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t,s)}(window, document,'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+            fbq('init', '2194469848018006');
+            fbq('track', 'PageView');
+          `}
+        </Script>
       </head>
-      <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>{children}</body>
+      <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{ display: "none" }}
+            src="https://www.facebook.com/tr?id=2194469848018006&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+        {children}
+      </body>
     </html>
   );
 }

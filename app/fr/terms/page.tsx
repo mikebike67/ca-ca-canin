@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     siteName: "Ca-Ca Canin",
     locale: "fr_CA",
     type: "website",
+    images: ["/images/cacacaninlogo.jpg"],
   },
 };
 
@@ -61,8 +62,9 @@ export default function FrenchTermsPage() {
             <section className="space-y-3">
               <h2 className="text-2xl font-bold text-gray-900">Zone de service</h2>
               <p>
-                Notre zone reguliere de service recurrent se limite actuellement a Laval, Quebec, et les codes postaux
-                commencent generalement par <span className="font-semibold">H7</span>. Le nettoyage de printemps est aussi offert dans certaines zones de codes postaux de la Rive-Nord indiquees sur les pages de nettoyage printanier. Nous pouvons refuser ou annuler les demandes a l'exterieur de nos zones de service affichees.
+                Notre zone reguliere de service recurrent inclut Laval ainsi que certaines zones de codes postaux de la Rive-Nord affichees sur les pages locales du service regulier.
+                Le nettoyage de printemps est aussi offert a Laval et dans certaines zones de codes postaux de la Rive-Nord indiquees sur les pages de nettoyage printanier.
+                Nous pouvons refuser ou annuler les demandes a l'exterieur de nos zones de service affichees.
               </p>
             </section>
 

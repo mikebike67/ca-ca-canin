@@ -27,7 +27,14 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
 
   return {
     title: `Spring Dog Poop Cleanup in ${location.name}, QC | Ca-Ca Canin`,
-    description: `${location.introEn} Request a fast quote for one-time spring cleanup with Ca-Ca Canin.`,
+    description: `${location.introEn} Request a fast quote for one-time spring cleanup, dog waste removal, and yard cleanup with Ca-Ca Canin.`,
+    keywords: [
+      location.primaryKeywordEn,
+      location.secondaryKeywordEn,
+      `spring dog poop cleanup ${location.name}`,
+      `dog waste removal ${location.name}`,
+      `${location.name} QC`,
+    ],
     alternates: {
       canonical: `/spring-cleanup/${location.slug}`,
       languages: {
@@ -42,11 +49,20 @@ export function generateMetadata({ params }: LocationPageProps): Metadata {
       url: `/spring-cleanup/${location.slug}`,
       siteName: "Ca-Ca Canin",
       locale: "en_CA",
+      images: [
+        {
+          url: "/images/cacacaninlogo.jpg",
+          width: 1200,
+          height: 630,
+          alt: `Spring dog poop cleanup in ${location.name} by Ca-Ca Canin`,
+        },
+      ],
     },
     twitter: {
       card: "summary",
       title: `Spring Dog Poop Cleanup in ${location.name}, QC | Ca-Ca Canin`,
       description: location.introEn,
+      images: ["/images/cacacaninlogo.jpg"],
     },
   };
 }

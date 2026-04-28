@@ -4,8 +4,14 @@ import LegalPageShell from "@/components/legal-page-shell";
 import ContactForm from "@/components/contact-form";
 
 export const metadata: Metadata = {
-  title: "Contact | Ca-Ca Canin",
-  description: "Contact Ca-Ca Canin for dog waste removal, spring cleanup, service-area questions, and quote requests in Laval and select North Shore locations.",
+  title: "Contact Dog Poop Cleanup Laval | Ca-Ca Canin",
+  description: "Contact Ca-Ca Canin for dog poop cleanup, dog waste removal, spring cleanup, service-area questions, and quote requests in Laval and select North Shore locations.",
+  keywords: [
+    "contact dog poop cleanup Laval",
+    "dog waste removal quote Laval",
+    "spring cleanup quote Laval",
+    "North Shore dog poop cleanup",
+  ],
   alternates: {
     canonical: "/contact",
     languages: {
@@ -18,12 +24,13 @@ export const metadata: Metadata = {
     follow: true,
   },
   openGraph: {
-    title: "Contact | Ca-Ca Canin",
-    description: "Contact Ca-Ca Canin for dog waste removal, spring cleanup, service-area questions, and quote requests in Laval and select North Shore locations.",
+    title: "Contact Dog Poop Cleanup Laval | Ca-Ca Canin",
+    description: "Contact Ca-Ca Canin for dog poop cleanup, dog waste removal, spring cleanup, service-area questions, and quote requests in Laval and select North Shore locations.",
     url: "https://cacacanin.com/contact",
     siteName: "Ca-Ca Canin",
     locale: "en_CA",
     type: "website",
+    images: ["/images/cacacaninlogo.jpg"],
   },
 };
 
@@ -75,7 +82,7 @@ export default function ContactPage() {
           <section className="rounded-[1.75rem] border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
             <h2 className="text-2xl font-bold text-gray-900">Service area</h2>
             <p className="mt-3 text-gray-600">
-              Regular dog waste removal is focused on Laval. Spring cleanup also covers select North Shore locations shown on the dedicated service pages.
+              Regular dog waste removal and spring cleanup are available in Laval and select North Shore locations shown on the dedicated service pages.
             </p>
           </section>
         </div>

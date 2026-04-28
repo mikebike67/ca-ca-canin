@@ -23,6 +23,7 @@ export const metadata: Metadata = {
     siteName: "Ca-Ca Canin",
     locale: "en_CA",
     type: "website",
+    images: ["/images/cacacaninlogo.jpg"],
   },
 };
 
@@ -61,9 +62,9 @@ export default function TermsPage() {
           <section className="space-y-3">
             <h2 className="text-2xl font-bold text-gray-900">Service area</h2>
             <p>
-              Our regular recurring service area is currently Laval, Quebec only, and those postal codes generally
-              begin with <span className="font-semibold">H7</span>. Spring cleanup is also available in select North Shore
-              postal code areas shown on the spring cleanup pages. We may refuse or cancel requests outside our listed service areas.
+              Our regular recurring service area includes Laval plus select North Shore postal code areas shown on the local service pages.
+              Spring cleanup is also available in Laval and select North Shore postal code areas shown on the dedicated spring cleanup pages.
+              We may refuse or cancel requests outside our listed service areas.
             </p>
           </section>
 

@@ -3,12 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import RegularServiceCalculator from "@/components/regular-service-calculator"
 import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
+import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
-import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
+import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin, ChevronDown } from 'lucide-react'
+import BeforeAfterGallery from "@/components/before-after-gallery"
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -32,9 +36,13 @@ const frequencyNotes: Record<ServiceFrequency, string> = {
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
-const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
+const isRegularServicePostalCode = (value: string) =>
+  REGULAR_SERVICE_LOCATIONS.some((location) =>
+    location.fsaPrefixes.some((prefix) => normalizePostalCode(value).startsWith(prefix))
+  );
 
 export default function Page() {
+  const router = useRouter();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,6 +60,8 @@ export default function Page() {
   const [consentChecked, setConsentChecked] = useState(false);
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
+  const [selectedServiceLocation, setSelectedServiceLocation] = useState(REGULAR_SERVICE_LOCATIONS[0]?.slug ?? 'laval');
+  const [selectedHeaderLocation, setSelectedHeaderLocation] = useState(REGULAR_SERVICE_LOCATIONS[0]?.slug ?? 'laval');
 
   const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
@@ -94,7 +104,7 @@ export default function Page() {
       return;
     }
 
-    if (!isLavalPostalCode(normalized)) {
+    if (!isRegularServicePostalCode(normalized)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -118,7 +128,7 @@ export default function Page() {
       return;
     }
 
-    if (!isCanadianPostalCode(postalCode) || !isLavalPostalCode(postalCode)) {
+    if (!isCanadianPostalCode(postalCode) || !isRegularServicePostalCode(postalCode)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -275,6 +285,33 @@ export default function Page() {
               <Link href="#about" className="text-gray-700 hover:text-brand-green transition-colors">À propos</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
               <Link href="/fr/contact" className="text-gray-700 hover:text-brand-green transition-colors">Contact</Link>
+              <div className="group relative">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 text-gray-700 transition-colors hover:text-brand-green"
+                  aria-label="Parcourir les villes desservies"
+                >
+                  <span>Villes</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <div className="invisible absolute left-0 top-full z-50 mt-3 w-64 max-h-[21rem] overflow-y-auto rounded-2xl border border-[#d7e6da] bg-white p-2 opacity-0 shadow-[0_18px_45px_rgba(17,24,39,0.08)] transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                  {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                    <Link
+                      key={location.slug}
+                      href={`/fr/ramassage-dejections/${location.slug}`}
+                      className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition-colors hover:bg-[#eef7f0] hover:text-brand-green"
+                    >
+                      {location.nameFr}
+                    </Link>
+                  ))}
+                  <Link
+                    href="/fr/ramassage-dejections"
+                    className="block rounded-xl border-t border-gray-100 px-4 py-3 text-sm font-semibold text-brand-green transition-colors hover:bg-[#eef7f0]"
+                  >
+                    Voir toutes les villes →
+                  </Link>
+                </div>
+              </div>
               <Link href="/" className="text-brand-brown hover:text-brand-brown/80 transition-colors">English</Link>
               <Button
                 size="lg"
@@ -310,6 +347,24 @@ export default function Page() {
               <Link href="#about" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">À propos</Link>
               <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
               <Link href="/fr/contact" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Contact</Link>
+              <div className="py-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">Villes desservies</label>
+                <select
+                  value={selectedHeaderLocation}
+                  onChange={(e) => {
+                    setSelectedHeaderLocation(e.target.value);
+                    router.push(`/fr/ramassage-dejections/${e.target.value}`);
+                    setIsMenuOpen(false);
+                  }}
+                  className="h-11 w-full rounded-xl border border-[#d7e6da] px-3 text-sm text-gray-700"
+                >
+                  {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                    <option key={location.slug} value={location.slug}>
+                      {location.nameFr}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Link href="/" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">English</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link
@@ -345,8 +400,11 @@ export default function Page() {
                   url: "https://cacacanin.com/fr",
                   image: "https://cacacanin.com/images/cacacaninlogo.jpg",
                   logo: "https://cacacanin.com/images/cacacaninlogo.jpg",
-                  description: "Service de ramassage de dejections canines a Laval, Quebec.",
-                  areaServed: "Laval, QC",
+                  description: "Service de ramassage de dejections canines a Laval et dans certaines villes de la Rive-Nord, Quebec.",
+                  areaServed: [
+                    { "@type": "City", name: "Laval" },
+                    { "@type": "AdministrativeArea", name: "Rive-Nord, QC" }
+                  ],
                   address: {
                     "@type": "PostalAddress",
                     addressLocality: "Laval",
@@ -363,10 +421,16 @@ export default function Page() {
                   provider: {
                     "@id": "https://cacacanin.com/#business"
                   },
-                  areaServed: {
-                    "@type": "City",
-                    name: "Laval"
-                  },
+                  areaServed: [
+                    {
+                      "@type": "City",
+                      name: "Laval"
+                    },
+                    {
+                      "@type": "AdministrativeArea",
+                      name: "Rive-Nord, QC"
+                    }
+                  ],
                   offers: {
                     "@type": "Offer",
                     availability: "https://schema.org/InStock"
@@ -402,12 +466,11 @@ export default function Page() {
               </div>
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
-                  Ramassage de déjections<br />
-
-                  <span className="text-brand-green">canines à Laval</span>
+                  Ramassage de déjections canines<br />
+                  <span className="text-brand-green">à Laval et sur la Rive-Nord</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Arrêtez de contourner les dégâts chaque fois que vous sortez dans la cour. Obtenez un devis rapide, des tarifs clairs et un service local simple qui enlève cette corvée de votre semaine.
+                  Obtenez des tarifs clairs, un devis rapide et un service régulier de ramassage à Laval et sur la Rive-Nord. Choisissez votre ville, vérifiez la disponibilité et évitez que la corvée s'accumule.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 lg:items-start">
@@ -420,7 +483,7 @@ export default function Page() {
                       href="#quote-form"
                       data-cta="spring-quote"
                     >
-                      Vérifier ma disponibilité à Laval
+                      Vérifier ma disponibilité
                     </Link>
                   </Button>
                   <Button
@@ -456,7 +519,7 @@ export default function Page() {
                 </div>
                 <div className="mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
                   {[
-                    "Service local à Laval",
+                    "Service Laval et Rive-Nord",
                     "Réponse habituelle en 1 jour ouvrable",
                     "Photo du portail après la visite",
                   ].map((item) => (
@@ -536,7 +599,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-1">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Pourquoi les propriétaires de Laval nous appellent
+                  Pourquoi les propriétaires réservent sur Laval et la Rive-Nord
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -548,7 +611,7 @@ export default function Page() {
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin est pour les propriétaires de Laval qui en ont assez de l’odeur, du désordre et du temps perdu à tout nettoyer eux-mêmes.
+                  Ca-Ca Canin est pour les propriétaires de Laval et de la Rive-Nord qui en ont assez de l’odeur, du désordre et du temps perdu à tout nettoyer eux-mêmes.
                 </p>
                 <p className="text-lg text-gray-700 mb-4">
                   Vous obtenez une équipe locale, des tarifs clairs et un service simple qui garde la cour prête pour les enfants, les invités et la vraie vie.
@@ -570,6 +633,8 @@ export default function Page() {
             </div>
           </div>
         </section>
+
+        <BeforeAfterGallery locale="fr" />
 
         {/* Residential Services */}
         <section id="services" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
@@ -618,372 +683,9 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Pricing Calculator */}
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto scroll-animation">
-            <div className="text-center mb-10">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Vérifiez votre disponibilité et voyez votre prix
-              </h2>
-              <p className="text-lg text-gray-600">
-                Choisissez la taille de votre cour, le nombre de chiens et la fréquence pour obtenir une estimation réelle et demander le service tout de suite.
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
-              {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
-              {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
-              <div className="grid min-w-0 gap-6 md:grid-cols-3">
-                <div className="order-2 min-w-0 space-y-4 md:order-1 md:col-span-1">
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Fréquence</p>
-                    <div className="space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        {[
-                          { key: 'weekly', label: 'Hebdomadaire' },
-                          { key: 'biweekly', label: 'Aux deux semaines' },
-                          { key: 'monthly', label: 'Mensuel' },
-                          { key: 'onetime', label: 'Ponctuel' },
-                        ].map((item) => (
-                          <button
-                            key={item.key}
-                            onClick={() => setFrequency(item.key as typeof frequency)}
-                            className={`min-h-[44px] min-w-0 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-                              frequency === item.key
-                                ? 'bg-brand-green text-white border-brand-green shadow-md'
-                                : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                            }`}
-                            type="button"
-                          >
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Nombre de chiens</p>
-                    <div className="flex min-w-0 flex-wrap gap-2">
-                      {[
-                        { key: '1', label: '1 chien' },
-                        { key: '2', label: '2 chiens' },
-                        { key: '3plus', label: '3+ chiens' },
-                      ].map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setDogs(item.key as typeof dogs)}
-                          className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                            dogs === item.key
-                              ? 'bg-brand-green text-white border-brand-green shadow-md'
-                              : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                          }`}
-                          type="button"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="yard-size" className="text-sm font-semibold text-gray-700 mb-2 block">
-                      Taille de la cour (pi²)
-                    </label>
-                    <div className="space-y-2">
-                      <input
-                        id="yard-size"
-                        type="range"
-                        min={3000}
-                        max={10000}
-                        step={100}
-                        value={yardSqft}
-                        onChange={(e) => {
-                          const raw = Number(e.target.value);
-                          const snapped = Math.round(raw / 100) * 100;
-                          const clamped = Math.max(3000, Math.min(10000, snapped));
-                          setYardSqft(clamped);
-                        }}
-                        className="w-full accent-brand-green"
-                        required
-                      />
-                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
-                        <span className="font-semibold text-brand-green">
-                          {yardSqft >= 10000 ? '10 000+ pi²' : `${yardSqft.toLocaleString()} pi²`}
-                        </span>
-                        <span
-                          className="inline-flex max-w-full rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
-                        >
-                          {yardOptions.find((o) => o.key === yardCategory)?.label} · {yardOptions.find((o) => o.key === yardCategory)?.detail}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="order-1 min-w-0 md:order-2 md:col-span-2">
-                  <div className="mx-auto min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                    <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                      {frequency === 'onetime' ? 'Visite estimée' : 'Estimation par visite'}
-                    </p>
-                    <p className="mb-2 text-2xl font-extrabold tabular-nums text-gray-900 sm:text-3xl">
-                      {frequency === 'onetime'
-                        ? `${formatMoney(displayPrice)} / premières 30 min`
-                        : `${formatMoney(displayPrice)}/visite`}
-                    </p>
-                    <div className="mt-3 min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:text-left">
-                      {frequency !== 'onetime' ? (
-                        <div className="space-y-1">
-                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                            Total mensuel estimé
-                          </p>
-                          <p className="text-2xl font-extrabold tabular-nums text-brand-green sm:text-4xl">
-                            {formatMoney(monthlyTotal)}
-                            <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="space-y-1">
-                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                            Tarification selon le temps
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            +5 $ par bloc additionnel de 5 minutes après les 30 premières minutes.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
-                      {pricingDetails.note}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
-                  <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    C’est la façon la plus rapide de voir si le service entre dans votre budget et de passer à l’étape suivante. Le prix final est confirmé après vérification.
-                  </div>
-
-                  <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
-                    {bookingStatus !== 'success' && (
-                      <>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">1</span>
-                        Vérifier la zone desservie
-                      </div>
-                      <div className="space-y-1">
-                        <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">
-                          Code postal
-                        </label>
-                        <input
-                          id="postal-code"
-                          type="text"
-                          name="postalCode"
-                          placeholder="H7A 1A1"
-                          value={postalCode}
-                          onChange={(e) => {
-                            setPostalCode(e.target.value);
-                            setPostalStatus('idle');
-                            setConsentError('');
-                          }}
-                          autoComplete="postal-code"
-                          inputMode="text"
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
-                          required
-                        />
-                      </div>
-                      <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
-                        <label className="flex items-start gap-3 text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={consentChecked}
-                            onChange={(e) => {
-                              const checked = e.target.checked;
-                              setConsentChecked(checked);
-                              setConsentError('');
-                              if (!checked) {
-                                setPostalStatus('idle');
-                              }
-                            }}
-                            className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-green focus:ring-brand-green"
-                          />
-                          <span>
-                            J’accepte les{" "}
-                            <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
-                              conditions
-                            </Link>{" "}
-                            et la{" "}
-                            <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
-                              politique de confidentialité
-                            </Link>{" "}
-                            et j’autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
-                          </span>
-                        </label>
-                        {consentError && (
-                          <p className="mt-2 text-sm text-red-600" role="alert">
-                            {consentError}
-                          </p>
-                        )}
-                      </div>
-                      <Button
-                        type="button"
-                        className="w-full bg-brand-green text-white hover:bg-brand-green-dark"
-                        onClick={handlePostalCodeCheck}
-                      >
-                        Vérifier
-                      </Button>
-                      {postalStatus === 'valid' && (
-                        <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Nous desservons ce code postal de Laval. Passez à l’étape 2.
-                        </div>
-                      )}
-                      {postalStatus === 'invalid' && (
-                        <div className="text-sm text-red-600" role="status" aria-live="polite">
-                          {postalCode && !isCanadianPostalCode(postalCode)
-                            ? 'Veuillez entrer un code postal canadien valide.'
-                            : <>Désolé, nous desservons actuellement seulement Laval, QC. Nous ne desservons pas votre secteur? <Link href="/fr/contact" className="font-semibold underline">Contactez-nous</Link>.</>}
-                        </div>
-                      )}
-                    </div>
-
-                    {postalStatus === 'valid' && (
-                      <>
-                        <div className="space-y-3 border-t border-gray-200 pt-4">
-                          <div className="hidden" aria-hidden="true">
-                            <label htmlFor="website-field-fr">Laisser ce champ vide</label>
-                            <input
-                              id="website-field-fr"
-                              type="text"
-                              name="website"
-                              tabIndex={-1}
-                              autoComplete="off"
-                              value={websiteField}
-                              onChange={(e) => setWebsiteField(e.target.value)}
-                            />
-                          </div>
-                          <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
-                            Vos coordonnées
-                          </div>
-                        {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
-                        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                            <div className="space-y-1">
-                              <label htmlFor="name" className="text-sm font-semibold text-gray-700">
-                                Nom
-                              </label>
-                              <input
-                                id="name"
-                                type="text"
-                                name="name"
-                                placeholder="Jean Dupont"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                autoComplete="name"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <label htmlFor="phone" className="text-sm font-semibold text-gray-700">
-                                Téléphone
-                              </label>
-                              <input
-                                id="phone"
-                                type="tel"
-                                name="phone"
-                                placeholder="438 880 8922"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                autoComplete="tel"
-                                inputMode="tel"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <label htmlFor="email" className="text-sm font-semibold text-gray-700">
-                                Courriel
-                              </label>
-                              <input
-                                id="email"
-                                type="email"
-                                name="email"
-                                placeholder="vous@courriel.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                autoComplete="email"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <Button
-                          type="submit"
-                          className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
-                          disabled={bookingStatus === 'loading'}
-                        >
-                          {bookingStatus === 'loading' ? 'Envoi...' : 'Obtenir mon devis'}
-                        </Button>
-                        {bookingMessage && (
-                          <div
-                            className="text-sm text-red-600"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            {bookingMessage}
-                          </div>
-                        )}
-                        <p className="text-xs text-gray-500">
-                          Nous répondons habituellement en 1 jour ouvrable.
-                        </p>
-                      </>
-                    )}
-                      </>
-                    )}
-                    {bookingStatus === 'success' && (
-                      <div id="quote-thank-you-fr" ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
-                        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Merci</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de devis est envoyée.</h3>
-                        <p className="mt-3 text-base text-gray-600">
-                          Vous êtes un pas plus près d’une cour propre. Nous vous contacterons sous peu, généralement dans un délai d’un jour ouvrable.
-                        </p>
-                        <p className="mt-2 text-sm text-gray-600">
-                          Vous ne l’avez pas reçu? Vérifiez vos courriels indésirables.
-                        </p>
-                        <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
-                      </div>
-                    )}
-                    {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
-                    {bookingStatus !== 'success' && (
-                    <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                        {frequency === 'onetime' ? 'Visite estimée' : 'Prix en direct'}
-                      </p>
-                      <div className="mt-2 flex items-end justify-between gap-3">
-                        <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
-                          {frequency === 'onetime'
-                            ? `${formatMoney(displayPrice)}+`
-                            : `${formatMoney(displayPrice)}/visite`}
-                        </p>
-                        {frequency !== 'onetime' && (
-                          <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
-                            {formatMoney(monthlyTotal)}/mois
-                          </p>
-                        )}
-                      </div>
-                      {frequency === 'onetime' && (
-                        <p className="mt-2 text-sm text-gray-600">
-                          +5 $ toutes les 5 minutes additionnelles apr&egrave;s les 30 premi&egrave;res minutes.
-                        </p>
-                      )}
-                    </div>
-                    )}
-                  </form>
-                </div>
-              </div>
-            </div>
+            <RegularServiceCalculator locale="fr" />
 
             <Link
               href="/fr/nettoyage-printemps#quote-form"
@@ -1006,7 +708,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Pourquoi les propriétaires de Laval restent avec nous
+                  Pourquoi les propriétaires restent avec nous
               </h2>
               <p className="text-xl text-gray-600">
                 Pensé pour les propriétaires qui veulent enlever l’odeur, le désordre et une corvée de plus.
@@ -1046,23 +748,39 @@ export default function Page() {
                 Zones desservies
               </h2>
               <p className="text-xl text-gray-600">
-                Service local pour les quartiers de Laval qui ont vraiment besoin que ce soit fait.
+                Le service régulier est maintenant offert à Laval ainsi que dans les mêmes villes de la Rive-Nord déjà desservies pour le nettoyage printanier : Blainville, Boisbriand, Bois-des-Filion, Deux-Montagnes, Lorraine, Mirabel, Oka, Pointe-Calumet, Rosemère, Saint-Eustache, Saint-Joseph-du-Lac, Sainte-Anne-des-Plaines, Sainte-Marthe-sur-le-Lac et Sainte-Thérèse.
               </p>
             </div>
-            <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
+            <div className="max-w-3xl mx-auto scroll-animation">
               <Card className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader className="text-center">
                   <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-[1.5rem] border border-brand-green/15 bg-[#eef7f0]">
                     <MapPin className="h-8 w-8 text-brand-green" />
                   </div>
-                  <CardTitle className="text-2xl">Laval, QC</CardTitle>
+                  <CardTitle className="text-2xl">Parcourir les villes desservies</CardTitle>
+                  <CardDescription className="text-base leading-7 text-gray-600">
+                    Choisissez une ville pour ouvrir sa page locale du service régulier et confirmer qu'elle est maintenant desservie.
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg text-gray-700 mb-4">
-                    Même service local. Moins de désordre. Moins de tracas.
-                  </p>
-                  <p className="text-gray-600">
-                    Service ponctuel et récurrent pour les propriétaires de Laval qui veulent que ce soit bien fait.
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-[1fr_auto]">
+                    <select
+                      value={selectedServiceLocation}
+                      onChange={(e) => setSelectedServiceLocation(e.target.value)}
+                      className="h-12 rounded-xl border border-[#d7e6da] px-4 text-base text-gray-900"
+                    >
+                      {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                        <option key={location.slug} value={location.slug}>
+                          {location.nameFr}, QC
+                        </option>
+                      ))}
+                    </select>
+                    <Button className="h-12 bg-brand-green text-white hover:bg-brand-green-dark" asChild>
+                      <Link href={`/fr/ramassage-dejections/${selectedServiceLocation}`}>Voir la page locale</Link>
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Villes actuellement desservies : {REGULAR_SERVICE_LOCATIONS.map((location) => location.nameFr).join(", ")}.
                   </p>
                 </CardContent>
               </Card>
@@ -1084,7 +802,7 @@ export default function Page() {
             <div className="space-y-4">
               {[
                 { q: "Nettoyez-vous toute la cour?", a: "Oui. Nous nettoyons les zones de la propriété où il y a des déjections, y compris l'avant, l'arrière, les côtés et les espaces comme les enclos à chiens." },
-                { q: "Offrez-vous le service toute l’année?", a: "Oui. Ca-Ca Canin offre le service à Laval toute l’année, y compris en hiver lorsque le nettoyage demeure accessible." },
+                { q: "Offrez-vous le service toute l’année?", a: "Oui. Ca-Ca Canin offre le service toute l’année à Laval et dans les villes desservies de la Rive-Nord, y compris en hiver lorsque le nettoyage demeure accessible." },
                 { q: "Comment le prix est-il calculé?", a: "Le prix dépend de la taille de la cour, de la fréquence du service et du nombre de chiens. Utilisez le calculateur pour une estimation, puis demandez un devis pour le prix final." },
                 { q: "Dois-je signer un contrat?", a: "Non. Vous pouvez commencer, mettre en pause ou annuler le service en communiquant avec notre équipe." },
                 { q: "Que se passe-t-il après chaque visite?", a: "Vous recevez une confirmation de service et, au besoin, une photo du portail après la visite." },

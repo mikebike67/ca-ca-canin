@@ -3,12 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
+import RegularServiceCalculator from "@/components/regular-service-calculator"
 import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
+import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
-import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin } from 'lucide-react'
+import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText, MapPin, ChevronDown } from 'lucide-react'
+import BeforeAfterGallery from "@/components/before-after-gallery"
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -32,9 +36,13 @@ const frequencyNotes: Record<ServiceFrequency, string> = {
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
-const isLavalPostalCode = (value: string) => normalizePostalCode(value).startsWith('H7');
+const isRegularServicePostalCode = (value: string) =>
+  REGULAR_SERVICE_LOCATIONS.some((location) =>
+    location.fsaPrefixes.some((prefix) => normalizePostalCode(value).startsWith(prefix))
+  );
 
 export default function Page() {
+  const router = useRouter();
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,6 +60,8 @@ export default function Page() {
   const [consentChecked, setConsentChecked] = useState(false);
   const [consentError, setConsentError] = useState('');
   const [websiteField, setWebsiteField] = useState('');
+  const [selectedServiceLocation, setSelectedServiceLocation] = useState(REGULAR_SERVICE_LOCATIONS[0]?.slug ?? 'laval');
+  const [selectedHeaderLocation, setSelectedHeaderLocation] = useState(REGULAR_SERVICE_LOCATIONS[0]?.slug ?? 'laval');
 
   const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
@@ -94,7 +104,7 @@ export default function Page() {
       return;
     }
 
-    if (!isLavalPostalCode(normalized)) {
+    if (!isRegularServicePostalCode(normalized)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -119,7 +129,7 @@ export default function Page() {
       return;
     }
 
-    if (!isCanadianPostalCode(postalCode) || !isLavalPostalCode(postalCode)) {
+    if (!isCanadianPostalCode(postalCode) || !isRegularServicePostalCode(postalCode)) {
       setPostalStatus('invalid');
       setBookingStatus('idle');
       setBookingMessage('');
@@ -276,6 +286,33 @@ export default function Page() {
               <Link href="#about" className="text-gray-700 hover:text-brand-green transition-colors">About</Link>
               <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
               <Link href="/contact" className="text-gray-700 hover:text-brand-green transition-colors">Contact</Link>
+              <div className="group relative">
+                <button
+                  type="button"
+                  className="inline-flex items-center gap-2 text-gray-700 transition-colors hover:text-brand-green"
+                  aria-label="Browse served locations"
+                >
+                  <span>Locations</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <div className="invisible absolute left-0 top-full z-50 mt-3 w-64 max-h-[21rem] overflow-y-auto rounded-2xl border border-[#d7e6da] bg-white p-2 opacity-0 shadow-[0_18px_45px_rgba(17,24,39,0.08)] transition-all duration-200 group-hover:visible group-hover:opacity-100">
+                  {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                    <Link
+                      key={location.slug}
+                      href={`/dog-poop-cleanup/${location.slug}`}
+                      className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition-colors hover:bg-[#eef7f0] hover:text-brand-green"
+                    >
+                      {location.name}
+                    </Link>
+                  ))}
+                  <Link
+                    href="/dog-poop-cleanup"
+                    className="block rounded-xl border-t border-gray-100 px-4 py-3 text-sm font-semibold text-brand-green transition-colors hover:bg-[#eef7f0]"
+                  >
+                    See all locations →
+                  </Link>
+                </div>
+              </div>
               <Link href="/fr" className="text-brand-brown hover:text-brand-brown/80 transition-colors">Français</Link>
               <Button
                 size="lg"
@@ -311,6 +348,24 @@ export default function Page() {
               <Link href="#about" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">About</Link>
               <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
               <Link href="/contact" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Contact</Link>
+              <div className="py-2">
+                <label className="mb-2 block text-sm font-medium text-gray-700">Locations</label>
+                <select
+                  value={selectedHeaderLocation}
+                  onChange={(e) => {
+                    setSelectedHeaderLocation(e.target.value);
+                    router.push(`/dog-poop-cleanup/${e.target.value}`);
+                    setIsMenuOpen(false);
+                  }}
+                  className="h-11 w-full rounded-xl border border-[#d7e6da] px-3 text-sm text-gray-700"
+                >
+                  {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                    <option key={location.slug} value={location.slug}>
+                      {location.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <Link href="/fr" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">Français</Link>
               <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
                 <Link
@@ -346,8 +401,11 @@ export default function Page() {
                   url: "https://cacacanin.com/",
                   image: "https://cacacanin.com/images/cacacaninlogo.jpg",
                   logo: "https://cacacanin.com/images/cacacaninlogo.jpg",
-                  description: "Dog waste removal and pooper scooper service in Laval, Quebec.",
-                  areaServed: "Laval, QC",
+                  description: "Dog waste removal and pooper scooper service in Laval and select North Shore locations in Quebec.",
+                  areaServed: [
+                    { "@type": "City", name: "Laval" },
+                    { "@type": "AdministrativeArea", name: "North Shore, QC" }
+                  ],
                   address: {
                     "@type": "PostalAddress",
                     addressLocality: "Laval",
@@ -364,10 +422,16 @@ export default function Page() {
                   provider: {
                     "@id": "https://cacacanin.com/#business"
                   },
-                  areaServed: {
-                    "@type": "City",
-                    name: "Laval"
-                  },
+                  areaServed: [
+                    {
+                      "@type": "City",
+                      name: "Laval"
+                    },
+                    {
+                      "@type": "AdministrativeArea",
+                      name: "North Shore, QC"
+                    }
+                  ],
                   offers: {
                     "@type": "Offer",
                     availability: "https://schema.org/InStock"
@@ -403,12 +467,12 @@ export default function Page() {
               </div>
               <div className="text-center lg:text-left">
                 <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
-                  Laval
+                  Dog waste removal in
                   <br />
-                  <span className="text-brand-green">dog poop cleanup</span>
+                  <span className="text-brand-green">Laval and the North Shore</span>
                 </h1>
                 <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
-                  Stop stepping around dog waste every time you use the yard. Get a fast quote, clear pricing, and a simple local service that gets the mess off your weekend list.
+                  Get clear pricing, fast quotes, and regular dog poop cleanup across Laval and the North Shore. Choose your location, check availability, and stop letting the mess pile up.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
                 <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center lg:justify-start">
@@ -421,7 +485,7 @@ export default function Page() {
                       href="#quote-form"
                       data-cta="spring-quote"
                     >
-                      Check Availability in Laval
+                      Check Availability
                     </Link>
                   </Button>
                   <Button
@@ -457,7 +521,7 @@ export default function Page() {
                 </div>
                 <div className="mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
                   {[
-                    "Local Laval service",
+                    "Laval and North Shore service",
                     "Usually replies within 1 business day",
                     "Gate photo after each visit",
                   ].map((item) => (
@@ -537,7 +601,7 @@ export default function Page() {
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-1">
                 <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
-                  Why Laval Homeowners Call Us
+                  Why Homeowners Call Us
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
                 <Image
@@ -549,7 +613,7 @@ export default function Page() {
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
                 <p className="text-lg text-gray-700 mb-4">
-                  Ca-Ca Canin is for Laval homeowners who are tired of the smell, tired of the mess, and tired of spending their own time cleaning up after the dog.
+                  Ca-Ca Canin is for homeowners across Laval and the North Shore who are tired of the smell, tired of the mess, and tired of spending their own time cleaning up after the dog.
                 </p>
                 <p className="text-lg text-gray-700">
                   You get a local team, clear pricing, and a simple way to keep the yard ready for kids, guests, and everyday use.
@@ -568,6 +632,8 @@ export default function Page() {
             </div>
           </div>
         </section>
+
+        <BeforeAfterGallery locale="en" />
 
         {/* Residential Services */}
         <section id="services" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
@@ -598,7 +664,7 @@ export default function Page() {
                   </li>
                   <li className="flex items-start">
                     <CheckCircle2 className="w-6 h-6 text-brand-green mr-3 flex-shrink-0 mt-1" />
-                    <span>Book one-time or recurring cleanup with a local Laval service that actually shows up.</span>
+                    <span>Book one-time or recurring cleanup with a local service that actually shows up across Laval and the North Shore.</span>
                   </li>
                 </ul>
               </div>
@@ -616,384 +682,9 @@ export default function Page() {
           </div>
         </section>
 
-        {/* Pricing Calculator */}
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto scroll-animation">
-            <div className="text-center mb-10">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
-                Check Availability and See Your Price
-              </h2>
-              <p className="text-lg text-gray-600">
-                Pick your yard size, dog count, and schedule to get a real estimate and request service right away.
-              </p>
-            </div>
-
-            <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
-              {/* RESPONSIVE: keep the live price visible on mobile while users move between controls and the form fields. */}
-              {/* RESPONSIVE: keep the pricing controls stacked first on mobile, then promote the price panel beside them at tablet widths. */}
-              <div className="grid min-w-0 gap-6 md:grid-cols-3">
-                <div className="order-2 min-w-0 space-y-4 md:order-1 md:col-span-1">
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Frequency</p>
-                    <div className="space-y-2">
-                      <div className="flex min-w-0 flex-wrap gap-2">
-                        {[
-                          { key: 'weekly', label: 'Weekly' },
-                          { key: 'biweekly', label: 'Bi-Weekly' },
-                          { key: 'monthly', label: 'Monthly' },
-                        ].map((item) => (
-                          <button
-                            key={item.key}
-                            onClick={() => setFrequency(item.key as typeof frequency)}
-                            className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                              frequency === item.key
-                                ? 'bg-brand-green text-white border-brand-green shadow-md'
-                                : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                            }`}
-                            type="button"
-                          >
-                            {item.label}
-                          </button>
-                        ))}
-                      </div>
-                      <div className="flex min-w-0">
-                        <button
-                          onClick={() => setFrequency('onetime')}
-                          className={`min-h-[44px] min-w-0 w-full rounded-lg border px-3 py-2 text-sm font-semibold transition sm:w-auto ${
-                            frequency === 'onetime'
-                              ? 'bg-brand-green text-white border-brand-green shadow-md'
-                              : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                          }`}
-                          type="button"
-                        >
-                          One-Time
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Number of Dogs</p>
-                    <div className="flex min-w-0 flex-wrap gap-2">
-                      {[
-                        { key: '1', label: '1 Dog' },
-                        { key: '2', label: '2 Dogs' },
-                        { key: '3plus', label: '3+ Dogs' },
-                      ].map((item) => (
-                        <button
-                          key={item.key}
-                          onClick={() => setDogs(item.key as typeof dogs)}
-                          className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                            dogs === item.key
-                              ? 'bg-brand-green text-white border-brand-green shadow-md'
-                              : 'border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green'
-                          }`}
-                          type="button"
-                        >
-                          {item.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="yard-size" className="text-sm font-semibold text-gray-700 mb-2 block">
-                      Yard Size (sq ft)
-                    </label>
-                    <div className="space-y-2">
-                      <input
-                        id="yard-size"
-                        type="range"
-                        min={3000}
-                        max={10000}
-                        step={100}
-                        value={yardSqft}
-                        onChange={(e) => {
-                          const raw = Number(e.target.value);
-                          const snapped = Math.round(raw / 100) * 100;
-                          const clamped = Math.max(3000, Math.min(10000, snapped));
-                          setYardSqft(clamped);
-                        }}
-                        className="w-full accent-brand-green"
-                        required
-                      />
-                      <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
-                        <span className="font-semibold text-brand-green">
-                          {yardSqft >= 10000 ? '10,000+ sq ft' : `${yardSqft.toLocaleString()} sq ft`}
-                        </span>
-                        <span
-                          className="inline-flex max-w-full rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
-                        >
-                          {yardOptions.find((o) => o.key === yardCategory)?.label} · {yardOptions.find((o) => o.key === yardCategory)?.detail}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="order-1 min-w-0 md:order-2 md:col-span-2">
-                  <div className="mx-auto min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
-                    <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                      {frequency === 'onetime' ? 'Estimated Visit' : 'Estimated Per-Visit'}
-                    </p>
-                    <p className="mb-2 text-2xl font-extrabold tabular-nums text-gray-900 sm:text-3xl">
-                      {frequency === 'onetime'
-                        ? `${formatMoney(displayPrice)} / first 30 mins`
-                        : `${formatMoney(displayPrice)}/visit`}
-                    </p>
-                    <div className="mt-3 min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:text-left">
-                      {frequency !== 'onetime' ? (
-                        <div className="space-y-1">
-                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                            Estimated monthly total
-                          </p>
-                          <p className="text-2xl font-extrabold tabular-nums text-brand-green sm:text-4xl">
-                            {formatMoney(monthlyTotal)}
-                            <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
-                          </p>
-                        </div>
-                      ) : (
-                        <div className="space-y-1">
-                          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                            Time-based pricing
-                          </p>
-                          <p className="text-sm text-gray-600">
-                            +$5 per additional 5-minute block after the first 30 minutes.
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                    <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
-                      {pricingDetails.note}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
-                  <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    This is the fastest way to see if the service fits your budget and lock in your next step. Final pricing is confirmed after we review your request.
-                  </div>
-
-                  <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
-                    {bookingStatus !== 'success' && (
-                      <>
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">1</span>
-                        Check service area
-                      </div>
-                      <div className="space-y-1">
-                        <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">
-                          Postal code
-                        </label>
-                        <input
-                          id="postal-code"
-                          type="text"
-                          name="postalCode"
-                          placeholder="H7A 1A1"
-                          value={postalCode}
-                          onChange={(e) => {
-                            setPostalCode(e.target.value);
-                            setPostalStatus('idle');
-                            setConsentError('');
-                          }}
-                          autoComplete="postal-code"
-                          inputMode="text"
-                          className="w-full rounded-lg border border-gray-300 px-3 py-2 uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
-                          required
-                        />
-                      </div>
-                      <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
-                        <label className="flex items-start gap-3 text-sm text-gray-700">
-                          <input
-                            type="checkbox"
-                            checked={consentChecked}
-                            onChange={(e) => {
-                              const checked = e.target.checked;
-                              setConsentChecked(checked);
-                              setConsentError('');
-                              if (!checked) {
-                                setPostalStatus('idle');
-                              }
-                            }}
-                            className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-green focus:ring-brand-green"
-                          />
-                          <span>
-                            I agree to the{" "}
-                            <Link href="/terms" className="font-semibold text-brand-green hover:underline">
-                              Terms
-                            </Link>{" "}
-                            and{" "}
-                            <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
-                              Privacy Policy
-                            </Link>{" "}
-                            and allow Ca-Ca Canin to contact me about my quote request.
-                          </span>
-                        </label>
-                        {consentError && (
-                          <p className="mt-2 text-sm text-red-600" role="alert">
-                            {consentError}
-                          </p>
-                        )}
-                      </div>
-                      <Button
-                        type="button"
-                        className="w-full bg-brand-green text-white hover:bg-brand-green-dark"
-                        onClick={handlePostalCodeCheck}
-                      >
-                        Check availability
-                      </Button>
-                      {postalStatus === 'valid' && (
-                        <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          We service that Laval postal code. Continue to step 2.
-                        </div>
-                      )}
-                      {postalStatus === 'invalid' && (
-                        <div className="text-sm text-red-600" role="status" aria-live="polite">
-                          {postalCode && !isCanadianPostalCode(postalCode)
-                            ? 'Please enter a valid Canadian postal code.'
-                            : <>Sorry, we currently only serve Laval, QC. We don&apos;t service your location? <Link href="/contact" className="font-semibold underline">Reach out to us</Link>.</>}
-                        </div>
-                      )}
-                    </div>
-
-                    {postalStatus === 'valid' && (
-                      <>
-                        <div className="space-y-3 border-t border-gray-200 pt-4">
-                          <div className="hidden" aria-hidden="true">
-                            <label htmlFor="website-field">Leave this field empty</label>
-                            <input
-                              id="website-field"
-                              type="text"
-                              name="website"
-                              tabIndex={-1}
-                              autoComplete="off"
-                              value={websiteField}
-                              onChange={(e) => setWebsiteField(e.target.value)}
-                            />
-                          </div>
-                          <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
-                            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
-                            Your contact information
-                          </div>
-                        {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
-                        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-                            <div className="space-y-1">
-                              <label htmlFor="name" className="text-sm font-semibold text-gray-700">
-                                Name
-                              </label>
-                              <input
-                                id="name"
-                                type="text"
-                                name="name"
-                                placeholder="Jane Doe"
-                                value={name}
-                                onChange={(e) => setName(e.target.value)}
-                                autoComplete="name"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <label htmlFor="phone" className="text-sm font-semibold text-gray-700">
-                                Phone number
-                              </label>
-                              <input
-                                id="phone"
-                                type="tel"
-                                name="phone"
-                                placeholder="438 880 8922"
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                                autoComplete="tel"
-                                inputMode="tel"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                            <div className="space-y-1">
-                              <label htmlFor="email" className="text-sm font-semibold text-gray-700">
-                                Email
-                              </label>
-                              <input
-                                id="email"
-                                type="email"
-                                name="email"
-                                placeholder="you@email.com"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                autoComplete="email"
-                                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
-                                required
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <Button
-                          type="submit"
-                          className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3"
-                          disabled={bookingStatus === 'loading'}
-                        >
-                          {bookingStatus === 'loading' ? 'Sending...' : 'Get My Quote'}
-                        </Button>
-                        {bookingMessage && (
-                          <div
-                            className="text-sm text-red-600"
-                            role="status"
-                            aria-live="polite"
-                          >
-                            {bookingMessage}
-                          </div>
-                        )}
-                        <p className="text-xs text-gray-500">
-                          We usually reply within 1 business day.
-                        </p>
-                      </>
-                    )}
-                      </>
-                    )}
-                    {bookingStatus === 'success' && (
-                      <div id="quote-thank-you" ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
-                        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your quote request is in.</h3>
-                        <p className="mt-3 text-base text-gray-600">
-                          You are one step closer to a clean yard. We will follow up shortly, usually within 1 business day.
-                        </p>
-                        <p className="mt-2 text-sm text-gray-600">
-                          Didn&apos;t receive it? Check your junk folder.
-                        </p>
-                        <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
-                      </div>
-                    )}
-                    {/* RESPONSIVE: keep the mobile estimate below the form steps so the flow stays linear on smaller screens. */}
-                    {bookingStatus !== 'success' && (
-                    <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
-                      <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                        {frequency === 'onetime' ? 'Estimated Visit' : 'Live Price'}
-                      </p>
-                      <div className="mt-2 flex items-end justify-between gap-3">
-                        <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
-                          {frequency === 'onetime'
-                            ? `${formatMoney(displayPrice)}+`
-                            : `${formatMoney(displayPrice)}/visit`}
-                        </p>
-                        {frequency !== 'onetime' && (
-                          <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
-                            {formatMoney(monthlyTotal)}/month
-                          </p>
-                        )}
-                      </div>
-                      {frequency === 'onetime' && (
-                        <p className="mt-2 text-sm text-gray-600">
-                          +$5 every additional 5 minutes after the first 30 minutes.
-                        </p>
-                      )}
-                    </div>
-                    )}
-                  </form>
-                </div>
-              </div>
-            </div>
+            <RegularServiceCalculator locale="en" />
 
             <Link
               href="/spring-cleanup#quote-form"
@@ -1016,7 +707,7 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
-                Why Laval Homeowners Stick With Us
+                Why Homeowners Stick With Us
               </h2>
               <p className="text-xl text-gray-600">
                 Built for homeowners who want the smell gone, the mess gone, and one less thing to worry about.
@@ -1056,23 +747,39 @@ export default function Page() {
                 Service Area
               </h2>
               <p className="text-xl text-gray-600">
-                Serving Laval neighborhoods that actually need this done.
+                Regular dog poop cleanup is now available across Laval and the same North Shore cities already served for spring cleanup: Blainville, Boisbriand, Bois-des-Filion, Deux-Montagnes, Lorraine, Mirabel, Oka, Pointe-Calumet, Rosemère, Saint-Eustache, Saint-Joseph-du-Lac, Sainte-Anne-des-Plaines, Sainte-Marthe-sur-le-Lac, and Sainte-Thérèse.
               </p>
             </div>
-            <div className="max-w-2xl mx-auto scroll-animation scroll-delay-1">
+            <div className="max-w-3xl mx-auto scroll-animation">
               <Card className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader className="text-center">
                   <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-[1.5rem] border border-brand-green/15 bg-[#eef7f0]">
                     <MapPin className="h-8 w-8 text-brand-green" />
                   </div>
-                  <CardTitle className="text-2xl">Laval, QC</CardTitle>
+                  <CardTitle className="text-2xl">Browse served locations</CardTitle>
+                  <CardDescription className="text-base leading-7 text-gray-600">
+                    Choose a city to open its local regular-service page and confirm that the area is now covered.
+                  </CardDescription>
                 </CardHeader>
-                <CardContent className="text-center">
-                  <p className="text-lg text-gray-700 mb-4">
-                    Same local service. Cleaner yard. Less hassle.
-                  </p>
-                  <p className="text-gray-600">
-                    Recurring and one-time cleanup for Laval homeowners who want the job handled properly.
+                <CardContent className="space-y-4">
+                  <div className="grid gap-4 md:grid-cols-[1fr_auto]">
+                    <select
+                      value={selectedServiceLocation}
+                      onChange={(e) => setSelectedServiceLocation(e.target.value)}
+                      className="h-12 rounded-xl border border-[#d7e6da] px-4 text-base text-gray-900"
+                    >
+                      {REGULAR_SERVICE_LOCATIONS.map((location) => (
+                        <option key={location.slug} value={location.slug}>
+                          {location.name}, QC
+                        </option>
+                      ))}
+                    </select>
+                    <Button className="h-12 bg-brand-green text-white hover:bg-brand-green-dark" asChild>
+                      <Link href={`/dog-poop-cleanup/${selectedServiceLocation}`}>View local page</Link>
+                    </Button>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Currently serving {REGULAR_SERVICE_LOCATIONS.map((location) => location.name).join(", ")}.
                   </p>
                 </CardContent>
               </Card>
@@ -1094,7 +801,7 @@ export default function Page() {
             <div className="space-y-4">
               {[
                 { q: "Do you clean the whole yard?", a: "Yes. We clean the areas of your property where dog waste is present, including front, back, and side yards, plus dog runs and similar spaces." },
-                { q: "Do you offer service year-round?", a: "Yes. Ca-Ca Canin offers dog waste removal service in Laval throughout the year, including winter conditions when cleanup is still accessible." },
+                { q: "Do you offer service year-round?", a: "Yes. Ca-Ca Canin offers dog waste removal service throughout Laval and the served North Shore cities year-round, including winter conditions when cleanup is still accessible." },
                 { q: "How is pricing calculated?", a: "Pricing depends on yard size, service frequency, and the number of dogs. Use the calculator for an estimate, then request a quote for final pricing." },
                 { q: "Do I need a contract?", a: "No. You can start, pause, or cancel service by contacting our team." },
                 { q: "What happens after each visit?", a: "You receive service confirmation, and we can provide a gate photo after the visit." },

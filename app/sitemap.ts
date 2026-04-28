@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area";
 import { SPRING_CLEANUP_LOCATIONS } from "@/lib/spring-cleanup-service-area";
 
 const siteUrl = "https://cacacanin.com";
@@ -11,6 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/fr/contact",
     "/spring-cleanup",
     "/fr/nettoyage-printemps",
+    "/dog-poop-cleanup",
+    "/fr/ramassage-dejections",
     "/terms",
     "/fr/terms",
     "/privacy",
@@ -36,5 +39,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
-  return [...staticEntries, ...locationEntries];
+  const regularServiceEntries = REGULAR_SERVICE_LOCATIONS.flatMap((location) => [
+    {
+      url: `${siteUrl}/dog-poop-cleanup/${location.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+    {
+      url: `${siteUrl}/fr/ramassage-dejections/${location.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.7,
+    },
+  ]);
+
+  return [...staticEntries, ...locationEntries, ...regularServiceEntries];
 }
