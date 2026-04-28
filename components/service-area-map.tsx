@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
-import Map, { Source, Layer, type MapRef, type MapLayerMouseEvent } from 'react-map-gl/mapbox'
+import Map, { Source, Layer, type MapRef, type MapMouseEvent } from 'react-map-gl/mapbox'
 import 'mapbox-gl/dist/mapbox-gl.css'
 import { Montserrat } from 'next/font/google'
 import geoData from '@/lib/quebec-municipalities.json'
@@ -60,7 +60,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
     }),
   }), [])
 
-  const onMouseMove = useCallback((e: MapLayerMouseEvent) => {
+  const onMouseMove = useCallback((e: MapMouseEvent) => {
     const map = mapRef.current?.getMap()
     if (!map) return
     const features = map.queryRenderedFeatures(e.point, { layers: ['muni-fill'] })
@@ -96,7 +96,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
     setCursor('grab')
   }, [])
 
-  const onClick = useCallback((e: MapLayerMouseEvent) => {
+  const onClick = useCallback((e: MapMouseEvent) => {
     const map = mapRef.current?.getMap()
     if (!map) return
     const features = map.queryRenderedFeatures(e.point, { layers: ['muni-fill'] })
