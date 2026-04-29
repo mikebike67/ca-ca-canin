@@ -127,13 +127,13 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
           id={`contact-thank-you-${locale}`}
           ref={thankYouRef}
           tabIndex={-1}
-          className="rounded-2xl border border-[#307944]/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
+          className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
         >
-          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#307944]">{copy.thankYouEyebrow}</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">{copy.thankYouEyebrow}</p>
           <h3 className="mt-2 text-2xl font-bold text-gray-900">{copy.thankYouTitle}</h3>
           <p className="mt-3 text-base text-gray-600">{copy.thankYouBody}</p>
           <p className="mt-2 text-sm text-gray-600">{copy.thankYouFoot}</p>
-          <p className="mt-4 text-sm text-[#307944]">{statusMessage}</p>
+          <p className="mt-4 text-sm text-brand-green">{statusMessage}</p>
         </div>
       ) : (
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -161,7 +161,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
                 value={name}
                 onChange={(event) => setName(event.target.value)}
                 autoComplete="name"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#307944]"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
                 required
               />
             </div>
@@ -176,7 +176,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
                 autoComplete="email"
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#307944]"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
                 required
               />
             </div>
@@ -192,7 +192,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
               value={phone}
               onChange={(event) => setPhone(event.target.value)}
               autoComplete="tel"
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#307944]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
               required
             />
           </div>
@@ -206,7 +206,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
               value={message}
               onChange={(event) => setMessage(event.target.value)}
               rows={6}
-              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#307944]"
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-brand-green"
               required
             />
           </div>
@@ -221,28 +221,28 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
                   setConsentChecked(checked);
                   setConsentError("");
                 }}
-                className="mt-1 h-4 w-4 rounded border-gray-300 text-[#307944] focus:ring-[#307944]"
+                className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-green focus:ring-brand-green"
               />
               <span>
                 {copy.consent.split("Terms")[0]}
                 {isFrench ? (
                   <>
-                    <Link href="/fr/terms" className="font-semibold text-[#307944] hover:underline">
+                    <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
                       conditions
                     </Link>{" "}
                     et la{" "}
-                    <Link href="/fr/privacy" className="font-semibold text-[#307944] hover:underline">
+                    <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
                       politique de confidentialite
                     </Link>{" "}
                     et j'autorise Ca-Ca Canin a me contacter au sujet de ma demande.
                   </>
                 ) : (
                   <>
-                    <Link href="/terms" className="font-semibold text-[#307944] hover:underline">
+                    <Link href="/terms" className="font-semibold text-brand-green hover:underline">
                       Terms
                     </Link>{" "}
                     and{" "}
-                    <Link href="/privacy" className="font-semibold text-[#307944] hover:underline">
+                    <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
                       Privacy Policy
                     </Link>{" "}
                     and allow Ca-Ca Canin to contact me about my request.
@@ -255,7 +255,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
 
           <Button
             type="submit"
-            className="w-full rounded-full bg-[#307944] px-6 py-3 text-white hover:bg-[#256336]"
+            className="w-full rounded-full bg-brand-green px-6 py-3 text-white hover:bg-brand-green-dark"
             disabled={status === "loading"}
           >
             {status === "loading" ? copy.sending : copy.submit}

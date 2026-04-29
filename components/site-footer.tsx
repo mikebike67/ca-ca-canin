@@ -4,10 +4,9 @@ import { Mail, MapPin, Phone } from "lucide-react";
 
 type SiteFooterProps = {
   locale?: "en" | "fr";
-  isHome?: boolean;
 };
 
-export default function SiteFooter({ locale = "en", isHome = false }: SiteFooterProps) {
+export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
   const copy = {
     en: {
       description: "Dog waste removal in Laval and spring cleanup across Laval plus select North Shore locations.",
@@ -19,8 +18,8 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
       ],
       aboutHeading: "About",
       about: [
-        { href: isHome ? "#about" : "/#about", label: "About" },
-        { href: isHome ? "#faq" : "/#faq", label: "FAQ" },
+        { href: "/about", label: "About" },
+        { href: "/faq", label: "FAQ" },
         { href: "/contact", label: "Contact" },
       ],
       contactHeading: "Contact",
@@ -51,8 +50,8 @@ export default function SiteFooter({ locale = "en", isHome = false }: SiteFooter
       ],
       aboutHeading: "À propos",
       about: [
-        { href: isHome ? "#about" : "/fr#about", label: "À propos" },
-        { href: isHome ? "#faq" : "/fr#faq", label: "FAQ" },
+        { href: "/fr/a-propos", label: "À propos" },
+        { href: "/fr/faq", label: "FAQ" },
         { href: "/fr/contact", label: "Contact" },
       ],
       contactHeading: "Nous joindre",

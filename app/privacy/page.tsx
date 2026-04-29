@@ -32,7 +32,7 @@ export default function PrivacyPage() {
       <div className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
         <div className="mb-10 border-b border-[#d7e6da] pb-6">
-          <Link href="/" className="text-sm font-semibold text-[#307944] hover:underline">
+          <Link href="/" className="text-sm font-semibold text-brand-green hover:underline">
             Back to home
           </Link>
           <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl">

@@ -401,25 +401,6 @@ export default function RegularServiceLocationPage({
         {isFrench ? "Passer au contenu" : "Skip to content"}
       </a>
 
-      <style jsx global>{`
-        html { scroll-behavior: smooth; scroll-padding-top: 1.5rem; }
-        main[id], main [id] { scroll-margin-top: 1.5rem; }
-        :root {
-          --brand-green: #307944;
-          --brand-green-dark: #307944;
-          --brand-brown: #724420;
-        }
-        .scroll-animation {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-        .scroll-animation.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
       <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
         <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">

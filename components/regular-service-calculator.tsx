@@ -239,7 +239,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
             <div>
               <p className="text-sm font-semibold text-gray-700 mb-2">{isFrench ? "Fréquence" : "Frequency"}</p>
               {isFrench ? (
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                   {[
                     { key: "weekly", label: "Hebdomadaire" },
                     { key: "biweekly", label: "Aux deux semaines" },

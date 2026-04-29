@@ -11,6 +11,7 @@ import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Camera, MapPin, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
+import SiteHeader from "@/components/site-header"
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -38,7 +39,6 @@ const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 export default function SpringCleanupPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<ServiceFrequency>('onetime');
   const [dogs, setDogs] = useState<DogCount>('1');
   const [yardSqft, setYardSqft] = useState(3000);
@@ -226,99 +226,7 @@ export default function SpringCleanupPage() {
       >
         Skip to content
       </a>
-      <style jsx global>{`
-        html {
-          scroll-behavior: smooth;
-          scroll-padding-top: 1.5rem;
-        }
-
-        main[id],
-        main [id] {
-          scroll-margin-top: 1.5rem;
-        }
-
-        :root {
-          --brand-green: #307944;
-          --brand-green-dark: #307944;
-          --brand-green-light: #307944;
-          --brand-green-lighter: #307944;
-          --brand-brown: #724420;
-          --brand-brown-light: #8b5a3c;
-        }
-
-        .scroll-animation {
-          opacity: 0;
-          transform: translateY(30px);
-          transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .scroll-animation.animate-in {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      `}</style>
-
-      {/* RESPONSIVE: keep the sticky header compact and readable on narrow screens without changing the desktop layout. */}
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-gray-200 bg-white shadow-sm">
-        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Primary">
-          <div className="flex items-center justify-between h-16">
-            <Link href="/" className="flex min-w-0 items-center space-x-3">
-              <Image
-                src="/images/cacacaninlogo.jpg"
-                alt="Ca-Ca Canin logo"
-                width={40}
-                height={40}
-                className="h-10 w-10"
-              />
-              <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
-                CA-CA CANIN
-              </span>
-            </Link>
-
-            <div className="hidden md:flex items-center space-x-8">
-              <Link href="#how-it-works" className="text-gray-700 hover:text-brand-green transition-colors">How it works</Link>
-              <Link href="#quote-form" className="text-gray-700 hover:text-brand-green transition-colors">Pricing</Link>
-              <Link href="#faq" className="text-gray-700 hover:text-brand-green transition-colors">FAQ</Link>
-              <Link href="/contact" className="text-gray-700 hover:text-brand-green transition-colors">Contact</Link>
-              <Link href="/fr/nettoyage-printemps" className="text-brand-brown hover:text-brand-brown/80 transition-colors">Français</Link>
-              <Button size="lg" className="bg-brand-green hover:bg-brand-green-dark text-white" asChild>
-                <Link href="#quote-form" data-cta="spring-quote">
-                  Get a Free Quote
-                </Link>
-              </Button>
-            </div>
-
-            {/* RESPONSIVE: enlarge the mobile menu trigger to a comfortable 44px touch target. */}
-            <button
-              className="md:hidden rounded-lg p-3"
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              aria-label="Toggle navigation menu"
-              aria-expanded={isMenuOpen}
-              aria-controls="mobile-nav"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-
-          {/* RESPONSIVE: add spacing and tap area so mobile navigation is easy to use on 320px screens. */}
-          {isMenuOpen && (
-            <div id="mobile-nav" className="space-y-2 border-t border-gray-200 py-4 md:hidden">
-              <Link href="#how-it-works" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">How it works</Link>
-              <Link href="#quote-form" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Pricing</Link>
-              <Link href="#faq" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">FAQ</Link>
-              <Link href="/contact" className="block rounded-md py-2 text-gray-700 hover:text-brand-green">Contact</Link>
-              <Link href="/fr/nettoyage-printemps" className="block rounded-md py-2 text-brand-brown hover:text-brand-brown/80">Français</Link>
-              <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
-                <Link href="#quote-form" data-cta="spring-quote">
-                  Get a Free Quote
-                </Link>
-              </Button>
-            </div>
-          )}
-        </nav>
-      </header>
+      <SiteHeader locale="en" altHref="/fr/nettoyage-printemps" ctaLabel="Get a Free Quote" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-16">
         <script
@@ -969,6 +877,22 @@ export default function SpringCleanupPage() {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+        {/* Cross-link to recurring service */}
+        <section className="bg-[#eef7f0] px-4 py-12 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-brand-green">Year-round service</p>
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">Looking for regular dog waste removal?</h2>
+            <p className="mb-6 text-gray-600">
+              After your spring reset, keep the yard clean week after week with our recurring pooper scooper service.
+            </p>
+            <Link
+              href="/dog-poop-cleanup#quote-form"
+              className="inline-flex items-center rounded-full bg-brand-green px-7 py-3 font-semibold text-white hover:bg-brand-green-dark transition-colors"
+            >
+              See regular service →
+            </Link>
           </div>
         </section>
       </main>

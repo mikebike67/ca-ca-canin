@@ -10,6 +10,7 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  transpilePackages: ['react-map-gl', 'mapbox-gl'],
 };
 
 export default nextConfig;

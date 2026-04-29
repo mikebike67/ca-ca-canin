@@ -3,7 +3,6 @@
 import { useState, useCallback, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Map, { Source, Layer, type MapRef, type MapMouseEvent } from 'react-map-gl/mapbox'
-import 'mapbox-gl/dist/mapbox-gl.css'
 import { Montserrat } from 'next/font/google'
 import geoData from '@/lib/quebec-municipalities.json'
 
@@ -127,7 +126,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
         {/* Hover info bar */}
         <div className="mb-3 flex h-10 items-center justify-center">
           {hoveredName ? (
-            <div className="flex items-center gap-2 rounded-full bg-[#307944] px-5 py-2 text-sm font-semibold text-white shadow-md transition-all">
+            <div className="flex items-center gap-2 rounded-full bg-brand-green px-5 py-2 text-sm font-semibold text-white shadow-md transition-all">
               <span>{hoveredName}</span>
               <span className="opacity-50">—</span>
               <span className="opacity-75">
@@ -212,7 +211,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
 
         <div className="mt-4 flex flex-wrap items-center justify-center gap-5 text-sm text-gray-400">
           <div className="flex items-center gap-2">
-            <div className="h-3 w-3 rounded-sm bg-[#307944] opacity-50" />
+            <div className="h-3 w-3 rounded-sm bg-brand-green opacity-50" />
             <span className="text-gray-500">{isFrench ? 'Zone desservie' : 'Service area'}</span>
           </div>
           <span>·</span>

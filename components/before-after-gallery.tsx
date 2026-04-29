@@ -118,7 +118,7 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
             </p>
           </div>
 
-          <div className="grid gap-3 grid-cols-2 sm:gap-4 lg:grid-cols-3">
+          <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
             {pairs.map((pair, index) => (
               <div
                 key={index}
@@ -156,7 +156,7 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
                       sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 17vw"
                       className="object-cover transition-transform duration-300 hover:scale-105"
                     />
-                    <div className="absolute left-0 right-0 top-0 bg-gradient-to-b from-[#307944]/80 to-transparent px-2 py-1.5">
+                    <div className="absolute left-0 right-0 top-0 bg-gradient-to-b from-brand-green/80 to-transparent px-2 py-1.5">
                       <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.18em] text-white">
                         {isFrench ? "Après" : "After"}
                       </span>

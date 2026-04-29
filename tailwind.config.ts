@@ -78,7 +78,7 @@ const config: Config = {
   			},
   			brand: {
   				green: '#307944',
-  				'green-dark': '#307944',
+  				'green-dark': '#265e36',
   				'green-light': '#307944',
   				'green-lighter': '#307944',
   				brown: '#724420',
