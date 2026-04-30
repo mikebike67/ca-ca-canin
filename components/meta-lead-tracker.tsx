@@ -1,12 +1,6 @@
 'use client'
 
-import { useEffect, useRef } from "react";
-
-declare global {
-  interface Window {
-    fbq?: (...args: unknown[]) => void;
-  }
-}
+import Script from "next/script";
 
 type MetaLeadTrackerProps = {
   contentName: string;
@@ -14,34 +8,43 @@ type MetaLeadTrackerProps = {
 };
 
 export default function MetaLeadTracker({ contentName, contentCategory }: MetaLeadTrackerProps) {
-  const trackedRef = useRef(false);
+  const eventKey = `lead:${contentCategory}:${contentName}`;
 
-  useEffect(() => {
-    if (trackedRef.current) return;
+  return (
+    <Script id="meta-lead-event" strategy="afterInteractive">
+      {`
+        (function() {
+          var eventKey = ${JSON.stringify(eventKey)};
+          var contentName = ${JSON.stringify(contentName)};
+          var contentCategory = ${JSON.stringify(contentCategory)};
+          var guardKey = "__cacacaninMetaLeadEvent";
+          var attempts = 0;
+          var maxAttempts = 40;
 
-    let attempts = 0;
-    const maxAttempts = 20;
+          window[guardKey] = window[guardKey] || {};
+          if (window[guardKey][eventKey]) return;
 
-    const trackLead = () => {
-      if (trackedRef.current) return;
+          function trackLead() {
+            if (window[guardKey][eventKey]) return;
 
-      if (window.fbq) {
-        trackedRef.current = true;
-        window.fbq("track", "Lead", {
-          content_name: contentName,
-          content_category: contentCategory,
-        });
-        return;
-      }
+            if (typeof window.fbq === "function") {
+              window[guardKey][eventKey] = true;
+              window.fbq("track", "Lead", {
+                content_name: contentName,
+                content_category: contentCategory
+              });
+              return;
+            }
 
-      attempts += 1;
-      if (attempts < maxAttempts) {
-        window.setTimeout(trackLead, 250);
-      }
-    };
+            attempts += 1;
+            if (attempts < maxAttempts) {
+              window.setTimeout(trackLead, 250);
+            }
+          }
 
-    trackLead();
-  }, [contentCategory, contentName]);
-
-  return null;
+          trackLead();
+        })();
+      `}
+    </Script>
+  );
 }
