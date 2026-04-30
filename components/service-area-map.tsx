@@ -150,6 +150,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
             initialViewState={{ longitude: -73.92, latitude: 45.635, zoom: 9.5 }}
             style={{ width: '100%', height: '100%' }}
             mapStyle="mapbox://styles/mapbox/light-v11"
+            projection="mercator"
             onMouseMove={onMouseMove}
             onMouseLeave={onMouseLeave}
             onClick={onClick}
