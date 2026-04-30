@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { CheckCircle2 } from "lucide-react";
 import LegalPageShell from "@/components/legal-page-shell";
-import MetaLeadTracker from "@/components/meta-lead-tracker";
 
 const leadTypes = {
   contact: {
@@ -75,7 +74,6 @@ export default function ThankYouContent() {
 
   return (
     <LegalPageShell locale={locale}>
-      <MetaLeadTracker contentName={copy.label} contentCategory={type} />
       <div className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
         <section className="mx-auto max-w-3xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
           <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-[#eef7f0] text-brand-green">

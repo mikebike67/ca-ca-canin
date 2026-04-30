@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
+import MetaRouteEvents from "@/components/meta-route-events";
 import "./globals.css";
 
 const montserrat = Montserrat({ 
@@ -135,6 +137,9 @@ export default function RootLayout({
           />
         </noscript>
         {children}
+        <Suspense fallback={null}>
+          <MetaRouteEvents />
+        </Suspense>
       </body>
     </html>
   );
