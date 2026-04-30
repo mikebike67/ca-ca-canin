@@ -7,6 +7,7 @@ import BeforeAfterGallery from "@/components/before-after-gallery"
 import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
 import { Montserrat } from 'next/font/google'
@@ -38,7 +39,7 @@ const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 
 export default function SpringCleanupPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const [frequency, setFrequency] = useState<ServiceFrequency>('onetime');
   const [dogs, setDogs] = useState<DogCount>('1');
   const [yardSqft, setYardSqft] = useState(3000);
@@ -155,8 +156,6 @@ export default function SpringCleanupPage() {
         throw new Error(data.error || 'Failed to send confirmation.');
       }
 
-      setBookingStatus('success');
-      setBookingMessage('Confirmation email sent! We will follow up shortly.');
       setPostalCode('');
       setName('');
       setPhone('');
@@ -165,6 +164,7 @@ export default function SpringCleanupPage() {
       setConsentError('');
       setPostalStatus('idle');
       setWebsiteField('');
+      router.push('/thank-you?lang=en&type=spring');
     } catch (err: any) {
       setBookingStatus('error');
       setBookingMessage(err?.message || 'Something went wrong. Please try again.');
@@ -189,15 +189,6 @@ export default function SpringCleanupPage() {
 
     return () => observerRef.current?.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (bookingStatus !== 'success' || !quoteThankYouRef.current) return;
-
-    requestAnimationFrame(() => {
-      quoteThankYouRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      quoteThankYouRef.current?.focus();
-    });
-  }, [bookingStatus]);
 
   const faqItems = [
     {
@@ -612,7 +603,7 @@ export default function SpringCleanupPage() {
                       </>
                     )}
                     {bookingStatus === 'success' && (
-                      <div id="spring-quote-thank-you" ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
+                      <div id="spring-quote-thank-you" tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">Your spring cleanup request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">

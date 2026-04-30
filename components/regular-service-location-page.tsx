@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Montserrat } from "next/font/google";
 import {
   Bell,
@@ -90,6 +91,7 @@ export default function RegularServiceLocationPage({
   const altHref = isFrench ? `/dog-poop-cleanup/${location.slug}` : `/fr/ramassage-dejections/${location.slug}`;
   const legalHref = isFrench ? "/fr/terms" : "/terms";
   const privacyHref = isFrench ? "/fr/privacy" : "/privacy";
+  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [frequency, setFrequency] = useState<ServiceFrequency>("weekly");
@@ -107,7 +109,6 @@ export default function RegularServiceLocationPage({
   const [consentError, setConsentError] = useState("");
   const [websiteField, setWebsiteField] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
 
   const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
@@ -153,15 +154,6 @@ export default function RegularServiceLocationPage({
 
     return () => observerRef.current?.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (bookingStatus !== "success" || !quoteThankYouRef.current) return;
-
-    requestAnimationFrame(() => {
-      quoteThankYouRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      quoteThankYouRef.current?.focus();
-    });
-  }, [bookingStatus]);
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -243,12 +235,6 @@ export default function RegularServiceLocationPage({
         );
       }
 
-      setBookingStatus("success");
-      setBookingMessage(
-        isFrench
-          ? "Courriel de confirmation envoyé! Nous vous contacterons sous peu."
-          : "Confirmation email sent! We will follow up shortly.",
-      );
       setPostalCode("");
       setName("");
       setPhone("");
@@ -257,6 +243,7 @@ export default function RegularServiceLocationPage({
       setConsentError("");
       setPostalStatus("idle");
       setWebsiteField("");
+      router.push(`/thank-you?lang=${locale}&type=quote`);
     } catch (err: any) {
       setBookingStatus("error");
       setBookingMessage(

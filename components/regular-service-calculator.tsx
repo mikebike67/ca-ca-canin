@@ -1,7 +1,8 @@
 'use client'
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Montserrat } from "next/font/google";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -62,7 +63,7 @@ type RegularServiceCalculatorProps = {
 
 export default function RegularServiceCalculator({ locale }: RegularServiceCalculatorProps) {
   const isFrench = locale === "fr";
-  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const [frequency, setFrequency] = useState<ServiceFrequency>("weekly");
   const [dogs, setDogs] = useState<DogCount>("1");
   const [yardSqft, setYardSqft] = useState(3000);
@@ -108,15 +109,6 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [pricingDetails.perVisit]);
-
-  useEffect(() => {
-    if (bookingStatus !== "success" || !quoteThankYouRef.current) return;
-
-    requestAnimationFrame(() => {
-      quoteThankYouRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      quoteThankYouRef.current?.focus();
-    });
-  }, [bookingStatus]);
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -198,12 +190,6 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
         );
       }
 
-      setBookingStatus("success");
-      setBookingMessage(
-        isFrench
-          ? "Courriel de confirmation envoyé! Nous vous contacterons sous peu."
-          : "Confirmation email sent! We will follow up shortly.",
-      );
       setPostalCode("");
       setName("");
       setPhone("");
@@ -212,6 +198,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
       setConsentError("");
       setPostalStatus("idle");
       setWebsiteField("");
+      router.push(`/thank-you?lang=${locale}&type=quote`);
     } catch (err: any) {
       setBookingStatus("error");
       setBookingMessage(
@@ -602,7 +589,6 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
               {bookingStatus === "success" && (
                 <div
                   id={`quote-thank-you-${locale}`}
-                  ref={quoteThankYouRef}
                   tabIndex={-1}
                   className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
                 >

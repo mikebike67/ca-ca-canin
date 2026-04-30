@@ -1,7 +1,8 @@
 'use client'
 
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 
 type ContactFormProps = {
@@ -10,7 +11,7 @@ type ContactFormProps = {
 
 export default function ContactForm({ locale = "en" }: ContactFormProps) {
   const isFrench = locale === "fr";
-  const thankYouRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -65,15 +66,6 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
     setConsentError("");
   };
 
-  useEffect(() => {
-    if (status !== "success" || !thankYouRef.current) return;
-
-    requestAnimationFrame(() => {
-      thankYouRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      thankYouRef.current?.focus();
-    });
-  }, [status]);
-
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -106,9 +98,8 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
         throw new Error(data.error || copy.error);
       }
 
-      setStatus("success");
-      setStatusMessage(copy.success);
       resetForm();
+      router.push(`/thank-you?lang=${locale}&type=contact`);
     } catch (error: any) {
       setStatus("error");
       setStatusMessage(error?.message || copy.error);
@@ -125,7 +116,6 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
       {status === "success" ? (
         <div
           id={`contact-thank-you-${locale}`}
-          ref={thankYouRef}
           tabIndex={-1}
           className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
         >

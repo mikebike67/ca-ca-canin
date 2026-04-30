@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Montserrat } from "next/font/google";
 import {
   Camera,
@@ -68,6 +69,7 @@ export default function SpringCleanupLocationPage({
   location,
 }: SpringCleanupLocationPageProps) {
   const isFrench = locale === "fr";
+  const router = useRouter();
   const locationName = isFrench ? location.nameFr : location.name;
   const homeHref = isFrench ? "/fr" : "/";
   const baseHref = isFrench ? "/fr/nettoyage-printemps" : "/spring-cleanup";
@@ -90,7 +92,6 @@ export default function SpringCleanupLocationPage({
   const [consentError, setConsentError] = useState("");
   const [websiteField, setWebsiteField] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const quoteThankYouRef = useRef<HTMLDivElement | null>(null);
 
   const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
 
@@ -139,15 +140,6 @@ export default function SpringCleanupLocationPage({
 
     return () => observerRef.current?.disconnect();
   }, []);
-
-  useEffect(() => {
-    if (bookingStatus !== "success" || !quoteThankYouRef.current) return;
-
-    requestAnimationFrame(() => {
-      quoteThankYouRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      quoteThankYouRef.current?.focus();
-    });
-  }, [bookingStatus]);
 
   const handlePostalCodeCheck = () => {
     const normalized = normalizePostalCode(postalCode);
@@ -222,12 +214,6 @@ export default function SpringCleanupLocationPage({
         );
       }
 
-      setBookingStatus("success");
-      setBookingMessage(
-        isFrench
-          ? "Courriel de confirmation envoyé! Nous vous contacterons sous peu."
-          : "Confirmation email sent! We will follow up shortly.",
-      );
       setPostalCode("");
       setName("");
       setPhone("");
@@ -236,6 +222,7 @@ export default function SpringCleanupLocationPage({
       setConsentError("");
       setPostalStatus("idle");
       setWebsiteField("");
+      router.push(`/thank-you?lang=${locale}&type=spring`);
     } catch (err: any) {
       setBookingStatus("error");
       setBookingMessage(
@@ -775,7 +762,7 @@ export default function SpringCleanupLocationPage({
                     )}
 
                     {bookingStatus === "success" && (
-                      <div id={`spring-location-thank-you-${locale}-${location.slug}`} ref={quoteThankYouRef} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
+                      <div id={`spring-location-thank-you-${locale}-${location.slug}`} tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
                         <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">{isFrench ? "Merci" : "Thank you"}</p>
                         <h3 className="mt-2 text-2xl font-bold text-gray-900">{copy.thankYou}</h3>
                         <p className="mt-3 text-base text-gray-600">{copy.thankYouBody}</p>
