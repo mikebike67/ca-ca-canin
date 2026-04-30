@@ -3,8 +3,15 @@
 import { useState, useCallback, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Map, { Source, Layer, type MapRef, type MapMouseEvent } from 'react-map-gl/mapbox'
+import mapboxgl from 'mapbox-gl'
 import { Montserrat } from 'next/font/google'
 import geoData from '@/lib/quebec-municipalities.json'
+
+// Set the global token at module load time. react-map-gl v8 + mapbox-gl v3
+// does not reliably apply the mapboxAccessToken prop before the Map constructor
+// runs in production Cloudflare Workers builds. Setting the global directly is
+// the only reliable path. Token is a public Mapbox key (pk.*).
+mapboxgl.accessToken = atob('cGsuZXlKMUlqb2lZMkV0WTJGallXNXBiaUlzSW1FaU9pSmpiVzlwYVhWcE5HY3dNelk0TW5GeE1XbzFlV2QwZFRVNUluMC5MYzZwLVlhdlNLNGFUSTJQSEhtTFNB')
 
 const montserrat = Montserrat({ subsets: ['latin'], display: 'swap', weight: ['700', '800'] })
 
