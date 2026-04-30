@@ -121,8 +121,12 @@ export default function RootLayout({
             t.src=v;s=b.getElementsByTagName(e)[0];
             s.parentNode.insertBefore(t,s)}(window, document,'script',
             'https://connect.facebook.net/en_US/fbevents.js');
-            fbq('init', '2194469848018006');
-            fbq('track', 'PageView');
+            window.__cacacaninMetaPixel = window.__cacacaninMetaPixel || {};
+            if (!window.__cacacaninMetaPixel.pageViewTracked) {
+              window.__cacacaninMetaPixel.pageViewTracked = true;
+              fbq('init', '2194469848018006');
+              fbq('track', 'PageView');
+            }
           `}
         </Script>
       </head>

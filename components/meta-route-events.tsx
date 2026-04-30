@@ -6,6 +6,9 @@ import { usePathname, useSearchParams } from "next/navigation";
 declare global {
   interface Window {
     fbq?: (...args: unknown[]) => void;
+    __cacacaninMetaPixel?: {
+      pageViewTracked?: boolean;
+    };
     __cacacaninMetaLeadEvent?: Record<string, boolean>;
   }
 }
