@@ -131,15 +131,6 @@ export default function RootLayout({
         </Script>
       </head>
       <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{ display: "none" }}
-            src="https://www.facebook.com/tr?id=2194469848018006&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
         {children}
         <Suspense fallback={null}>
           <MetaRouteEvents />
