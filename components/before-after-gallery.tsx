@@ -1,16 +1,9 @@
 'use client'
 
 import Image from "next/image";
-import { Montserrat } from "next/font/google";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["700", "800"],
-  style: ["normal"],
-});
 
 const pairs = [
   {
@@ -65,6 +58,18 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
 
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const touchStartX = useRef<number | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("animate-in"); }),
+      { threshold: 0.1, rootMargin: "50px" }
+    );
+    section.querySelectorAll(".scroll-animation").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
 
   const prev = useCallback(() =>
     setActiveIndex((i) => (i === null ? null : (i - 1 + allImages.length) % allImages.length)),
@@ -105,10 +110,10 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
 
   return (
     <>
-      <section className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <section ref={sectionRef} className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
           <div className="mb-8 text-center scroll-animation">
-            <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>
+            <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>
               {isFrench ? "Avant et après" : "Before & after"}
             </h2>
             <p className="text-base text-gray-600 sm:text-lg">

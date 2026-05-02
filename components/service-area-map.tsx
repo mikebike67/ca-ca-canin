@@ -1,10 +1,10 @@
 'use client'
 
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { useState, useCallback, useRef, useMemo } from 'react'
 import { useRouter } from 'next/navigation'
 import Map, { Source, Layer, type MapRef, type MapMouseEvent } from 'react-map-gl/mapbox'
 import mapboxgl from 'mapbox-gl'
-import { Montserrat } from 'next/font/google'
 import geoData from '@/lib/quebec-municipalities.json'
 
 // Set the global token at module load time. react-map-gl v8 + mapbox-gl v3
@@ -13,7 +13,6 @@ import geoData from '@/lib/quebec-municipalities.json'
 // the only reliable path. Token is a public Mapbox key (pk.*).
 mapboxgl.accessToken = atob('cGsuZXlKMUlqb2lZMkV0WTJGallXNXBiaUlzSW1FaU9pSmpiVzlwYVhWcE5HY3dNelk0TW5GeE1XbzFlV2QwZFRVNUluMC5MYzZwLVlhdlNLNGFUSTJQSEhtTFNB')
 
-const montserrat = Montserrat({ subsets: ['latin'], display: 'swap', weight: ['700', '800'] })
 
 const SLUG_MAP: Record<string, string> = {
   'Laval': 'laval',
@@ -120,7 +119,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
       <div className="mx-auto max-w-5xl">
 
         <div className="mb-8 text-center">
-          <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>
+          <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>
             {isFrench ? 'Notre zone de service' : 'Our service area'}
           </h2>
           <p className="text-gray-500">

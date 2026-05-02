@@ -3,23 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
-import RegularServiceCalculator from "@/components/regular-service-calculator"
-import BeforeAfterGallery from "@/components/before-after-gallery"
-import ServiceAreaMap from "@/components/service-area-map"
+import dynamic from 'next/dynamic'
 import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area"
 import Link from "next/link"
 import Image from "next/image"
 import { useEffect, useRef } from "react"
-import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Heart, Camera, Bell, ClipboardCheck, MapPin, PawPrint, Smartphone } from 'lucide-react'
 import SiteHeader from "@/components/site-header"
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-  style: ['normal'],
-})
+const RegularServiceCalculator = dynamic(() => import('@/components/regular-service-calculator'), { ssr: false })
+const BeforeAfterGallery = dynamic(() => import('@/components/before-after-gallery'), { ssr: false })
+const ServiceAreaMap = dynamic(() => import('@/components/service-area-map'), { ssr: false })
 
 export default function RamassageDejectionsPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -63,7 +57,7 @@ export default function RamassageDejectionsPage() {
   }, []);
 
   return (
-    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
+    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
@@ -128,7 +122,7 @@ export default function RamassageDejectionsPage() {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
               Laval et Rive-Nord, QC
             </p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
+            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
               RAMASSAGE DE DÉJECTIONS CANINES À LAVAL ET SUR LA RIVE-NORD
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
@@ -185,7 +179,7 @@ export default function RamassageDejectionsPage() {
         <section id="how-it-works" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Comment ça fonctionne
               </h2>
               <p className="text-lg text-gray-600">
@@ -217,7 +211,7 @@ export default function RamassageDejectionsPage() {
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Ce que disent nos clients
               </h2>
               <p className="text-lg text-gray-600">
@@ -325,7 +319,7 @@ export default function RamassageDejectionsPage() {
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Pourquoi réserver le service régulier
               </h2>
               <p className="text-lg text-gray-600">
@@ -359,7 +353,7 @@ export default function RamassageDejectionsPage() {
         <section id="faq" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Questions fréquentes
               </h2>
               <p className="text-lg text-gray-600">

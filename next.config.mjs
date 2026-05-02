@@ -11,6 +11,9 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
   transpilePackages: ['react-map-gl', 'mapbox-gl'],
+  images: {
+    formats: ['image/avif', 'image/webp'],
+  },
 };
 
 export default nextConfig;

@@ -4,7 +4,6 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Montserrat } from "next/font/google";
 import {
   Camera,
   CheckCircle2,
@@ -21,12 +20,6 @@ import { BASE_PRICING, getYardCategory, isCanadianPostalCode, normalizePostalCod
 import type { SpringCleanupLocation } from "@/lib/spring-cleanup-service-area";
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal"],
-});
 
 const yardOptions = {
   en: [
@@ -406,7 +399,7 @@ export default function SpringCleanupLocationPage({
   ];
 
   return (
-    <div lang={isFrench ? "fr" : "en"} className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
+    <div lang={isFrench ? "fr" : "en"} className={`flex flex-col min-h-screen bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
@@ -418,7 +411,7 @@ export default function SpringCleanupLocationPage({
           <div className="flex h-16 items-center justify-between">
             <Link href={homeHref} className="flex min-w-0 items-center space-x-3">
               <Image src="/images/cacacaninlogo.jpg" alt={isFrench ? "Logo Ca-Ca Canin" : "Ca-Ca Canin logo"} width={40} height={40} className="h-10 w-10" />
-              <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>CA-CA CANIN</span>
+              <span className={`text-lg font-bold text-brand-green sm:text-2xl`}>CA-CA CANIN</span>
             </Link>
 
             <div className="hidden items-center space-x-8 md:flex">
@@ -530,7 +523,7 @@ export default function SpringCleanupLocationPage({
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-brand-brown">
               {copy.heroEyebrow}
             </p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
+            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
               {copy.heroTitle}
             </h1>
             <p className="mb-4 text-lg text-gray-600 sm:text-xl md:text-2xl">{copy.heroSubtitle}</p>
@@ -576,7 +569,7 @@ export default function SpringCleanupLocationPage({
         <section id="quote-form" className="scroll-mt-12 bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl scroll-animation">
             <div className="mb-8 text-center">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.pricingTitle}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.pricingTitle}</h2>
               <p className="text-lg text-gray-600">{copy.pricingSubtitle}</p>
             </div>
 
@@ -780,7 +773,7 @@ export default function SpringCleanupLocationPage({
         <section id="how-it-works" className="scroll-mt-12 bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.howItWorks.title}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.howItWorks.title}</h2>
               <p className="text-lg text-gray-600">{copy.howItWorks.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
@@ -804,7 +797,7 @@ export default function SpringCleanupLocationPage({
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>
                 {isFrench ? "Pourquoi les propriétaires réservent maintenant" : "Why homeowners book now"}
               </h2>
               <p className="text-lg text-gray-600">
@@ -912,7 +905,7 @@ export default function SpringCleanupLocationPage({
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{whyBookCopy.title}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{whyBookCopy.title}</h2>
               <p className="text-lg text-gray-600">{whyBookCopy.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
@@ -936,7 +929,7 @@ export default function SpringCleanupLocationPage({
         <section className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.serviceAreaTitle}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.serviceAreaTitle}</h2>
               <p className="text-lg text-gray-600">{copy.serviceAreaSubtitle}</p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -969,7 +962,7 @@ export default function SpringCleanupLocationPage({
         <section id="faq" className="scroll-mt-12 bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.faqTitle}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.faqTitle}</h2>
               <p className="text-lg text-gray-600">{copy.faqSubtitle}</p>
             </div>
             <div className="space-y-4">

@@ -53,6 +53,8 @@ export default function AboutPage() {
                 alt="Ca-Ca Canin team ready for a yard cleanup visit"
                 width={800}
                 height={600}
+                loading="lazy"
+                sizes="(min-width: 768px) 50vw, 100vw"
                 className="w-full h-auto"
               />
             </div>

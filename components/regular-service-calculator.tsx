@@ -1,7 +1,6 @@
 'use client'
 
 import { FormEvent, useEffect, useMemo, useState } from "react";
-import { Montserrat } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -18,12 +17,6 @@ import {
 import { isRegularServicePostalCode } from "@/lib/regular-service-area";
 import Link from "next/link";
 
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal"],
-});
 
 const yardOptions: Record<"en" | "fr", { key: YardCategory; label: string; detail: string }[]> = {
   en: [
@@ -210,7 +203,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
   return (
     <>
       <div className="text-center mb-10">
-        <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+        <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
           {isFrench ? "Vérifiez votre disponibilité et voyez votre prix" : "Check Availability and See Your Price"}
         </h2>
         <p className="text-lg text-gray-600">

@@ -3,22 +3,16 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
-import RegularServiceCalculator from "@/components/regular-service-calculator"
 import Link from "next/link"
 import Image from "next/image"
+import dynamic from 'next/dynamic'
 import { useEffect, useRef } from "react"
-import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText } from 'lucide-react'
-import BeforeAfterGallery from "@/components/before-after-gallery"
-import ServiceAreaMap from "@/components/service-area-map"
 import SiteHeader from "@/components/site-header"
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-  style: ['normal'],
-})
+const RegularServiceCalculator = dynamic(() => import('@/components/regular-service-calculator'), { ssr: false })
+const BeforeAfterGallery = dynamic(() => import('@/components/before-after-gallery'), { ssr: false })
+const ServiceAreaMap = dynamic(() => import('@/components/service-area-map'), { ssr: false })
 
 export default function Page() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -43,7 +37,7 @@ export default function Page() {
   }, []);
 
   return (
-    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
+    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
@@ -131,7 +125,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="text-center lg:text-left">
-                <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl ${montserrat.className}`}>
+                <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl`}>
                   Ramassage de déjections canines<br />
                   <span className="text-brand-green">à Laval et sur la Rive-Nord</span>
                 </h1>
@@ -227,7 +221,7 @@ export default function Page() {
         <section className="bg-white px-4 pb-16 pt-8 sm:px-6 sm:pt-0 lg:px-8">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                 Ce que vous évitez avec un service régulier
               </h2>
             </div>
@@ -284,7 +278,7 @@ export default function Page() {
             {/* RESPONSIVE: tighten stacked section spacing on mobile to reduce long scroll jumps. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-1">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
+                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
                   Pourquoi les propriétaires réservent sur Laval et la Rive-Nord
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
@@ -293,6 +287,7 @@ export default function Page() {
                   alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service"
                   width={1200}
                   height={900}
+                  loading="lazy"
                   sizes="(max-width: 767px) 100vw, 0px"
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
@@ -312,6 +307,7 @@ export default function Page() {
                   alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service"
                   width={1200}
                   height={900}
+                  loading="lazy"
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="rounded-lg shadow-lg w-full"
                 />
@@ -328,7 +324,7 @@ export default function Page() {
             {/* RESPONSIVE: keep the service image/text pair balanced as the layout collapses to one column. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
               <div className="scroll-animation order-2 md:order-2">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900 ${montserrat.className}`}>
+                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
                   Gardez votre cour propre sans le faire vous-même
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
@@ -337,6 +333,7 @@ export default function Page() {
                   alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité"
                   width={1200}
                   height={900}
+                  loading="lazy"
                   sizes="(max-width: 767px) 100vw, 0px"
                   className="mb-6 rounded-lg shadow-lg w-full md:hidden"
                 />
@@ -361,6 +358,7 @@ export default function Page() {
                   alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité"
                   width={1200}
                   height={900}
+                  loading="lazy"
                   sizes="(min-width: 768px) 50vw, 100vw"
                   className="rounded-lg shadow-lg w-full"
                 />
@@ -373,7 +371,7 @@ export default function Page() {
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                   Pourquoi les propriétaires restent avec nous
               </h2>
               <p className="text-xl text-gray-600">
@@ -413,7 +411,7 @@ export default function Page() {
         <section id="faq" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                 Questions que les propriétaires posent avant de réserver
               </h2>
               <p className="text-xl text-gray-600">

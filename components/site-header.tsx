@@ -6,14 +6,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
-import { Montserrat } from 'next/font/google'
 import { REGULAR_SERVICE_LOCATIONS } from '@/lib/regular-service-area'
-
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['700', '800'],
-})
 
 type Props = {
   locale: 'en' | 'fr'
@@ -64,7 +57,7 @@ export default function SiteHeader({
               height={40}
               className="h-10 w-10"
             />
-            <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>
+            <span className={`text-lg font-bold text-brand-green sm:text-2xl`}>
               CA-CA CANIN
             </span>
           </Link>

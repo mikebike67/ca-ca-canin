@@ -3,23 +3,17 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteFooter from "@/components/site-footer"
-import BeforeAfterGallery from "@/components/before-after-gallery"
+import dynamic from 'next/dynamic'
 import { calculateBookingPrice, getMonthlyVisits, getYardCategory, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency, type YardCategory } from "@/lib/booking"
 import { SPRING_CLEANUP_LOCATIONS, isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { FormEvent, useEffect, useMemo, useRef, useState } from "react"
-import { Montserrat } from 'next/font/google'
 import { CheckCircle2, Shield, Heart, Camera, MapPin, ClipboardCheck, Sparkles, PawPrint } from 'lucide-react'
 import SiteHeader from "@/components/site-header"
 
-const montserrat = Montserrat({
-  subsets: ['latin'],
-  display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
-  style: ['normal'],
-})
+const BeforeAfterGallery = dynamic(() => import('@/components/before-after-gallery'), { ssr: false })
 
 const yardOptions: { key: YardCategory; label: string; detail: string }[] = [
   { key: 'small', label: 'Standard / Petit', detail: '~1 000-3 000 pi²' },
@@ -210,7 +204,7 @@ export default function SpringCleanupFrenchPage() {
   ];
 
   return (
-    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900 ${montserrat.className}`}>
+    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
@@ -275,7 +269,7 @@ export default function SpringCleanupFrenchPage() {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
               Laval et Rive-Nord, QC
             </p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
+            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
               NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES POUR LAVAL ET LA RIVE-NORD
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
@@ -329,7 +323,7 @@ export default function SpringCleanupFrenchPage() {
         <section id="quote-form" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-8">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Vérifiez votre disponibilité et obtenez votre prix de printemps
               </h2>
               <p className="text-lg text-gray-600">
@@ -650,7 +644,7 @@ export default function SpringCleanupFrenchPage() {
         <section id="how-it-works" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Comment ça fonctionne
               </h2>
               <p className="text-lg text-gray-600">
@@ -682,7 +676,7 @@ export default function SpringCleanupFrenchPage() {
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Pourquoi les propriétaires réservent maintenant
               </h2>
               <p className="text-lg text-gray-600">
@@ -790,7 +784,7 @@ export default function SpringCleanupFrenchPage() {
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Pourquoi réserver votre nettoyage printanier avec Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
@@ -822,7 +816,7 @@ export default function SpringCleanupFrenchPage() {
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Zone de service
               </h2>
               <p className="text-lg text-gray-600">
@@ -849,7 +843,7 @@ export default function SpringCleanupFrenchPage() {
         <section id="faq" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900 ${montserrat.className}`}>
+              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 FAQ du nettoyage de printemps
               </h2>
               <p className="text-lg text-gray-600">

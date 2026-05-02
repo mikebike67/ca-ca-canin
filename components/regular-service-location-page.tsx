@@ -4,7 +4,6 @@ import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Montserrat } from "next/font/google";
 import {
   Bell,
   Camera,
@@ -35,13 +34,6 @@ import {
   REGULAR_SERVICE_LOCATIONS,
   type RegularServiceLocation,
 } from "@/lib/regular-service-area";
-
-const montserrat = Montserrat({
-  subsets: ["latin"],
-  display: "swap",
-  weight: ["400", "500", "600", "700", "800", "900"],
-  style: ["normal"],
-});
 
 const yardOptions = {
   en: [
@@ -380,7 +372,7 @@ export default function RegularServiceLocationPage({
   ];
 
   return (
-    <div lang={isFrench ? "fr" : "en"} className={`flex min-h-screen flex-col bg-white text-gray-900 ${montserrat.className}`}>
+    <div lang={isFrench ? "fr" : "en"} className={`flex min-h-screen flex-col bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
@@ -393,7 +385,7 @@ export default function RegularServiceLocationPage({
           <div className="flex h-16 items-center justify-between">
             <Link href={homeHref} className="flex min-w-0 items-center space-x-3">
               <Image src="/images/cacacaninlogo.jpg" alt={isFrench ? "Logo Ca-Ca Canin" : "Ca-Ca Canin logo"} width={40} height={40} className="h-10 w-10" />
-              <span className={`text-lg font-bold text-brand-green sm:text-2xl ${montserrat.className}`}>CA-CA CANIN</span>
+              <span className={`text-lg font-bold text-brand-green sm:text-2xl`}>CA-CA CANIN</span>
             </Link>
 
             <div className="hidden items-center space-x-6 md:flex">
@@ -494,7 +486,7 @@ export default function RegularServiceLocationPage({
               </ol>
             </nav>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-brand-brown">{copy.heroEyebrow}</p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl ${montserrat.className}`}>
+            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
               {copy.heroTitle}
             </h1>
             <p className="mb-4 text-lg text-gray-600 sm:text-xl md:text-2xl">{copy.heroSubtitle}</p>
@@ -530,7 +522,7 @@ export default function RegularServiceLocationPage({
         <section id="how-it-works" className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.howItWorks.title}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.howItWorks.title}</h2>
               <p className="text-lg text-gray-600">{copy.howItWorks.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
@@ -554,7 +546,7 @@ export default function RegularServiceLocationPage({
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{whyBookCopy.title}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{whyBookCopy.title}</h2>
               <p className="text-lg text-gray-600">{whyBookCopy.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
@@ -578,7 +570,7 @@ export default function RegularServiceLocationPage({
         <section id="faq" className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.faqTitle}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.faqTitle}</h2>
               <p className="text-lg text-gray-600">{copy.faqSubtitle}</p>
             </div>
             <div className="space-y-4">
@@ -599,7 +591,7 @@ export default function RegularServiceLocationPage({
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
             <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl ${montserrat.className}`}>{copy.relatedTitle}</h2>
+              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.relatedTitle}</h2>
               <p className="text-lg text-gray-600">{copy.relatedIntro}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
