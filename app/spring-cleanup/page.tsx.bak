@@ -16,22 +16,22 @@ import SiteHeader from "@/components/site-header"
 const BeforeAfterGallery = dynamic(() => import('@/components/before-after-gallery'), { ssr: false })
 
 const yardOptions: { key: YardCategory; label: string; detail: string }[] = [
-  { key: 'small', label: 'Standard / Petit', detail: '~1 000-3 000 pi²' },
-  { key: 'medium', label: 'Moyen', detail: '~3 000-6 000 pi²' },
-  { key: 'large', label: 'Grand', detail: '~6 000-10 000 pi²' },
-  { key: 'xlarge', label: 'Très grand', detail: '10 000+ pi²' },
+  { key: 'small', label: 'Standard / Small', detail: '~1,000-3,000 sq ft' },
+  { key: 'medium', label: 'Medium', detail: '~3,000-6,000 sq ft' },
+  { key: 'large', label: 'Large', detail: '~6,000-10,000 sq ft' },
+  { key: 'xlarge', label: 'X-Large', detail: '10,000+ sq ft' },
 ];
 
 const frequencyNotes: Record<ServiceFrequency, string> = {
-  weekly: "Idéal pour garder la cour propre après le grand nettoyage.",
-  biweekly: "Un bon équilibre entre entretien et coût.",
-  monthly: "Une option d'entretien plus léger.",
-  onetime: "Visite ponctuelle de nettoyage de printemps.",
+  weekly: "Best for ongoing cleanup after the initial reset.",
+  biweekly: "A practical balance of upkeep and cost.",
+  monthly: "A lighter maintenance option.",
+  onetime: "One-time spring cleanup visit.",
 };
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 
-export default function SpringCleanupFrenchPage() {
+export default function SpringCleanupPage() {
   const observerRef = useRef<IntersectionObserver | null>(null);
   const router = useRouter();
   const [frequency, setFrequency] = useState<ServiceFrequency>('onetime');
@@ -98,7 +98,7 @@ export default function SpringCleanupFrenchPage() {
     }
 
     if (!consentChecked) {
-      setConsentError("Veuillez accepter les conditions et la politique de confidentialité pour continuer.");
+      setConsentError('Please agree to the Terms and Privacy Policy to continue.');
       setPostalStatus('idle');
       return;
     }
@@ -111,7 +111,7 @@ export default function SpringCleanupFrenchPage() {
     e.preventDefault();
 
     if (!consentChecked) {
-      setConsentError("Veuillez accepter les conditions et la politique de confidentialité avant l'envoi.");
+      setConsentError('Please agree to the Terms and Privacy Policy before submitting.');
       return;
     }
 
@@ -137,7 +137,7 @@ export default function SpringCleanupFrenchPage() {
           consent: true,
           website: websiteField,
           source: 'spring-cleanup',
-          locale: 'fr',
+          locale: 'en',
           frequency,
           dogs,
           yardSqft,
@@ -147,7 +147,7 @@ export default function SpringCleanupFrenchPage() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        throw new Error(data.error || "Échec de l'envoi de la confirmation.");
+        throw new Error(data.error || 'Failed to send confirmation.');
       }
 
       setPostalCode('');
@@ -158,10 +158,10 @@ export default function SpringCleanupFrenchPage() {
       setConsentError('');
       setPostalStatus('idle');
       setWebsiteField('');
-      router.push('/thank-you?lang=fr&type=spring');
+      router.push('/thank-you?lang=en&type=spring');
     } catch (err: any) {
       setBookingStatus('error');
-      setBookingMessage(err?.message || "Une erreur s'est produite. Veuillez réessayer.");
+      setBookingMessage(err?.message || 'Something went wrong. Please try again.');
     }
   };
 
@@ -186,32 +186,32 @@ export default function SpringCleanupFrenchPage() {
 
   const faqItems = [
     {
-      q: "Qu'est-ce qui est inclus dans le nettoyage de printemps?",
-      a: "Un nettoyage complet de la cour pour enlever l'accumulation de l'hiver et rendre l'espace plus utilisable."
+      q: "What is included in the spring cleanup?",
+      a: "A full yard sweep to remove winter buildup and leave the property cleaner and ready to use."
     },
     {
-      q: "Le nettoyage commence vraiment à 60 $?",
-      a: "Oui. Le nettoyage de printemps est de 60 $ pour les 30 premières minutes, puis 5 $ pour chaque tranche additionnelle de 5 minutes. Nous arrondissons vers le bas, donc si le travail prend 54 minutes, il est facturé comme 50 minutes au lieu de 55."
+      q: "Is the spring cleanup really starting at $60?",
+      a: "Yes. Spring cleanup is $60 for the first 30 minutes, then $5 for every additional 5-minute increment. We round time down, so if the job takes 54 minutes, it is billed as 50 minutes instead of 55."
     },
     {
-      q: "Dois-je être sur place?",
-      a: "Non. Si nous avons accès au portail, nous pouvons faire le nettoyage et envoyer une confirmation après la visite."
+      q: "Do I need to be home?",
+      a: "No. If we have access to the gate, we can complete the cleanup and send confirmation after the visit."
     },
     {
-      q: "À quelle vitesse puis-je réserver?",
-      a: "Les places de printemps sont limitées et nous confirmons généralement les demandes en 1 jour ouvrable."
+      q: "How fast can I book?",
+      a: "Spring spots are limited, and we typically confirm requests within 1 business day."
     }
   ];
 
   return (
-    <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900`}>
+    <div className={`flex flex-col min-h-screen bg-white text-gray-900`}>
       <a
         href="#main-content"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 rounded-md bg-white px-3 py-2 text-sm font-semibold text-brand-brown shadow"
       >
-        Passer au contenu
+        Skip to content
       </a>
-      <SiteHeader locale="fr" altHref="/spring-cleanup" ctaLabel="Obtenir un devis gratuit" />
+      <SiteHeader locale="en" altHref="/fr/nettoyage-printemps" ctaLabel="Get a Free Quote" showAnnouncement />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-16">
         <script
@@ -222,13 +222,13 @@ export default function SpringCleanupFrenchPage() {
               "@graph": [
                 {
                   "@type": "Service",
-                  name: "Nettoyage printanier des dejections canines",
-                  serviceType: "Nettoyage printanier des dejections canines",
+                  name: "Spring dog poop cleanup",
+                  serviceType: "Spring dog poop cleanup",
                   provider: {
                     "@type": "LocalBusiness",
                     name: "Ca-Ca Canin",
                     telephone: "+1-438-880-8922",
-                    url: "https://cacacanin.com/fr/nettoyage-printemps",
+                    url: "https://cacacanin.com/spring-cleanup",
                   },
                   areaServed: [
                     "Laval, QC",
@@ -267,47 +267,47 @@ export default function SpringCleanupFrenchPage() {
         <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
-              Laval et Rive-Nord, QC
+              Laval and North Shore, QC
             </p>
             <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
-              NETTOYAGE PRINTANIER DES DÉJECTIONS CANINES POUR LAVAL ET LA RIVE-NORD
+              SPRING DOG POOP CLEANUP IN LAVAL AND THE NORTH SHORE
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              L'hiver a laissé votre cour dans un sale état. Réservez un nettoyage ponctuel à partir de 60 $ et récupérez votre espace sans le faire vous-même.
+              Winter left the yard a mess. Book a one-time cleanup starting at $60 and get the space usable again without doing it yourself.
             </p>
             {/* RESPONSIVE: keep hero actions full-width on phones for easier tapping. */}
             <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form" data-cta="spring-quote">
-                  Réserver mon nettoyage de printemps
+                  Book My Spring Cleanup
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#how-it-works">Comment ça fonctionne</Link>
+                <Link href="#how-it-works">How It Works</Link>
               </Button>
             </div>
             <p className="mt-4 text-sm font-semibold text-brand-green">
-              Les places de printemps sont limitées. La plupart des demandes sont confirmées en 1 jour ouvrable lorsqu’une place est ouverte.
+              Spring spots are limited. Most requests are confirmed within 1 business day when availability is open.
             </p>
             <ul className="mt-8 grid gap-3 text-left max-w-2xl mx-auto text-gray-700">
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Enlève l'accumulation de déjections de l'hiver
+                Clears winter dog waste buildup
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Rend la cour plus facile à réutiliser
+                Makes the yard easier to use again
               </li>
               <li className="flex items-start gap-3">
                 <CheckCircle2 className="h-5 w-5 text-brand-green mt-0.5" />
-                Nettoyage ponctuel avec tarification claire selon le temps
+                One-time cleanup with clear time-based pricing
               </li>
             </ul>
             <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
               {[
-                "À partir de 60 $",
-                "Aucun abonnement requis",
-                "Confirmation après le service",
+                "Starting at $60",
+                "No recurring plan required",
+                "Gate confirmation after service",
               ].map((item) => (
                 <div
                   key={item}
@@ -324,10 +324,10 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <div className="text-center mb-8">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                Vérifiez votre disponibilité et obtenez votre prix de printemps
+                Check Availability and Get Your Spring Cleanup Price
               </h2>
               <p className="text-lg text-gray-600">
-                Entrez vos détails, voyez le prix de départ et demandez votre nettoyage avant que la prochaine place de printemps disparaisse.
+                Enter your details, see the starting price, and request your cleanup before the next spring slot is gone.
               </p>
             </div>
 
@@ -337,19 +337,19 @@ export default function SpringCleanupFrenchPage() {
               <div className="grid gap-6 md:grid-cols-3">
                 <div className="space-y-4 md:col-span-1">
                   <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Fréquence</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Frequency</p>
                     <div className="rounded-lg border border-brand-green bg-brand-green px-3 py-2 text-sm font-semibold text-white shadow-md">
-                      Nettoyage de printemps ponctuel
+                      One-Time Spring Cleanup
                     </div>
                   </div>
 
                   <div>
-                    <p className="text-sm font-semibold text-gray-700 mb-2">Nombre de chiens</p>
+                    <p className="text-sm font-semibold text-gray-700 mb-2">Number of Dogs</p>
                     <div className="flex flex-wrap gap-2">
                       {[
-                        { key: '1', label: '1 chien' },
-                        { key: '2', label: '2 chiens' },
-                        { key: '3plus', label: '3+ chiens' },
+                        { key: '1', label: '1 Dog' },
+                        { key: '2', label: '2 Dogs' },
+                        { key: '3plus', label: '3+ Dogs' },
                       ].map((item) => (
                         <button
                           key={item.key}
@@ -369,7 +369,7 @@ export default function SpringCleanupFrenchPage() {
 
                   <div>
                     <label htmlFor="yard-size" className="text-sm font-semibold text-gray-700 mb-2 block">
-                      Taille de la cour (pi²)
+                      Yard Size (sq ft)
                     </label>
                     <div className="space-y-2">
                       <input
@@ -390,7 +390,7 @@ export default function SpringCleanupFrenchPage() {
                       />
                       <div className="flex flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
                         <span className="font-semibold text-brand-green">
-                          {yardSqft >= 10000 ? '10 000+ pi²' : `${yardSqft.toLocaleString()} pi²`}
+                          {yardSqft >= 10000 ? '10,000+ sq ft' : `${yardSqft.toLocaleString()} sq ft`}
                         </span>
                         <span
                           className="inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green"
@@ -405,27 +405,27 @@ export default function SpringCleanupFrenchPage() {
                 <div className="flex flex-col gap-4 md:col-span-2">
                   <div className="mx-auto w-full max-w-[26rem] rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                     <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                      {frequency === 'onetime' ? 'Estimation du nettoyage de printemps' : 'Estimation par visite'}
+                      {frequency === 'onetime' ? 'Spring Cleanup Estimate' : 'Estimated Per-Visit'}
                     </p>
                     <p className="mb-2 text-2xl font-extrabold text-gray-900 sm:text-3xl">
                       {frequency === 'onetime'
-                        ? `${formatMoney(displayPrice)} / premières 30 min`
-                        : `${formatMoney(displayPrice)}/visite`}
+                        ? `${formatMoney(displayPrice)} / first 30 mins`
+                        : `${formatMoney(displayPrice)}/visit`}
                     </p>
                     {frequency !== 'onetime' && (
                       <div className="mt-3 rounded-2xl bg-white/75 p-3 shadow-sm">
                         <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                          Total mensuel estimé
+                          Estimated monthly total
                         </p>
                         <p className="text-2xl font-extrabold text-brand-green sm:text-4xl">
                           {formatMoney(monthlyTotal)}
-                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/mois</span>
+                          <span className="ml-1 text-lg font-semibold text-gray-600 sm:text-xl">/month</span>
                         </p>
                       </div>
                     )}
                     {frequency === 'onetime' && (
                       <p className="text-sm text-gray-600">
-                        +5 $ par bloc additionnel de 5 minutes.
+                        +$5 per additional 5-minute block.
                       </p>
                     )}
                     <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
@@ -434,16 +434,16 @@ export default function SpringCleanupFrenchPage() {
                   </div>
 
                   <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
-                    Le nettoyage commence à 60 $ pour les 30 premières minutes. Le prix final dépend de la taille de la cour et du nombre de chiens et est confirmé après vérification.
+                    Starting at $60 for the first 30 minutes. Final pricing depends on yard size and number of dogs and is confirmed after review.
                   </div>
 
                   <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
                     {bookingStatus !== 'success' && (
                       <>
                     <div className="hidden" aria-hidden="true">
-                      <label htmlFor="website-field-spring-fr">Laisser ce champ vide</label>
+                      <label htmlFor="website-field-spring">Leave this field empty</label>
                       <input
-                        id="website-field-spring-fr"
+                        id="website-field-spring"
                         type="text"
                         name="website"
                         tabIndex={-1}
@@ -455,10 +455,10 @@ export default function SpringCleanupFrenchPage() {
                     <div className="space-y-3">
                       <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
                         <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">1</span>
-                        Vérifier la zone desservie
+                        Check service area
                       </div>
                       <div className="space-y-1">
-                        <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">Code postal</label>
+                        <label htmlFor="postal-code" className="text-sm font-semibold text-gray-700">Postal code</label>
                         <input
                           id="postal-code"
                           type="text"
@@ -492,15 +492,15 @@ export default function SpringCleanupFrenchPage() {
                             className="mt-1 h-4 w-4 rounded border-gray-300 text-brand-green focus:ring-brand-green"
                           />
                           <span>
-                            J’accepte les{" "}
-                            <Link href="/fr/terms" className="font-semibold text-brand-green hover:underline">
-                              conditions
+                            I agree to the{" "}
+                            <Link href="/terms" className="font-semibold text-brand-green hover:underline">
+                              Terms
                             </Link>{" "}
-                            et la{" "}
-                            <Link href="/fr/privacy" className="font-semibold text-brand-green hover:underline">
-                              politique de confidentialité
+                            and{" "}
+                            <Link href="/privacy" className="font-semibold text-brand-green hover:underline">
+                              Privacy Policy
                             </Link>{" "}
-                            et j’autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis.
+                            and allow Ca-Ca Canin to contact me about my quote request.
                           </span>
                         </label>
                         {consentError && (
@@ -514,18 +514,18 @@ export default function SpringCleanupFrenchPage() {
                         className="w-full bg-brand-green text-white hover:bg-brand-green-dark"
                         onClick={handlePostalCodeCheck}
                       >
-                        Vérifier
+                        Check availability
                       </Button>
                       {postalStatus === 'valid' && (
                         <div className="text-sm text-brand-green" role="status" aria-live="polite">
-                          Nous desservons ce code postal. Passez à l’étape 2.
+                          We service that postal code. Continue to step 2.
                         </div>
                       )}
                       {postalStatus === 'invalid' && (
                         <div className="text-sm text-red-600" role="status" aria-live="polite">
                           {postalCode && !isCanadianPostalCode(postalCode)
-                            ? 'Veuillez entrer un code postal canadien valide.'
-                            : <>Désolé, ce code postal est hors de notre zone de service pour le nettoyage de printemps. Nous ne desservons pas votre secteur? <Link href="/fr/contact" className="font-semibold underline">Contactez-nous</Link>.</>}
+                            ? 'Please enter a valid Canadian postal code.'
+                            : <>Sorry, that postal code is outside our spring cleanup service area. We don&apos;t service your location? <Link href="/contact" className="font-semibold underline">Reach out to us</Link>.</>}
                         </div>
                       )}
                     </div>
@@ -534,12 +534,12 @@ export default function SpringCleanupFrenchPage() {
                         {/* RESPONSIVE: collect lead details in one column on phones, then grow to multi-column layouts as space allows. */}
                         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
                           <div className="space-y-1">
-                            <label htmlFor="name" className="text-sm font-semibold text-gray-700">Nom</label>
+                            <label htmlFor="name" className="text-sm font-semibold text-gray-700">Name</label>
                             <input
                               id="name"
                               type="text"
                               name="name"
-                              placeholder="Jean Dupont"
+                              placeholder="Jane Doe"
                               value={name}
                               onChange={(e) => setName(e.target.value)}
                               autoComplete="name"
@@ -548,7 +548,7 @@ export default function SpringCleanupFrenchPage() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <label htmlFor="phone" className="text-sm font-semibold text-gray-700">Téléphone</label>
+                            <label htmlFor="phone" className="text-sm font-semibold text-gray-700">Phone number</label>
                             <input
                               id="phone"
                               type="tel"
@@ -563,12 +563,12 @@ export default function SpringCleanupFrenchPage() {
                             />
                           </div>
                           <div className="space-y-1">
-                            <label htmlFor="email" className="text-sm font-semibold text-gray-700">Courriel</label>
+                            <label htmlFor="email" className="text-sm font-semibold text-gray-700">Email</label>
                             <input
                               id="email"
                               type="email"
                               name="email"
-                              placeholder="vous@courriel.com"
+                              placeholder="you@email.com"
                               value={email}
                               onChange={(e) => setEmail(e.target.value)}
                               autoComplete="email"
@@ -578,7 +578,7 @@ export default function SpringCleanupFrenchPage() {
                           </div>
                         </div>
                         <Button type="submit" className="w-full bg-brand-green hover:bg-brand-green-dark text-white text-lg py-3" disabled={bookingStatus === 'loading'}>
-                          {bookingStatus === 'loading' ? 'Envoi...' : 'Demander mon devis de printemps'}
+                          {bookingStatus === 'loading' ? 'Sending...' : 'Request My Spring Quote'}
                         </Button>
                         {bookingMessage && (
                           <div
@@ -590,21 +590,21 @@ export default function SpringCleanupFrenchPage() {
                           </div>
                         )}
                         <p className="text-xs text-gray-500">
-                          Nous répondons habituellement en 1 jour ouvrable.
+                          We usually reply within 1 business day.
                         </p>
                       </>
                     )}
                       </>
                     )}
                     {bookingStatus === 'success' && (
-                      <div id="spring-quote-thank-you-fr" tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
-                        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Merci</p>
-                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Votre demande de nettoyage de printemps est envoyée.</h3>
+                      <div id="spring-quote-thank-you" tabIndex={-1} className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none">
+                        <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Thank you</p>
+                        <h3 className="mt-2 text-2xl font-bold text-gray-900">Your spring cleanup request is in.</h3>
                         <p className="mt-3 text-base text-gray-600">
-                          Nous avons bien reçu votre demande et nous vous contacterons sous peu. Inutile de renvoyer le formulaire.
+                          We received your request and will follow up shortly. No need to send the form again.
                         </p>
                         <p className="mt-2 text-sm text-gray-600">
-                          Vous ne l’avez pas reçu? Vérifiez vos courriels indésirables.
+                          Didn&apos;t receive it? Check your junk folder.
                         </p>
                         <p className="mt-4 text-sm text-brand-green">{bookingMessage}</p>
                       </div>
@@ -613,23 +613,23 @@ export default function SpringCleanupFrenchPage() {
                     {bookingStatus !== 'success' && (
                     <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
                       <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                        {frequency === 'onetime' ? 'Estimation du nettoyage' : 'Prix en direct'}
+                        {frequency === 'onetime' ? 'Spring Cleanup Estimate' : 'Live Price'}
                       </p>
                       <div className="mt-2 flex items-end justify-between gap-3">
                         <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
                           {frequency === 'onetime'
                             ? `${formatMoney(displayPrice)}+`
-                            : `${formatMoney(displayPrice)}/visite`}
+                            : `${formatMoney(displayPrice)}/visit`}
                         </p>
                         {frequency !== 'onetime' && (
                           <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
-                            {formatMoney(monthlyTotal)}/mois
+                            {formatMoney(monthlyTotal)}/month
                           </p>
                         )}
                       </div>
                       {frequency === 'onetime' && (
                         <p className="mt-2 text-sm text-gray-600">
-                          +5 $ toutes les 5 minutes additionnelles apr&egrave;s les 30 premi&egrave;res minutes.
+                          +$5 every additional 5 minutes after the first 30 minutes.
                         </p>
                       )}
                     </div>
@@ -645,17 +645,17 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                Comment ça fonctionne
+                How it works
               </h2>
               <p className="text-lg text-gray-600">
-                Devis rapide, visite ponctuelle et aucun abonnement necessaire pour reserver un grand nettoyage printanier.
+                Fast quote, one-time cleanup, and no ongoing plan required to book a spring yard reset.
               </p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { icon: ClipboardCheck, title: "Demander un devis", desc: "Indiquez la taille de la cour et le nombre de chiens." },
-                { icon: PawPrint, title: "Confirmer la visite", desc: "Nous validons les détails et planifions le nettoyage." },
-                { icon: Sparkles, title: "On nettoie la cour", desc: "Nous enlevons l'accumulation et laissons l'espace plus propre." },
+                { icon: ClipboardCheck, title: "Request a quote", desc: "Tell us your yard size and number of dogs." },
+                { icon: PawPrint, title: "Confirm your visit", desc: "We review the details and schedule your cleanup." },
+                { icon: Sparkles, title: "We clean the yard", desc: "We remove buildup and leave the space cleaner." },
               ].map((step, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -677,17 +677,17 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                Pourquoi les propriétaires réservent maintenant
+                Why homeowners book now
               </h2>
               <p className="text-lg text-gray-600">
-                Quelques preuves courtes de propriétaires qui voulaient remettre leur cour en ordre rapidement après l’hiver.
+                Short proof points from people who wanted the yard reset quickly after winter.
               </p>
             </div>
             <div className="grid gap-6 lg:grid-cols-3">
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Avis 5 etoiles
+                    5-star review
                   </div>
                   <CardTitle className="text-xl">Zander M. | Laval</CardTitle>
                 </CardHeader>
@@ -700,7 +700,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Avis Google
+                    Google review
                   </div>
                   <CardTitle className="text-xl">Julie B. | Laval</CardTitle>
                 </CardHeader>
@@ -713,7 +713,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Avis 5 etoiles
+                    5-star review
                   </div>
                   <CardTitle className="text-xl">Daniella H. | Deux-Montagnes</CardTitle>
                 </CardHeader>
@@ -726,7 +726,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Avis 5 étoiles
+                    5-star review
                   </div>
                   <CardTitle className="text-xl">Mohamed L. | Boisbriand</CardTitle>
                 </CardHeader>
@@ -739,7 +739,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Recommandation Facebook
+                    Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Elisa A. | Laval</CardTitle>
                 </CardHeader>
@@ -752,7 +752,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Recommandation Facebook
+                    Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Pete B. | Lorraine</CardTitle>
                 </CardHeader>
@@ -765,7 +765,7 @@ export default function SpringCleanupFrenchPage() {
               <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
                 <CardHeader>
                   <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
-                    Recommandation Facebook
+                    Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Sylvain D. | Mirabel</CardTitle>
                 </CardHeader>
@@ -779,23 +779,23 @@ export default function SpringCleanupFrenchPage() {
           </div>
         </section>
 
-        <BeforeAfterGallery locale="fr" />
+        <BeforeAfterGallery locale="en" />
 
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                Pourquoi réserver votre nettoyage printanier avec Ca-Ca Canin
+                Why Book Your Spring Cleanup With Ca-Ca Canin
               </h2>
               <p className="text-lg text-gray-600">
-                Une visite ponctuelle pour enlever l'accumulation de l'hiver sans vous engager dans un service recurrent.
+                A one-time pooper scooper visit that clears winter buildup without locking you into recurring service.
               </p>
             </div>
             <div className="grid md:grid-cols-3 gap-6">
                 {[
-                  { icon: Heart, title: "Cour plus propre, moins de tracas", desc: "Un nettoyage ciblé pour remettre la cour en ordre après l'hiver." },
-                  { icon: Camera, title: "Confirmation de visite", desc: "Nous envoyons une confirmation une fois le nettoyage terminé." },
-                  { icon: ClipboardCheck, title: "Tarification claire", desc: "Le nettoyage de printemps commence à 60 $ pour les 30 premières minutes, puis 5 $ par tranche additionnelle de 5 minutes." },
+                  { icon: Heart, title: "Cleaner yard, less hassle", desc: "A focused cleanup that helps get your yard back into shape after winter." },
+                  { icon: Camera, title: "Visit confirmation", desc: "We send confirmation after the cleanup is complete." },
+                  { icon: ClipboardCheck, title: "Clear time-based pricing", desc: "Spring cleanup starts at $60 for the first 30 minutes, then $5 per additional 5 minutes." },
                 ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                   <CardHeader>
@@ -817,21 +817,21 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-5xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                Zone de service
+                Service area
               </h2>
               <p className="text-lg text-gray-600">
-                Service ponctuel de nettoyage printanier pour Laval et certaines villes de la Rive-Nord : Blainville, Boisbriand, Bois-des-Filion, Deux-Montagnes, Lorraine, Mirabel, Oka, Pointe-Calumet, Rosemère, Saint-Eustache, Saint-Joseph-du-Lac, Sainte-Anne-des-Plaines, Sainte-Marthe-sur-le-Lac et Sainte-Thérèse.
+                Serving Laval plus select North Shore cities for one-time spring dog waste cleanup: Blainville, Boisbriand, Bois-des-Filion, Deux-Montagnes, Lorraine, Mirabel, Oka, Pointe-Calumet, Rosemère, Saint-Eustache, Saint-Joseph-du-Lac, Sainte-Anne-des-Plaines, Sainte-Marthe-sur-le-Lac, and Sainte-Thérèse.
               </p>
             </div>
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {SPRING_CLEANUP_LOCATIONS.map((location) => (
-                <Link key={location.slug} href={`/fr/nettoyage-printemps/${location.slug}`} className="block h-full">
+                <Link key={location.slug} href={`/spring-cleanup/${location.slug}`} className="block h-full">
                   <Card className="h-full border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
                     <CardHeader className="items-center text-center">
                       <div className="mb-3 flex h-14 w-14 items-center justify-center rounded-[1.25rem] border border-brand-green/15 bg-[#eef7f0]">
                         <MapPin className="h-7 w-7 text-brand-green" />
                       </div>
-                      <CardTitle className="text-xl">{location.nameFr}</CardTitle>
+                      <CardTitle className="text-xl">{location.name}</CardTitle>
                     </CardHeader>
                   </Card>
                 </Link>
@@ -844,10 +844,10 @@ export default function SpringCleanupFrenchPage() {
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-10 scroll-animation">
               <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
-                FAQ du nettoyage de printemps
+                Spring Cleanup FAQs
               </h2>
               <p className="text-lg text-gray-600">
-                Reponses sur la reservation, la tarification et le nettoyage ponctuel de cour.
+                Answers about booking, pricing, and one-time yard cleanup service.
               </p>
             </div>
             <div className="space-y-4">
@@ -867,22 +867,22 @@ export default function SpringCleanupFrenchPage() {
         {/* Cross-link to recurring service */}
         <section className="bg-[#eef7f0] px-4 py-12 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-brand-green">Service à l'année</p>
-            <h2 className="mb-3 text-2xl font-bold text-gray-900">Vous cherchez un service régulier de ramassage?</h2>
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-brand-green">Year-round service</p>
+            <h2 className="mb-3 text-2xl font-bold text-gray-900">Looking for regular dog waste removal?</h2>
             <p className="mb-6 text-gray-600">
-              Après votre grand nettoyage printanier, gardez la cour propre semaine après semaine avec notre service récurrent.
+              After your spring reset, keep the yard clean week after week with our recurring pooper scooper service.
             </p>
             <Link
-              href="/fr/ramassage-dejections#quote-form"
+              href="/dog-poop-cleanup#quote-form"
               className="inline-flex items-center rounded-full bg-brand-green px-7 py-3 font-semibold text-white hover:bg-brand-green-dark transition-colors"
             >
-              Voir le service régulier →
+              See regular service →
             </Link>
           </div>
         </section>
       </main>
 
-      <SiteFooter locale="fr" />
+      <SiteFooter locale="en" />
     </div>
   )
 }

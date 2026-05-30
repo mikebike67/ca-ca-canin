@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <div className="flex flex-col min-h-screen bg-white text-gray-900">
-      <SiteHeader locale="en" altHref="/fr/a-propos" ctaLabel="Check Availability" />
+      <SiteHeader locale="en" altHref="/fr/a-propos" ctaLabel="Check Availability" showAnnouncement />
 
       <main id="main-content" className="flex-grow pt-16">
         {/* Hero */}

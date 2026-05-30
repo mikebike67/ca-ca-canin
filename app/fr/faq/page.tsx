@@ -58,7 +58,7 @@ const faqs = [
 export default function FaqFrenchPage() {
   return (
     <div lang="fr" className="flex flex-col min-h-screen bg-white text-gray-900">
-      <SiteHeader locale="fr" altHref="/faq" ctaLabel="Vérifier la disponibilité" />
+      <SiteHeader locale="fr" altHref="/faq" ctaLabel="Vérifier la disponibilité" showAnnouncement />
 
       <main id="main-content" className="flex-grow pt-16">
         {/* Hero */}

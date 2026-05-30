@@ -19,17 +19,17 @@ export default function LegalPageShell({
 
   const copy = {
     home: isFrench ? "Accueil" : "Home",
-    springCleanup: isFrench ? "Nettoyage printanier" : "Spring Cleanup",
+    springCleanup: isFrench ? "Promo printemps" : "Spring Promo",
     faq: "FAQ",
     contact: "Contact",
     language: isFrench ? "English" : "Francais",
     quote: isFrench ? "Obtenir un devis" : "Get a Quote",
     quoteShort: isFrench ? "Devis" : "Quote",
     navLabel: isFrench ? "Principal" : "Primary",
-    promoHref: isFrench ? "/fr/nettoyage-printemps" : "/spring-cleanup",
-    promoText: isFrench ? "Nettoyage de printemps a partir de 60 $ ->" : "Spring cleanup starting at $60 ->",
+    promoHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
+    promoText: isFrench ? "Printemps en Service — 50 % de rabais sur votre premier nettoyage →" : "Spring Into Service — Get 50% off your first cleaning →",
     homeHref: isFrench ? "/fr" : "/",
-    springCleanupHref: isFrench ? "/fr/nettoyage-printemps" : "/spring-cleanup",
+    springCleanupHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
     faqHref: isFrench ? "/fr/faq" : "/faq",
     contactHref: isFrench ? "/fr/contact" : "/contact",
     languageHref: isFrench ? "/" : "/fr",
@@ -94,7 +94,7 @@ export default function LegalPageShell({
 
         <Link
           href={copy.promoHref}
-          className="block bg-brand-green px-4 py-2 text-center text-xs font-semibold text-white sm:text-sm"
+          className="block bg-brand-spring-green px-4 py-2 text-center text-xs font-semibold text-white sm:text-sm"
           onClick={closeMenu}
         >
           {copy.promoText}

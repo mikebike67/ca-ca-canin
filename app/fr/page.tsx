@@ -152,8 +152,8 @@ export default function Page() {
                     className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
                     asChild
                   >
-                    <Link href="/fr/nettoyage-printemps" className="block w-full text-center sm:w-auto">
-                      Nettoyage de printemps
+                    <Link href="/fr/printemps-en-service" className="block w-full text-center sm:w-auto">
+                      Promo printemps — 50 % de rabais
                     </Link>
                   </Button>
                 </div>
@@ -201,16 +201,16 @@ export default function Page() {
             <RegularServiceCalculator locale="fr" />
 
             <Link
-              href="/fr/nettoyage-printemps#quote-form"
+              href="/fr/printemps-en-service#calculator"
               className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Nettoyage de printemps</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Si l'hiver a laissé votre cour en désordre, réservez le grand nettoyage maintenant.</p>
-                <p className="mt-1 text-sm text-gray-600">Utilisez le calculateur de nettoyage de printemps pour une tarification selon le temps et un devis rapide à Laval.</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Offre à durée limitée</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Obtenez 50 % de rabais sur votre premier nettoyage</p>
+                <p className="mt-1 text-sm text-gray-600">Inscrivez-vous au service récurrent et votre première visite passe de 60 $ à 30 $. Offre valide jusqu'au 20 juin 2026.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Obtenir un devis de printemps
+                Réclamer 50 % de rabais →
               </span>
             </Link>
           </div>

@@ -195,12 +195,40 @@ export default function SiteHeader({
 
       {showAnnouncement && (
         <Link
-          href={isFrench ? '/fr/nettoyage-printemps' : '/spring-cleanup'}
-          className="block bg-brand-green px-4 py-2 text-center text-xs font-semibold text-white sm:text-sm"
+          href={isFrench ? '/fr/printemps-en-service' : '/spring-into-service'}
+          className="relative block overflow-hidden bg-brand-spring-green px-12 py-2 text-center text-xs font-semibold text-white sm:px-8 sm:text-sm"
         >
+          <span className="pointer-events-none absolute left-2 top-1/2 -translate-y-1/2 select-none" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="12" cy="5" rx="3" ry="4.5" fill="#FDE68A"/>
+              <ellipse cx="12" cy="19" rx="3" ry="4.5" fill="#FDE68A"/>
+              <ellipse cx="5" cy="12" rx="4.5" ry="3" fill="#86EFAC"/>
+              <ellipse cx="19" cy="12" rx="4.5" ry="3" fill="#86EFAC"/>
+              <ellipse cx="7.5" cy="6.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(-45 7.5 6.5)"/>
+              <ellipse cx="16.5" cy="6.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(45 16.5 6.5)"/>
+              <ellipse cx="7.5" cy="17.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(45 7.5 17.5)"/>
+              <ellipse cx="16.5" cy="17.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(-45 16.5 17.5)"/>
+              <circle cx="12" cy="12" r="3.5" fill="#FEF08A"/>
+              <circle cx="12" cy="12" r="2" fill="#F59E0B"/>
+            </svg>
+          </span>
           {isFrench
-            ? 'Nettoyage printanier à partir de 60 $ →'
-            : 'Spring cleanup starting at $60 →'}
+            ? 'Printemps en Service — 50 % de rabais sur votre premier nettoyage →'
+            : 'Spring Into Service — Get 50% off your first cleaning →'}
+          <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="12" cy="5" rx="3" ry="4.5" fill="#FDE68A"/>
+              <ellipse cx="12" cy="19" rx="3" ry="4.5" fill="#FDE68A"/>
+              <ellipse cx="5" cy="12" rx="4.5" ry="3" fill="#86EFAC"/>
+              <ellipse cx="19" cy="12" rx="4.5" ry="3" fill="#86EFAC"/>
+              <ellipse cx="7.5" cy="6.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(-45 7.5 6.5)"/>
+              <ellipse cx="16.5" cy="6.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(45 16.5 6.5)"/>
+              <ellipse cx="7.5" cy="17.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(45 7.5 17.5)"/>
+              <ellipse cx="16.5" cy="17.5" rx="2.5" ry="3.5" fill="#FCA5A5" transform="rotate(-45 16.5 17.5)"/>
+              <circle cx="12" cy="12" r="3.5" fill="#FEF08A"/>
+              <circle cx="12" cy="12" r="2" fill="#F59E0B"/>
+            </svg>
+          </span>
         </Link>
       )}
     </header>

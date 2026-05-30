@@ -14,7 +14,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       servicesHeading: "Services",
       services: [
         { href: "/dog-poop-cleanup", label: "Dog Poop Cleanup" },
-        { href: "/spring-cleanup", label: "Spring Cleanup" },
+        { href: "/spring-into-service", label: "Spring Promo" },
       ],
       aboutHeading: "About",
       about: [
@@ -46,7 +46,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       servicesHeading: "Services",
       services: [
         { href: "/fr/ramassage-dejections", label: "Ramassage de déjections" },
-        { href: "/fr/nettoyage-printemps", label: "Nettoyage printanier" },
+        { href: "/fr/printemps-en-service", label: "Promo printemps" },
       ],
       aboutHeading: "À propos",
       about: [

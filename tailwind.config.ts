@@ -81,6 +81,7 @@ const config: Config = {
   				'green-dark': '#265e36',
   				'green-light': '#307944',
   				'green-lighter': '#307944',
+  				'spring-green': '#7DBF8E',
   				brown: '#724420',
   				'brown-light': '#8b5a3c'
   			}

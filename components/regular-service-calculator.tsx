@@ -50,6 +50,9 @@ const frequencyNotes: Record<"en" | "fr", Record<ServiceFrequency, string>> = {
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 
+const INITIAL_CLEANING_FULL = 60;
+const INITIAL_CLEANING_DISCOUNTED = 30;
+
 type RegularServiceCalculatorProps = {
   locale: "en" | "fr";
 };
@@ -203,7 +206,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
   return (
     <>
       <div className="text-center mb-10">
-        <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
+        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">
           {isFrench ? "Vérifiez votre disponibilité et voyez votre prix" : "Check Availability and See Your Price"}
         </h2>
         <p className="text-lg text-gray-600">
@@ -214,97 +217,60 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
       </div>
 
       <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
-        <div className="grid min-w-0 gap-6 md:grid-cols-3">
-          <div className="order-2 min-w-0 space-y-4 md:order-1 md:col-span-1">
+        <div className="grid gap-8 lg:grid-cols-2">
+          {/* LEFT: Selectors */}
+          <div className="space-y-6">
             <div>
-              <p className="text-sm font-semibold text-gray-700 mb-2">{isFrench ? "Fréquence" : "Frequency"}</p>
-              {isFrench ? (
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
-                  {[
-                    { key: "weekly", label: "Hebdomadaire" },
-                    { key: "biweekly", label: "Aux deux semaines" },
-                    { key: "monthly", label: "Mensuel" },
-                    { key: "onetime", label: "Ponctuel" },
-                  ].map((item) => (
-                    <button
-                      key={item.key}
-                      onClick={() => setFrequency(item.key as ServiceFrequency)}
-                      className={`min-h-[44px] min-w-0 rounded-lg border px-3 py-2 text-sm font-semibold transition ${
-                        frequency === item.key
-                          ? "bg-brand-green text-white border-brand-green shadow-md"
-                          : "border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green"
-                      }`}
-                      type="button"
-                    >
-                      {item.label}
-                    </button>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-2">
-                  <div className="flex min-w-0 flex-wrap gap-2">
-                    {[
-                      { key: "weekly", label: "Weekly" },
-                      { key: "biweekly", label: "Bi-Weekly" },
-                      { key: "monthly", label: "Monthly" },
-                    ].map((item) => (
-                      <button
-                        key={item.key}
-                        onClick={() => setFrequency(item.key as ServiceFrequency)}
-                        className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                          frequency === item.key
-                            ? "bg-brand-green text-white border-brand-green shadow-md"
-                            : "border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green"
-                        }`}
-                        type="button"
-                      >
-                        {item.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex min-w-0">
-                    <button
-                      onClick={() => setFrequency("onetime")}
-                      className={`min-h-[44px] min-w-0 w-full rounded-lg border px-3 py-2 text-sm font-semibold transition sm:w-auto ${
-                        frequency === "onetime"
-                          ? "bg-brand-green text-white border-brand-green shadow-md"
-                          : "border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green"
-                      }`}
-                      type="button"
-                    >
-                      One-Time
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <div>
-              <p className="text-sm font-semibold text-gray-700 mb-2">{isFrench ? "Nombre de chiens" : "Number of Dogs"}</p>
-              <div className="flex min-w-0 flex-wrap gap-2">
+              <p className="text-sm font-semibold text-gray-700 mb-3">{isFrench ? "Fréquence" : "Frequency"}</p>
+              <div className="grid grid-cols-2 gap-2">
                 {[
-                  { key: "1", label: isFrench ? "1 chien" : "1 Dog" },
-                  { key: "2", label: isFrench ? "2 chiens" : "2 Dogs" },
-                  { key: "3plus", label: isFrench ? "3+ chiens" : "3+ Dogs" },
+                  { key: "weekly",   en: "Weekly",       fr: "Hebdomadaire" },
+                  { key: "biweekly", en: "Bi-Weekly",    fr: "Aux deux semaines" },
+                  { key: "monthly",  en: "Monthly",      fr: "Mensuel" },
+                  { key: "onetime",  en: "One-Time",     fr: "Ponctuel" },
                 ].map((item) => (
                   <button
                     key={item.key}
-                    onClick={() => setDogs(item.key as DogCount)}
-                    className={`min-h-[44px] min-w-0 flex-1 rounded-lg border px-3 py-2 text-sm font-semibold transition sm:flex-none ${
-                      dogs === item.key
+                    onClick={() => setFrequency(item.key as ServiceFrequency)}
+                    className={`min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                      frequency === item.key
                         ? "bg-brand-green text-white border-brand-green shadow-md"
                         : "border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green"
                     }`}
                     type="button"
                   >
-                    {item.label}
+                    {isFrench ? item.fr : item.en}
                   </button>
                 ))}
               </div>
             </div>
 
             <div>
-              <label htmlFor={`yard-size-${locale}`} className="text-sm font-semibold text-gray-700 mb-2 block">
+              <p className="text-sm font-semibold text-gray-700 mb-3">{isFrench ? "Nombre de chiens" : "Number of Dogs"}</p>
+              <div className="grid grid-cols-3 gap-2">
+                {[
+                  { key: "1",     en: "1 Dog",   fr: "1 chien" },
+                  { key: "2",     en: "2 Dogs",  fr: "2 chiens" },
+                  { key: "3plus", en: "3+ Dogs", fr: "3+ chiens" },
+                ].map((item) => (
+                  <button
+                    key={item.key}
+                    onClick={() => setDogs(item.key as DogCount)}
+                    className={`min-h-[44px] rounded-lg border px-3 py-2 text-sm font-semibold transition ${
+                      dogs === item.key
+                        ? "bg-brand-green text-white border-brand-green shadow-md"
+                        : "border-gray-200 text-gray-700 hover:border-brand-green hover:text-brand-green"
+                    }`}
+                    type="button"
+                  >
+                    {isFrench ? item.fr : item.en}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor={`yard-size-${locale}`} className="text-sm font-semibold text-gray-700 mb-3 block">
                 {isFrench ? "Taille de la cour (pi²)" : "Yard Size (sq ft)"}
               </label>
               <div className="space-y-2">
@@ -324,13 +290,13 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                   className="w-full accent-brand-green"
                   required
                 />
-                <div className="flex min-w-0 flex-col gap-2 text-sm text-gray-700 md:flex-row md:items-center md:justify-between">
-                  <span className="font-semibold text-brand-green">
+                <div className="space-y-1">
+                  <span className="block text-sm font-semibold text-brand-green">
                     {yardSqft >= 10000
                       ? (isFrench ? "10 000+ pi²" : "10,000+ sq ft")
                       : (isFrench ? `${yardSqft.toLocaleString()} pi²` : `${yardSqft.toLocaleString()} sq ft`)}
                   </span>
-                  <span className="inline-flex max-w-full rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green">
+                  <span className="inline-flex rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green">
                     {yardOptions[locale].find((option) => option.key === yardCategory)?.label} · {yardOptions[locale].find((option) => option.key === yardCategory)?.detail}
                   </span>
                 </div>
@@ -338,8 +304,9 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
             </div>
           </div>
 
-          <div className="order-1 min-w-0 md:order-2 md:col-span-2">
-            <div className="mx-auto min-w-0 w-full max-w-full rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center md:max-w-[26rem] md:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+          {/* RIGHT: Price summary + Form */}
+          <div className="space-y-4">
+            <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center lg:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
               <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                 {frequency === "onetime"
                   ? (isFrench ? "Visite estimée" : "Estimated Visit")
@@ -350,7 +317,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                   ? (isFrench ? `${formatMoney(displayPrice)} / premières 30 min` : `${formatMoney(displayPrice)} / first 30 mins`)
                   : `${formatMoney(displayPrice)}${isFrench ? "/visite" : "/visit"}`}
               </p>
-              <div className="mt-3 min-w-0 rounded-2xl bg-white/75 p-3 shadow-sm md:text-left">
+              <div className="mt-3 rounded-2xl bg-white/75 p-3 shadow-sm text-left">
                 {frequency !== "onetime" ? (
                   <div className="space-y-1">
                     <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
@@ -379,10 +346,34 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
               <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
                 {pricingDetails.note}
               </p>
+              {frequency !== 'onetime' && (
+                <div className="mt-3 rounded-xl border border-brand-green/20 bg-white/60 px-3 py-2 text-left">
+                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-green/70">
+                    {isFrench ? 'Nettoyage initial — 30 premières min' : 'Initial cleaning — first 30 min'}
+                  </p>
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-sm text-gray-400 line-through">{formatMoney(INITIAL_CLEANING_FULL)}</span>
+                    <span className="text-xl font-extrabold text-brand-green">{formatMoney(INITIAL_CLEANING_DISCOUNTED)}</span>
+                    <span className="text-xs text-gray-500">{isFrench ? '— 50 % de rabais' : '— 50% off'}</span>
+                  </div>
+                  <p className="mt-1 text-xs leading-relaxed text-gray-500">
+                    {isFrench
+                      ? '30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min (régulièrement 5 $). Valide avec 1 mois de service récurrent minimum.'
+                      : '$30 for the first 30 minutes (regularly $60), then +$2.50 per additional 5-min block (regularly $5). Requires at least 1 month of recurring service.'}
+                  </p>
+                </div>
+              )}
+              {frequency === 'onetime' && (
+                <div className="mt-3 rounded-xl border border-brand-green/25 bg-white/70 px-3 py-3 text-left">
+                  <p className="text-sm leading-relaxed text-gray-700">
+                    {isFrench
+                      ? '💡 Passez à un plan récurrent et obtenez votre premier nettoyage à 50 % de rabais — à partir de 30 $ au lieu de 60 $.'
+                      : '💡 Switch to a recurring plan and get your first cleaning at 50% off — starting at $30 instead of $60.'}
+                  </p>
+                </div>
+              )}
             </div>
-          </div>
 
-          <div className="order-3 flex flex-col gap-4 md:col-span-2 md:col-start-2">
             <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
               {isFrench
                 ? "C’est la façon la plus rapide de voir si le service entre dans votre budget et de passer à l’étape suivante. Le prix final est confirmé après vérification."
@@ -505,7 +496,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
                           {isFrench ? "Vos coordonnées" : "Your contact information"}
                         </div>
-                        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+                        <div className="grid gap-3 sm:grid-cols-3">
                           <div className="space-y-1">
                             <label htmlFor={`name-${locale}`} className="text-sm font-semibold text-gray-700">
                               {isFrench ? "Nom" : "Name"}
@@ -603,34 +594,6 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                 </div>
               )}
 
-              {bookingStatus !== "success" && (
-                <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-4 shadow-[0_14px_34px_rgba(48,121,68,0.12)] md:hidden">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
-                    {frequency === "onetime"
-                      ? (isFrench ? "Visite estimée" : "Estimated Visit")
-                      : (isFrench ? "Prix en direct" : "Live Price")}
-                  </p>
-                  <div className="mt-2 flex items-end justify-between gap-3">
-                    <p className="min-w-[9rem] text-2xl font-extrabold tabular-nums text-gray-900">
-                      {frequency === "onetime"
-                        ? `${formatMoney(displayPrice)}+`
-                        : `${formatMoney(displayPrice)}${isFrench ? "/visite" : "/visit"}`}
-                    </p>
-                    {frequency !== "onetime" && (
-                      <p className="min-w-[7rem] text-right text-sm font-semibold tabular-nums text-brand-green">
-                        {formatMoney(monthlyTotal)}{isFrench ? "/mois" : "/month"}
-                      </p>
-                    )}
-                  </div>
-                  {frequency === "onetime" && (
-                    <p className="mt-2 text-sm text-gray-600">
-                      {isFrench
-                        ? "+5 $ toutes les 5 minutes additionnelles après les 30 premières minutes."
-                        : "+$5 every additional 5 minutes after the first 30 minutes."}
-                    </p>
-                  )}
-                </div>
-              )}
             </form>
           </div>
         </div>

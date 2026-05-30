@@ -153,8 +153,8 @@ export default function Page() {
                     className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
                     asChild
                   >
-                    <Link href="/spring-cleanup">
-                      Book Spring Cleanup
+                    <Link href="/spring-into-service">
+                      Spring Promo — 50% Off
                     </Link>
                   </Button>
                 </div>
@@ -202,16 +202,16 @@ export default function Page() {
             <RegularServiceCalculator locale="en" />
 
             <Link
-              href="/spring-cleanup#quote-form"
+              href="/spring-into-service#calculator"
               className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
             >
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Spring cleanup</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">If winter left your yard a mess, book the reset now.</p>
-                <p className="mt-1 text-sm text-gray-600">Starting at $60. No recurring plan required. Most spring requests are confirmed within 1 business day.</p>
+                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Limited-time offer</p>
+                <p className="mt-1 text-xl font-bold text-gray-900">Get 50% off your first cleaning</p>
+                <p className="mt-1 text-sm text-gray-600">Sign up for recurring service and your first visit drops from $60 to $30. Offer valid until June 20, 2026.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Book spring cleanup
+                Claim 50% off →
               </span>
             </Link>
           </div>
