@@ -27,7 +27,7 @@ export default function LegalPageShell({
     quoteShort: isFrench ? "Devis" : "Quote",
     navLabel: isFrench ? "Principal" : "Primary",
     promoHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
-    promoText: isFrench ? "Printemps en Service — 50 % de rabais sur votre premier nettoyage →" : "Spring Into Service — Get 50% off your first cleaning →",
+    promoText: isFrench ? "Printemps en Service: 50 % de rabais sur votre premier nettoyage →" : "Spring Into Service: Get 50% off your first cleaning →",
     homeHref: isFrench ? "/fr" : "/",
     springCleanupHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
     faqHref: isFrench ? "/fr/faq" : "/faq",

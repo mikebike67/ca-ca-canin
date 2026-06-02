@@ -72,7 +72,7 @@ export default function PrintempsEnServicePage() {
               "@graph": [
                 {
                   "@type": "Service",
-                  name: "Printemps en Service — Promo ramassage déjections canines",
+                  name: "Printemps en Service: Promo ramassage dejections canines",
                   serviceType: "Ramassage de déjections canines",
                   provider: {
                     "@type": "LocalBusiness",
@@ -128,12 +128,14 @@ export default function PrintempsEnServicePage() {
               Printemps en Service
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Inscrivez-vous au service hebdomadaire, aux deux semaines ou mensuel, et votre premier nettoyage passe de 60 $ à 30 $. Aucun contrat requis.
+              Inscrivez-vous au service hebdomadaire, aux deux semaines ou mensuel, et votre premier nettoyage commence à 30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min. Aucun contrat requis.
             </p>
-            <div className="mb-6 flex items-baseline justify-center gap-3">
-              <span className="text-3xl font-semibold text-gray-400 line-through">60 $</span>
-              <span className="text-6xl font-extrabold text-brand-green">30 $</span>
-              <span className="text-lg text-gray-500">nettoyage initial</span>
+            <div className="mb-6 flex flex-col items-center gap-1">
+              <div className="flex items-baseline justify-center gap-3">
+                <span className="text-3xl font-semibold text-gray-400 line-through">60 $</span>
+                <span className="text-6xl font-extrabold text-brand-green">30 $</span>
+              </div>
+              <span className="text-sm text-gray-500">prix de départ (30 premières min)</span>
             </div>
             <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -144,7 +146,7 @@ export default function PrintempsEnServicePage() {
               </Button>
             </div>
             <p className="mt-4 text-sm font-semibold text-brand-green">
-              Offre valide jusqu'au 20 juin 2026. Engagement minimum d'un mois de service récurrent requis.
+              Offre valide jusqu'au 20 juin 2026. 30 $ pour les 30 premières minutes (rég. 60 $), puis 2,50 $/5 min (rég. 5 $). Engagement minimum d'un mois de service récurrent requis.
             </p>
             <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
               {[

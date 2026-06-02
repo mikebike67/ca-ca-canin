@@ -154,7 +154,7 @@ export default function Page() {
                     asChild
                   >
                     <Link href="/spring-into-service">
-                      Spring Promo — 50% Off
+                      Spring Promo: 50% Off
                     </Link>
                   </Button>
                 </div>
@@ -208,7 +208,7 @@ export default function Page() {
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Limited-time offer</p>
                 <p className="mt-1 text-xl font-bold text-gray-900">Get 50% off your first cleaning</p>
-                <p className="mt-1 text-sm text-gray-600">Sign up for recurring service and your first visit drops from $60 to $30. Offer valid until June 20, 2026.</p>
+                <p className="mt-1 text-sm text-gray-600">Sign up for recurring service and your first cleaning starts at $30 for the first 30 minutes (regularly $60). Offer valid until June 20, 2026.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
                 Claim 50% off →

@@ -72,7 +72,7 @@ export default function SpringIntoServicePage() {
               "@graph": [
                 {
                   "@type": "Service",
-                  name: "Spring Into Service — Dog waste removal promo",
+                  name: "Spring Into Service: Dog waste removal promo",
                   serviceType: "Dog poop cleanup",
                   provider: {
                     "@type": "LocalBusiness",
@@ -128,12 +128,14 @@ export default function SpringIntoServicePage() {
               Spring Into Service
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Sign up for weekly, bi-weekly, or monthly service and your first cleaning drops from $60 to $30. No contract required.
+              Sign up for weekly, bi-weekly, or monthly service and your first cleaning starts at $30 for the first 30 minutes (regularly $60), then $2.50 per additional 5-min block. No contract required.
             </p>
-            <div className="mb-6 flex items-baseline justify-center gap-3">
-              <span className="text-3xl font-semibold text-gray-400 line-through">$60</span>
-              <span className="text-6xl font-extrabold text-brand-green">$30</span>
-              <span className="text-lg text-gray-500">initial cleaning</span>
+            <div className="mb-6 flex flex-col items-center gap-1">
+              <div className="flex items-baseline justify-center gap-3">
+                <span className="text-3xl font-semibold text-gray-400 line-through">$60</span>
+                <span className="text-6xl font-extrabold text-brand-green">$30</span>
+              </div>
+              <span className="text-sm text-gray-500">starting price (first 30 min)</span>
             </div>
             <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
               <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -144,7 +146,7 @@ export default function SpringIntoServicePage() {
               </Button>
             </div>
             <p className="mt-4 text-sm font-semibold text-brand-green">
-              Offer valid until June 20, 2026. Minimum 1-month recurring commitment required.
+              Offer valid until June 20, 2026. $30 for the first 30 min (reg. $60), then $2.50/5 min (reg. $5). Minimum 1-month recurring commitment required.
             </p>
             <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
               {[

@@ -349,12 +349,12 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
               {frequency !== 'onetime' && (
                 <div className="mt-3 rounded-xl border border-brand-green/20 bg-white/60 px-3 py-2 text-left">
                   <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-green/70">
-                    {isFrench ? 'Nettoyage initial — 30 premières min' : 'Initial cleaning — first 30 min'}
+                    {isFrench ? 'Nettoyage initial (30 premières min)' : 'Initial cleaning (first 30 min)'}
                   </p>
                   <div className="flex items-baseline gap-2">
                     <span className="text-sm text-gray-400 line-through">{formatMoney(INITIAL_CLEANING_FULL)}</span>
                     <span className="text-xl font-extrabold text-brand-green">{formatMoney(INITIAL_CLEANING_DISCOUNTED)}</span>
-                    <span className="text-xs text-gray-500">{isFrench ? '— 50 % de rabais' : '— 50% off'}</span>
+                    <span className="text-xs text-gray-500">{isFrench ? '50 % de rabais' : '50% off'}</span>
                   </div>
                   <p className="mt-1 text-xs leading-relaxed text-gray-500">
                     {isFrench
@@ -367,8 +367,8 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                 <div className="mt-3 rounded-xl border border-brand-green/25 bg-white/70 px-3 py-3 text-left">
                   <p className="text-sm leading-relaxed text-gray-700">
                     {isFrench
-                      ? '💡 Passez à un plan récurrent et obtenez votre premier nettoyage à 50 % de rabais — à partir de 30 $ au lieu de 60 $.'
-                      : '💡 Switch to a recurring plan and get your first cleaning at 50% off — starting at $30 instead of $60.'}
+                      ? '💡 Passez à un plan récurrent et obtenez votre premier nettoyage à 50 % de rabais: 30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min.'
+                      : '💡 Switch to a recurring plan and get your first cleaning at 50% off: $30 for the first 30 min (regularly $60), then $2.50 per additional 5-min block.'}
                   </p>
                 </div>
               )}

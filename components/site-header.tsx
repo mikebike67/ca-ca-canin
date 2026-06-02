@@ -213,8 +213,8 @@ export default function SiteHeader({
             </svg>
           </span>
           {isFrench
-            ? 'Printemps en Service — 50 % de rabais sur votre premier nettoyage →'
-            : 'Spring Into Service — Get 50% off your first cleaning →'}
+            ? 'Printemps en Service: 50 % de rabais sur votre premier nettoyage →'
+            : 'Spring Into Service: Get 50% off your first cleaning →'}
           <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2 select-none" aria-hidden="true">
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <ellipse cx="12" cy="5" rx="3" ry="4.5" fill="#FDE68A"/>

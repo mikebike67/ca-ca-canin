@@ -153,7 +153,7 @@ export default function Page() {
                     asChild
                   >
                     <Link href="/fr/printemps-en-service" className="block w-full text-center sm:w-auto">
-                      Promo printemps — 50 % de rabais
+                      Promo printemps: 50 % de rabais
                     </Link>
                   </Button>
                 </div>
@@ -207,7 +207,7 @@ export default function Page() {
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Offre à durée limitée</p>
                 <p className="mt-1 text-xl font-bold text-gray-900">Obtenez 50 % de rabais sur votre premier nettoyage</p>
-                <p className="mt-1 text-sm text-gray-600">Inscrivez-vous au service récurrent et votre première visite passe de 60 $ à 30 $. Offre valide jusqu'au 20 juin 2026.</p>
+                <p className="mt-1 text-sm text-gray-600">Inscrivez-vous au service récurrent et votre premier nettoyage commence à 30 $ pour les 30 premières minutes (régulièrement 60 $). Offre valide jusqu'au 20 juin 2026.</p>
               </div>
               <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
                 Réclamer 50 % de rabais →
