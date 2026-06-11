@@ -53,6 +53,17 @@ export default function PrintempsEnServicePage() {
     return () => observerRef.current?.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#calculator') {
+      const el = document.getElementById('calculator');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
+    }
+  }, []);
+
   return (
     <div lang="fr" className="flex flex-col min-h-screen bg-white text-gray-900">
       <a
@@ -118,49 +129,34 @@ export default function PrintempsEnServicePage() {
           }}
         />
 
-        {/* Section héro */}
-        <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        {/* Section héro — condensée */}
+        <section className="bg-white px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-green/25 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-green/25 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
               Offre à durée limitée · Valide jusqu'au 20 juin 2026
             </div>
-            <h1 className="mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl">
+            <h1 className="mb-3 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl">
               Printemps en Service
             </h1>
-            <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Inscrivez-vous au service hebdomadaire, aux deux semaines ou mensuel, et votre premier nettoyage commence à 30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min. Aucun contrat requis.
+            <p className="mb-4 text-lg text-gray-600 sm:text-xl">
+              50 % de rabais sur votre premier nettoyage. Obtenez votre prix en quelques secondes.
             </p>
-            <div className="mb-6 flex flex-col items-center gap-1">
-              <div className="flex items-baseline justify-center gap-3">
-                <span className="text-3xl font-semibold text-gray-400 line-through">60 $</span>
-                <span className="text-6xl font-extrabold text-brand-green">30 $</span>
-              </div>
+            <div className="mb-2 flex items-baseline justify-center gap-3">
+              <span className="text-xl font-semibold text-gray-400 line-through">60 $</span>
+              <span className="text-4xl font-extrabold text-brand-green">30 $</span>
               <span className="text-sm text-gray-500">prix de départ (30 premières min)</span>
             </div>
-            <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
-              <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#calculator">Réclamer mon 50 % de rabais</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#how-it-works">Comment ça fonctionne</Link>
-              </Button>
-            </div>
-            <p className="mt-4 text-sm font-semibold text-brand-green">
-              Offre valide jusqu'au 20 juin 2026. 30 $ pour les 30 premières minutes (rég. 60 $), puis 2,50 $/5 min (rég. 5 $). Engagement minimum d'un mois de service récurrent requis.
+            <p className="text-xs text-gray-400">
+              Offre valide jusqu'au 20 juin 2026. Engagement minimum d'un mois de service récurrent requis.
             </p>
-            <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
-              {[
-                "50 % de rabais sur le premier nettoyage",
-                "Aucun contrat requis",
-                "À partir de 20 $/visite ensuite",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
-                >
-                  {item}
-                </div>
-              ))}
+          </div>
+        </section>
+
+        {/* Calculatrice — en premier, juste sous le héro */}
+        <section id="calculator" className="scroll-mt-16 py-10 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="scroll-animation">
+              <RegularServiceCalculator locale="fr" instanceId="fr-top" />
             </div>
           </div>
         </section>
@@ -178,7 +174,7 @@ export default function PrintempsEnServicePage() {
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { icon: ClipboardCheck, title: "Utilisez la calculatrice", desc: "Obtenez votre estimation de prix instantanée ci-dessous. Sélectionnez hebdomadaire, aux deux semaines ou mensuel pour accéder à la promo." },
+                { icon: ClipboardCheck, title: "Utilisez la calculatrice", desc: "Obtenez votre estimation de prix instantanée ci-dessus. Sélectionnez hebdomadaire, aux deux semaines ou mensuel pour accéder à la promo." },
                 { icon: Tag, title: "Inscrivez-vous au service récurrent", desc: "Choisissez votre fréquence et engagez-vous à au moins un mois de service récurrent." },
                 { icon: Sparkles, title: "Premier nettoyage à 50 % de rabais", desc: "Votre première visite passe de 60 $ à 30 $. Nous nous occupons du reste selon votre horaire." },
               ].map((step, index) => (
@@ -330,23 +326,6 @@ export default function PrintempsEnServicePage() {
           </div>
         </section>
 
-        {/* Calculatrice */}
-        <section id="calculator" className="scroll-mt-16 py-12 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">
-                Obtenez votre prix et profitez de votre 50 % de rabais
-              </h2>
-              <p className="text-lg text-gray-600">
-                Choisissez hebdomadaire, aux deux semaines ou mensuel pour bénéficier du 50 % de rabais sur le premier nettoyage.
-              </p>
-            </div>
-            <div className="scroll-animation">
-              <RegularServiceCalculator locale="fr" />
-            </div>
-          </div>
-        </section>
-
         {/* Foire aux questions */}
         <section id="faq" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
@@ -369,6 +348,28 @@ export default function PrintempsEnServicePage() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Calculatrice d'action — bas de page */}
+        <section id="book-now" className="scroll-mt-16 bg-brand-green py-14 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-8 text-center">
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white/70">
+                Offre valide jusqu'au 20 juin 2026
+              </p>
+              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+                Prêt à réclamer votre 50 % de rabais?
+              </h2>
+              <p className="mt-2 text-base text-white/80">
+                Sélectionnez votre service et obtenez votre devis en moins d'une minute.
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white shadow-[0_30px_70px_rgba(0,0,0,0.20)] overflow-hidden">
+              <div className="p-6 md:p-8">
+                <RegularServiceCalculator locale="fr" instanceId="fr-bottom" />
+              </div>
             </div>
           </div>
         </section>

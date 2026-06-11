@@ -30,6 +30,7 @@ type BookingPayload = {
   website?: string;
   source?: "home-calculator" | "spring-cleanup";
   locale?: "en" | "fr";
+  outOfArea?: boolean;
 };
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -120,7 +121,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as Partial<BookingPayload>;
-    const { name, phone, email, postalCode, frequency, dogs, yardSqft, price, consent, website, source, locale } = body;
+    const { name, phone, email, postalCode, frequency, dogs, yardSqft, price, consent, website, source, locale, outOfArea } = body;
 
     if (website) {
       return NextResponse.json({ ok: true });
@@ -164,21 +165,23 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Invalid postal code." }, { status: 400 });
       }
 
-      const postalCodeIsAllowed =
-        source === "spring-cleanup"
-          ? isSpringCleanupPostalCode(normalizedPostalCode)
-          : isRegularServicePostalCode(normalizedPostalCode);
+      if (!outOfArea) {
+        const postalCodeIsAllowed =
+          source === "spring-cleanup"
+            ? isSpringCleanupPostalCode(normalizedPostalCode)
+            : isRegularServicePostalCode(normalizedPostalCode);
 
-      if (!postalCodeIsAllowed) {
-        return NextResponse.json(
-          {
-            error:
-              source === "spring-cleanup"
-                ? "Postal code is outside the spring cleanup service area."
-                : "Service is limited to Laval, QC.",
-          },
-          { status: 400 },
-        );
+        if (!postalCodeIsAllowed) {
+          return NextResponse.json(
+            {
+              error:
+                source === "spring-cleanup"
+                  ? "Postal code is outside the spring cleanup service area."
+                  : "Service is limited to Laval, QC.",
+            },
+            { status: 400 },
+          );
+        }
       }
     }
 
@@ -234,7 +237,7 @@ export async function POST(req: NextRequest) {
       : frequency === "onetime"
         ? "One-time visit"
         : `${frequency} service`;
-    const subject = `${requestLabel} | ${normalizedPostalCode || "No postal code"} | ${dogs} dog${dogs === "1" ? "" : "s"} | ${yardSqft} sq ft`;
+    const subject = `${outOfArea ? "[Hors zone] " : ""}${requestLabel} | ${normalizedPostalCode || "No postal code"} | ${dogs} dog${dogs === "1" ? "" : "s"} | ${yardSqft} sq ft`;
     const text = [
       isFrench ? `Bonjour ${name.trim()},` : `Hi ${name.trim()},`,
       ``,

@@ -55,10 +55,12 @@ const INITIAL_CLEANING_DISCOUNTED = 30;
 
 type RegularServiceCalculatorProps = {
   locale: "en" | "fr";
+  instanceId?: string;
 };
 
-export default function RegularServiceCalculator({ locale }: RegularServiceCalculatorProps) {
+export default function RegularServiceCalculator({ locale, instanceId }: RegularServiceCalculatorProps) {
   const isFrench = locale === "fr";
+  const idPrefix = instanceId ?? locale;
   const router = useRouter();
   const [frequency, setFrequency] = useState<ServiceFrequency>("weekly");
   const [dogs, setDogs] = useState<DogCount>("1");
@@ -68,7 +70,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [postalStatus, setPostalStatus] = useState<"idle" | "valid" | "invalid">("idle");
+  const [postalStatus, setPostalStatus] = useState<"idle" | "valid" | "invalid" | "out_of_area">("idle");
   const [bookingStatus, setBookingStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [bookingMessage, setBookingMessage] = useState("");
   const [consentChecked, setConsentChecked] = useState(false);
@@ -116,24 +118,22 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
       return;
     }
 
-    if (!isRegularServicePostalCode(normalized)) {
-      setPostalStatus("invalid");
-      setBookingStatus("idle");
-      setBookingMessage("");
-      return;
-    }
-
     if (!consentChecked) {
       setConsentError(
         isFrench
           ? "Veuillez accepter les conditions et la politique de confidentialité pour continuer."
           : "Please agree to the Terms and Privacy Policy to continue.",
       );
-      setPostalStatus("idle");
       return;
     }
 
     setConsentError("");
+
+    if (!isRegularServicePostalCode(normalized)) {
+      setPostalStatus("out_of_area");
+      return;
+    }
+
     setPostalStatus("valid");
   };
 
@@ -149,7 +149,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
       return;
     }
 
-    if (!isCanadianPostalCode(postalCode) || !isRegularServicePostalCode(postalCode)) {
+    if (!isCanadianPostalCode(postalCode)) {
       setPostalStatus("invalid");
       setBookingStatus("idle");
       setBookingMessage("");
@@ -176,6 +176,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
           dogs,
           yardSqft,
           price: pricingDetails.perVisit,
+          outOfArea: postalStatus === "out_of_area",
         }),
       });
 
@@ -270,12 +271,12 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
             </div>
 
             <div>
-              <label htmlFor={`yard-size-${locale}`} className="text-sm font-semibold text-gray-700 mb-3 block">
+              <label htmlFor={`yard-size-${idPrefix}`} className="text-sm font-semibold text-gray-700 mb-3 block">
                 {isFrench ? "Taille de la cour (pi²)" : "Yard Size (sq ft)"}
               </label>
               <div className="space-y-2">
                 <input
-                  id={`yard-size-${locale}`}
+                  id={`yard-size-${idPrefix}`}
                   type="range"
                   min={3000}
                   max={10000}
@@ -389,11 +390,11 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                       {isFrench ? "Vérifier la zone desservie" : "Check service area"}
                     </div>
                     <div className="space-y-1">
-                      <label htmlFor={`postal-code-${locale}`} className="text-sm font-semibold text-gray-700">
+                      <label htmlFor={`postal-code-${idPrefix}`} className="text-sm font-semibold text-gray-700">
                         {isFrench ? "Code postal" : "Postal code"}
                       </label>
                       <input
-                        id={`postal-code-${locale}`}
+                        id={`postal-code-${idPrefix}`}
                         type="text"
                         name="postalCode"
                         placeholder="H7A 1A1"
@@ -458,32 +459,27 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                           : "We service that postal code. Continue to step 2."}
                       </div>
                     )}
+                    {postalStatus === "out_of_area" && (
+                      <div className="rounded-lg border border-yellow-200 bg-yellow-50 px-3 py-2 text-sm text-yellow-800" role="status" aria-live="polite">
+                        {isFrench
+                          ? "Ce code postal est hors de notre zone habituelle, mais laissez vos coordonnées et on vous contactera si on s’étend dans votre secteur."
+                          : "That postal code is outside our usual area, but leave your info and we’ll reach out if we expand to your area."}
+                      </div>
+                    )}
                     {postalStatus === "invalid" && (
                       <div className="text-sm text-red-600" role="status" aria-live="polite">
-                        {postalCode && !isCanadianPostalCode(postalCode)
-                          ? (isFrench ? "Veuillez entrer un code postal canadien valide." : "Please enter a valid Canadian postal code.")
-                          : (
-                            <>
-                              {isFrench
-                                ? "Désolé, ce code postal est hors de notre zone de service régulière. "
-                                : "Sorry, that postal code is outside our regular service area. "}
-                              <Link href={isFrench ? "/fr/contact" : "/contact"} className="font-semibold underline">
-                                {isFrench ? "Contactez-nous" : "Reach out to us"}
-                              </Link>
-                              .
-                            </>
-                          )}
+                        {isFrench ? "Veuillez entrer un code postal canadien valide." : "Please enter a valid Canadian postal code."}
                       </div>
                     )}
                   </div>
 
-                  {postalStatus === "valid" && (
+                  {(postalStatus === "valid" || postalStatus === "out_of_area") && (
                     <>
                       <div className="space-y-3 border-t border-gray-200 pt-4">
                         <div className="hidden" aria-hidden="true">
-                          <label htmlFor={`website-field-${locale}`}>{isFrench ? "Laisser ce champ vide" : "Leave this field empty"}</label>
+                          <label htmlFor={`website-field-${idPrefix}`}>{isFrench ? "Laisser ce champ vide" : "Leave this field empty"}</label>
                           <input
-                            id={`website-field-${locale}`}
+                            id={`website-field-${idPrefix}`}
                             type="text"
                             name="website"
                             tabIndex={-1}
@@ -494,15 +490,17 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                         </div>
                         <div className="flex items-center gap-2 text-sm font-semibold text-brand-green">
                           <span className="flex h-7 w-7 items-center justify-center rounded-full bg-brand-green text-white">2</span>
-                          {isFrench ? "Vos coordonnées" : "Your contact information"}
+                          {postalStatus === "out_of_area"
+                            ? (isFrench ? "Laissez vos coordonnées" : "Leave your contact info")
+                            : (isFrench ? "Vos coordonnées" : "Your contact information")}
                         </div>
                         <div className="grid gap-3 sm:grid-cols-3">
                           <div className="space-y-1">
-                            <label htmlFor={`name-${locale}`} className="text-sm font-semibold text-gray-700">
+                            <label htmlFor={`name-${idPrefix}`} className="text-sm font-semibold text-gray-700">
                               {isFrench ? "Nom" : "Name"}
                             </label>
                             <input
-                              id={`name-${locale}`}
+                              id={`name-${idPrefix}`}
                               type="text"
                               name="name"
                               placeholder={isFrench ? "Jean Dupont" : "Jane Doe"}
@@ -514,11 +512,11 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                             />
                           </div>
                           <div className="space-y-1">
-                            <label htmlFor={`phone-${locale}`} className="text-sm font-semibold text-gray-700">
+                            <label htmlFor={`phone-${idPrefix}`} className="text-sm font-semibold text-gray-700">
                               {isFrench ? "Téléphone" : "Phone number"}
                             </label>
                             <input
-                              id={`phone-${locale}`}
+                              id={`phone-${idPrefix}`}
                               type="tel"
                               name="phone"
                               placeholder="438 880 8922"
@@ -531,11 +529,11 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
                             />
                           </div>
                           <div className="space-y-1">
-                            <label htmlFor={`email-${locale}`} className="text-sm font-semibold text-gray-700">
+                            <label htmlFor={`email-${idPrefix}`} className="text-sm font-semibold text-gray-700">
                               {isFrench ? "Courriel" : "Email"}
                             </label>
                             <input
-                              id={`email-${locale}`}
+                              id={`email-${idPrefix}`}
                               type="email"
                               name="email"
                               placeholder={isFrench ? "vous@courriel.com" : "you@email.com"}
@@ -572,7 +570,7 @@ export default function RegularServiceCalculator({ locale }: RegularServiceCalcu
 
               {bookingStatus === "success" && (
                 <div
-                  id={`quote-thank-you-${locale}`}
+                  id={`quote-thank-you-${idPrefix}`}
                   tabIndex={-1}
                   className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
                 >

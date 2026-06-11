@@ -53,6 +53,17 @@ export default function SpringIntoServicePage() {
     return () => observerRef.current?.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash === '#calculator') {
+      const el = document.getElementById('calculator');
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 300);
+      }
+    }
+  }, []);
+
   return (
     <div className="flex flex-col min-h-screen bg-white text-gray-900">
       <a
@@ -118,49 +129,34 @@ export default function SpringIntoServicePage() {
           }}
         />
 
-        {/* Hero */}
-        <section className="bg-white px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+        {/* Hero — condensed */}
+        <section className="bg-white px-4 py-8 sm:px-6 sm:py-10 lg:px-8">
           <div className="max-w-5xl mx-auto text-center">
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-brand-green/25 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-brand-green/25 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
               Limited-Time Offer · Expires June 20, 2026
             </div>
-            <h1 className="mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl">
+            <h1 className="mb-3 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl">
               Spring Into Service
             </h1>
-            <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
-              Sign up for weekly, bi-weekly, or monthly service and your first cleaning starts at $30 for the first 30 minutes (regularly $60), then $2.50 per additional 5-min block. No contract required.
+            <p className="mb-4 text-lg text-gray-600 sm:text-xl">
+              50% off your first cleaning. Get your price in seconds.
             </p>
-            <div className="mb-6 flex flex-col items-center gap-1">
-              <div className="flex items-baseline justify-center gap-3">
-                <span className="text-3xl font-semibold text-gray-400 line-through">$60</span>
-                <span className="text-6xl font-extrabold text-brand-green">$30</span>
-              </div>
+            <div className="mb-2 flex items-baseline justify-center gap-3">
+              <span className="text-xl font-semibold text-gray-400 line-through">$60</span>
+              <span className="text-4xl font-extrabold text-brand-green">$30</span>
               <span className="text-sm text-gray-500">starting price (first 30 min)</span>
             </div>
-            <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
-              <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#calculator">Claim My 50% Off</Link>
-              </Button>
-              <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
-                <Link href="#how-it-works">How It Works</Link>
-              </Button>
-            </div>
-            <p className="mt-4 text-sm font-semibold text-brand-green">
-              Offer valid until June 20, 2026. $30 for the first 30 min (reg. $60), then $2.50/5 min (reg. $5). Minimum 1-month recurring commitment required.
+            <p className="text-xs text-gray-400">
+              Offer valid until June 20, 2026. Minimum 1-month recurring commitment required.
             </p>
-            <div className="mt-6 grid gap-3 text-sm md:grid-cols-3">
-              {[
-                "50% off your first cleaning",
-                "No contract required",
-                "Starting at $20/visit after",
-              ].map((item) => (
-                <div
-                  key={item}
-                  className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
-                >
-                  {item}
-                </div>
-              ))}
+          </div>
+        </section>
+
+        {/* Calculator — first, right below the hero */}
+        <section id="calculator" className="scroll-mt-16 py-10 px-4 sm:px-6 lg:px-8 bg-white">
+          <div className="max-w-5xl mx-auto">
+            <div className="scroll-animation">
+              <RegularServiceCalculator locale="en" instanceId="en-top" />
             </div>
           </div>
         </section>
@@ -178,7 +174,7 @@ export default function SpringIntoServicePage() {
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {[
-                { icon: ClipboardCheck, title: "Use the calculator", desc: "Get your instant price estimate below. Select weekly, bi-weekly, or monthly to unlock the promo." },
+                { icon: ClipboardCheck, title: "Use the calculator", desc: "Get your instant price estimate above. Select weekly, bi-weekly, or monthly to unlock the promo." },
                 { icon: Tag, title: "Sign up for recurring service", desc: "Choose your frequency and commit to at least one month of recurring service." },
                 { icon: Sparkles, title: "First cleaning at 50% off", desc: "Your initial visit drops from $60 to $30. We handle the rest on your schedule." },
               ].map((step, index) => (
@@ -212,7 +208,7 @@ export default function SpringIntoServicePage() {
             <div className="grid md:grid-cols-3 gap-6">
               {[
                 { icon: Heart, title: "Less hassle every week", desc: "Recurring cleanup takes one messy job off your schedule for good." },
-                { icon: Camera, title: "Visit confirmation", desc: "We send a confirmation after each completed visit so you always know it’s done." },
+                { icon: Camera, title: "Visit confirmation", desc: "We send a confirmation after each completed visit so you always know it's done." },
                 { icon: Bell, title: "Flexible frequency", desc: "Weekly, bi-weekly, or monthly. Adjust your schedule anytime." },
               ].map((feature, index) => (
                 <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
@@ -330,23 +326,6 @@ export default function SpringIntoServicePage() {
           </div>
         </section>
 
-        {/* Calculator */}
-        <section id="calculator" className="scroll-mt-16 py-12 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-8 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">
-                Get Your Price &amp; Claim Your 50% Off
-              </h2>
-              <p className="text-lg text-gray-600">
-                Select weekly, bi-weekly, or monthly to lock in 50% off your first cleaning.
-              </p>
-            </div>
-            <div className="scroll-animation">
-              <RegularServiceCalculator locale="en" />
-            </div>
-          </div>
-        </section>
-
         {/* FAQ */}
         <section id="faq" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
@@ -369,6 +348,28 @@ export default function SpringIntoServicePage() {
                   </CardContent>
                 </Card>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Bottom action calculator */}
+        <section id="book-now" className="scroll-mt-16 bg-brand-green py-14 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-5xl mx-auto">
+            <div className="mb-8 text-center">
+              <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em] text-white/70">
+                Offer expires June 20, 2026
+              </p>
+              <h2 className="text-3xl font-extrabold text-white sm:text-4xl">
+                Ready to claim your 50% off?
+              </h2>
+              <p className="mt-2 text-base text-white/80">
+                Select your service and get your discounted quote in under a minute.
+              </p>
+            </div>
+            <div className="rounded-2xl bg-white shadow-[0_30px_70px_rgba(0,0,0,0.20)] overflow-hidden">
+              <div className="p-6 md:p-8">
+                <RegularServiceCalculator locale="en" instanceId="en-bottom" />
+              </div>
             </div>
           </div>
         </section>
