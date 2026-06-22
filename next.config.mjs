@@ -14,6 +14,12 @@ const nextConfig = {
   images: {
     formats: ['image/avif', 'image/webp'],
   },
+  async redirects() {
+    return [
+      { source: '/spring-into-service', destination: '/dog-poop-cleanup', permanent: true },
+      { source: '/fr/printemps-en-service', destination: '/fr/ramassage-dejections', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

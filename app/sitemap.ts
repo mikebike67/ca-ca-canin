@@ -9,8 +9,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/fr",
     "/contact",
     "/fr/contact",
-    "/spring-into-service",
-    "/fr/printemps-en-service",
     "/dog-poop-cleanup",
     "/fr/ramassage-dejections",
     "/terms",

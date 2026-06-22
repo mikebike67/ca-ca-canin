@@ -5,7 +5,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/spring-cleanup", "/fr/nettoyage-printemps"],
+      disallow: [],
     },
     sitemap: "https://cacacanin.com/sitemap.xml",
     host: "https://cacacanin.com",

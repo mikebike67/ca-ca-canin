@@ -64,7 +64,7 @@ export default function DogPoopCleanupPage() {
       >
         Skip to content
       </a>
-      <SiteHeader locale="en" altHref="/fr/ramassage-dejections" ctaLabel="Get a Free Quote" showAnnouncement />
+      <SiteHeader locale="en" altHref="/fr/ramassage-dejections" ctaLabel="Get a Free Quote" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-16">
         <script
@@ -372,22 +372,6 @@ export default function DogPoopCleanupPage() {
                 </Card>
               ))}
             </div>
-          </div>
-        </section>
-        {/* Cross-link to spring promo */}
-        <section className="bg-[#eef7f0] px-4 py-12 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-brand-green">Limited-time offer</p>
-            <h2 className="mb-3 text-2xl font-bold text-gray-900">Get 50% off your first cleaning</h2>
-            <p className="mb-6 text-gray-600">
-              Sign up for recurring service and your first cleaning drops from $60 to $30. Offer valid until June 20, 2026.
-            </p>
-            <Link
-              href="/spring-into-service"
-              className="inline-flex items-center rounded-full bg-brand-green px-7 py-3 font-semibold text-white hover:bg-brand-green-dark transition-colors"
-            >
-              Claim 50% off →
-            </Link>
           </div>
         </section>
       </main>

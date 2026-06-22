@@ -50,8 +50,6 @@ const frequencyNotes: Record<"en" | "fr", Record<ServiceFrequency, string>> = {
 
 const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 
-const INITIAL_CLEANING_FULL = 60;
-const INITIAL_CLEANING_DISCOUNTED = 30;
 
 type RegularServiceCalculatorProps = {
   locale: "en" | "fr";
@@ -347,32 +345,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
               <p className="mt-3 text-sm font-semibold text-brand-green sm:text-base">
                 {pricingDetails.note}
               </p>
-              {frequency !== 'onetime' && (
-                <div className="mt-3 rounded-xl border border-brand-green/20 bg-white/60 px-3 py-2 text-left">
-                  <p className="mb-1 text-xs font-semibold uppercase tracking-[0.12em] text-brand-green/70">
-                    {isFrench ? 'Nettoyage initial (30 premières min)' : 'Initial cleaning (first 30 min)'}
-                  </p>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-sm text-gray-400 line-through">{formatMoney(INITIAL_CLEANING_FULL)}</span>
-                    <span className="text-xl font-extrabold text-brand-green">{formatMoney(INITIAL_CLEANING_DISCOUNTED)}</span>
-                    <span className="text-xs text-gray-500">{isFrench ? '50 % de rabais' : '50% off'}</span>
-                  </div>
-                  <p className="mt-1 text-xs leading-relaxed text-gray-500">
-                    {isFrench
-                      ? '30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min (régulièrement 5 $). Valide avec 1 mois de service récurrent minimum.'
-                      : '$30 for the first 30 minutes (regularly $60), then +$2.50 per additional 5-min block (regularly $5). Requires at least 1 month of recurring service.'}
-                  </p>
-                </div>
-              )}
-              {frequency === 'onetime' && (
-                <div className="mt-3 rounded-xl border border-brand-green/25 bg-white/70 px-3 py-3 text-left">
-                  <p className="text-sm leading-relaxed text-gray-700">
-                    {isFrench
-                      ? '💡 Passez à un plan récurrent et obtenez votre premier nettoyage à 50 % de rabais: 30 $ pour les 30 premières minutes (régulièrement 60 $), puis 2,50 $ par tranche de 5 min.'
-                      : '💡 Switch to a recurring plan and get your first cleaning at 50% off: $30 for the first 30 min (regularly $60), then $2.50 per additional 5-min block.'}
-                  </p>
-                </div>
-              )}
+
             </div>
 
             <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">

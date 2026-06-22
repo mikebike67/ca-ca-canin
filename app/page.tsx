@@ -44,7 +44,7 @@ export default function Page() {
       >
         Skip to content
       </a>
-      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" showAnnouncement />
+      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script
@@ -142,19 +142,9 @@ export default function Page() {
                   >
                     <Link
                       href="#quote-form"
-                      data-cta="spring-quote"
+                      data-cta="hero-quote"
                     >
                       Check Availability
-                    </Link>
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
-                    asChild
-                  >
-                    <Link href="/spring-into-service">
-                      Spring Promo: 50% Off
                     </Link>
                   </Button>
                 </div>
@@ -162,7 +152,7 @@ export default function Page() {
                   No contract. No back-and-forth. Just a quick quote and a clean yard.
                 </p>
                 <p className="mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
-                  Spring spots are limited. Most requests are confirmed within 1 business day.
+                  Most requests are confirmed within 1 business day.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
@@ -201,19 +191,6 @@ export default function Page() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <RegularServiceCalculator locale="en" />
 
-            <Link
-              href="/spring-into-service#calculator"
-              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
-            >
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Limited-time offer</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Get 50% off your first cleaning</p>
-                <p className="mt-1 text-sm text-gray-600">Sign up for recurring service and your first cleaning starts at $30 for the first 30 minutes (regularly $60). Offer valid until June 20, 2026.</p>
-              </div>
-              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Claim 50% off →
-              </span>
-            </Link>
           </div>
         </section>
 

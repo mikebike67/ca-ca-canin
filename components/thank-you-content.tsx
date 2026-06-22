@@ -42,24 +42,6 @@ const leadTypes = {
       ctaHref: "/fr",
     },
   },
-  spring: {
-    en: {
-      label: "Spring cleanup request",
-      title: "Your spring cleanup request is in.",
-      body: "We received your spring cleanup request and will follow up shortly to confirm the details.",
-      next: "Spring spots can move quickly, so watch your email and phone for our reply.",
-      cta: "View spring promo",
-      ctaHref: "/spring-into-service",
-    },
-    fr: {
-      label: "Demande de nettoyage printanier",
-      title: "Votre demande de nettoyage printanier est envoyee.",
-      body: "Nous avons bien recu votre demande et nous vous contacterons sous peu pour confirmer les details.",
-      next: "Les plages printanieres peuvent se remplir rapidement, alors surveillez vos courriels et votre telephone.",
-      cta: "Voir la promo printemps",
-      ctaHref: "/fr/printemps-en-service",
-    },
-  },
 } as const;
 
 type LeadType = keyof typeof leadTypes;
@@ -69,7 +51,7 @@ export default function ThankYouContent() {
   const searchParams = useSearchParams();
   const locale: Locale = searchParams.get("lang") === "fr" ? "fr" : "en";
   const typeParam = searchParams.get("type");
-  const type: LeadType = typeParam === "contact" || typeParam === "spring" ? typeParam : "quote";
+  const type: LeadType = typeParam === "contact" ? typeParam : "quote";
   const copy = leadTypes[type][locale];
 
   return (

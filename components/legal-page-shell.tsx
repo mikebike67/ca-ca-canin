@@ -19,17 +19,13 @@ export default function LegalPageShell({
 
   const copy = {
     home: isFrench ? "Accueil" : "Home",
-    springCleanup: isFrench ? "Promo printemps" : "Spring Promo",
     faq: "FAQ",
     contact: "Contact",
     language: isFrench ? "English" : "Francais",
     quote: isFrench ? "Obtenir un devis" : "Get a Quote",
     quoteShort: isFrench ? "Devis" : "Quote",
     navLabel: isFrench ? "Principal" : "Primary",
-    promoHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
-    promoText: isFrench ? "Printemps en Service: 50 % de rabais sur votre premier nettoyage →" : "Spring Into Service: Get 50% off your first cleaning →",
     homeHref: isFrench ? "/fr" : "/",
-    springCleanupHref: isFrench ? "/fr/printemps-en-service" : "/spring-into-service",
     faqHref: isFrench ? "/fr/faq" : "/faq",
     contactHref: isFrench ? "/fr/contact" : "/contact",
     languageHref: isFrench ? "/" : "/fr",
@@ -58,9 +54,6 @@ export default function LegalPageShell({
           <div className="hidden items-center space-x-8 md:flex">
             <Link href={copy.homeHref} className="text-gray-700 transition-colors hover:text-brand-green">
               {copy.home}
-            </Link>
-            <Link href={copy.springCleanupHref} className="text-gray-700 transition-colors hover:text-brand-green">
-              {copy.springCleanup}
             </Link>
             <Link href={copy.faqHref} className="text-gray-700 transition-colors hover:text-brand-green">
               {copy.faq}
@@ -92,18 +85,11 @@ export default function LegalPageShell({
           </div>
         </nav>
 
-        <Link
-          href={copy.promoHref}
-          className="block bg-brand-spring-green px-4 py-2 text-center text-xs font-semibold text-white sm:text-sm"
-          onClick={closeMenu}
-        >
-          {copy.promoText}
-        </Link>
       </header>
 
       {/* Mobile nav drawer */}
       {mobileMenuOpen && (
-        <div className="fixed inset-x-0 top-[96px] bottom-0 z-40 overflow-y-auto bg-white md:hidden">
+        <div className="fixed inset-x-0 top-16 bottom-0 z-40 overflow-y-auto bg-white md:hidden">
           <nav className="flex flex-col divide-y divide-gray-100 px-4 py-2" aria-label={copy.navLabel}>
             <Link
               href={copy.homeHref}
@@ -111,13 +97,6 @@ export default function LegalPageShell({
               onClick={closeMenu}
             >
               {copy.home}
-            </Link>
-            <Link
-              href={copy.springCleanupHref}
-              className="py-4 text-base font-semibold text-gray-800 hover:text-brand-green"
-              onClick={closeMenu}
-            >
-              {copy.springCleanup}
             </Link>
             <Link
               href={copy.faqHref}
@@ -149,7 +128,7 @@ export default function LegalPageShell({
         </div>
       )}
 
-      <main id="main-content" className="flex-1 bg-white pt-24">{children}</main>
+      <main id="main-content" className="flex-1 bg-white pt-16">{children}</main>
 
       <SiteFooter locale={locale} />
     </div>

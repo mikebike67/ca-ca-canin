@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
 import { calculateBookingPrice, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency } from "@/lib/booking";
-import { isSpringCleanupPostalCode } from "@/lib/spring-cleanup-service-area";
 import { isRegularServicePostalCode } from "@/lib/regular-service-area";
 
 declare global {
@@ -28,7 +27,7 @@ type BookingPayload = {
   price: number;
   consent?: boolean;
   website?: string;
-  source?: "home-calculator" | "spring-cleanup";
+  source?: "home-calculator";
   locale?: "en" | "fr";
   outOfArea?: boolean;
 };
@@ -166,19 +165,9 @@ export async function POST(req: NextRequest) {
       }
 
       if (!outOfArea) {
-        const postalCodeIsAllowed =
-          source === "spring-cleanup"
-            ? isSpringCleanupPostalCode(normalizedPostalCode)
-            : isRegularServicePostalCode(normalizedPostalCode);
-
-        if (!postalCodeIsAllowed) {
+        if (!isRegularServicePostalCode(normalizedPostalCode)) {
           return NextResponse.json(
-            {
-              error:
-                source === "spring-cleanup"
-                  ? "Postal code is outside the spring cleanup service area."
-                  : "Service is limited to Laval, QC.",
-            },
+            { error: "Service is limited to Laval, QC." },
             { status: 400 },
           );
         }
@@ -216,20 +205,8 @@ export async function POST(req: NextRequest) {
     });
 
     const isFrench = locale === "fr";
-    const requestLabel = isFrench
-      ? source === "spring-cleanup"
-        ? "Demande de devis - nettoyage de printemps"
-        : "Demande de devis"
-      : source === "spring-cleanup"
-        ? "Spring Cleanup Quote Request"
-        : "Quote Request";
-    const estimateLabel = isFrench
-      ? source === "spring-cleanup"
-        ? "Prix de depart estime"
-        : "Prix estime"
-      : source === "spring-cleanup"
-        ? "Estimated starting price"
-        : "Estimated price";
+    const requestLabel = isFrench ? "Demande de devis" : "Quote Request";
+    const estimateLabel = isFrench ? "Prix estime" : "Estimated price";
     const cadenceLabel = isFrench
       ? frequency === "onetime"
         ? "Visite ponctuelle"
@@ -254,18 +231,6 @@ export async function POST(req: NextRequest) {
       `- ${isFrench ? "Telephone" : "Phone"}: ${phone.trim()}`,
       `- ${isFrench ? "Courriel" : "Email"}: ${email.trim()}`,
       ``,
-      ...(frequency !== "onetime" ? [
-        ``,
-        isFrench
-          ? `OFFRE : Votre premier nettoyage est a 50 % de rabais — 30 $ pour les 30 premieres minutes (regulierement 60 $), puis 2,50 $ par tranche de 5 min. Nous l'appliquerons automatiquement a votre premiere visite.`
-          : `PROMO: Your first cleaning is 50% off — $30 for the first 30 minutes (regularly $60), then $2.50 per additional 5 min. We'll apply this automatically to your first visit.`,
-      ] : []),
-      ...(frequency === "onetime" ? [
-        ``,
-        isFrench
-          ? `CONSEIL : Saviez-vous que si vous vous inscrivez a au moins 1 mois de service recurrant, votre premier nettoyage est a 50 % de rabais (30 $ au lieu de 60 $)? Parlez-nous-en lorsque nous vous contacterons.`
-          : `TIP: Did you know that if you sign up for at least 1 month of recurring service, your first cleaning is 50% off ($30 instead of $60)? Ask us about it when we follow up!`,
-      ] : []),
       isFrench ? `Nous vous contacterons sous peu pour confirmer les details et la suite.` : `We'll reach out soon to finalize your schedule.`,
       ``,
       `Ca-Ca Canin`,
@@ -297,26 +262,6 @@ export async function POST(req: NextRequest) {
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Courriel" : "Email"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${email.trim()}</td></tr>
               </table>
             </div>
-            ${frequency !== "onetime" ? `
-            <div style="margin:20px 0 0; border:1px solid #86efac; border-radius:14px; padding:16px 18px; background:#f0fdf4;">
-              <p style="margin:0 0 6px; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; font-weight:700; color:#166534;">
-                ${isFrench ? "Offre promo — Premier nettoyage" : "Spring Promo — First Cleaning"}
-              </p>
-              <p style="margin:0; font-size:15px; line-height:1.6; color:#166534; font-weight:600;">
-                ${isFrench
-                  ? "50&nbsp;% de rabais&nbsp;: 30&nbsp;$ pour les 30 premieres minutes (reg. 60&nbsp;$), puis 2,50&nbsp;$ par tranche de 5&nbsp;min. Nous l&apos;appliquerons automatiquement a votre premiere visite."
-                  : "50% off: $30 for the first 30 minutes (reg. $60), then +$2.50 per additional 5-min block. We&apos;ll apply this automatically to your first visit."}
-              </p>
-            </div>
-            ` : `
-            <div style="margin:20px 0 0; border:1px solid #d7e6da; border-radius:14px; padding:16px 18px; background:#f7faf7;">
-              <p style="margin:0; font-size:14px; line-height:1.6; color:#4b5563;">
-                💡 ${isFrench
-                  ? "Saviez-vous que si vous vous inscrivez a au moins 1 mois de service recurrant, votre premier nettoyage est a 50&nbsp;% de rabais (30&nbsp;$ au lieu de 60&nbsp;$)? Demandez-nous lors de notre suivi."
-                  : "Did you know that signing up for at least 1 month of recurring service gets you 50% off your first cleaning ($30 instead of $60)? Ask us about it when we follow up!"}
-              </p>
-            </div>
-            `}
             <p style="margin:20px 0 0; font-size:15px; line-height:1.6; color:#4b5563;">
               ${isFrench ? "Nous vous contacterons sous peu pour confirmer les details et la suite." : "We&apos;ll be in touch soon to confirm the details and next steps."}
             </p>

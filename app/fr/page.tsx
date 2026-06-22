@@ -44,7 +44,7 @@ export default function Page() {
       >
         Passer au contenu
       </a>
-      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" showAnnouncement />
+      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script
@@ -141,19 +141,9 @@ export default function Page() {
                   >
                     <Link
                       href="#quote-form"
-                      data-cta="spring-quote"
+                      data-cta="hero-quote"
                     >
                       Vérifier ma disponibilité
-                    </Link>
-                  </Button>
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
-                    asChild
-                  >
-                    <Link href="/fr/printemps-en-service" className="block w-full text-center sm:w-auto">
-                      Promo printemps: 50 % de rabais
                     </Link>
                   </Button>
                 </div>
@@ -161,7 +151,7 @@ export default function Page() {
                   Aucun contrat. Aucun va-et-vient inutile. Juste un devis rapide et une cour propre.
                 </p>
                 <p className="mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
-                  Les places de printemps sont limitées. La plupart des demandes sont confirmées en 1 jour ouvrable.
+                  La plupart des demandes sont confirmées en 1 jour ouvrable.
                 </p>
                 <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
                   <div className="flex items-center gap-2 text-center sm:text-left">
@@ -200,19 +190,6 @@ export default function Page() {
           <div className="max-w-5xl mx-auto scroll-animation">
             <RegularServiceCalculator locale="fr" />
 
-            <Link
-              href="/fr/printemps-en-service#calculator"
-              className="mt-6 flex flex-col gap-3 rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)] md:flex-row md:items-center md:justify-between"
-            >
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">Offre à durée limitée</p>
-                <p className="mt-1 text-xl font-bold text-gray-900">Obtenez 50 % de rabais sur votre premier nettoyage</p>
-                <p className="mt-1 text-sm text-gray-600">Inscrivez-vous au service récurrent et votre premier nettoyage commence à 30 $ pour les 30 premières minutes (régulièrement 60 $). Offre valide jusqu'au 20 juin 2026.</p>
-              </div>
-              <span className="inline-flex max-w-fit items-center rounded-full bg-brand-green px-5 py-3 text-sm font-semibold text-white">
-                Réclamer 50 % de rabais →
-              </span>
-            </Link>
           </div>
         </section>
 
