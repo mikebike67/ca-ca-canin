@@ -13,6 +13,7 @@ import SiteHeader from "@/components/site-header"
 const RegularServiceCalculator = dynamic(() => import('@/components/regular-service-calculator'), { ssr: false })
 const BeforeAfterGallery = dynamic(() => import('@/components/before-after-gallery'), { ssr: false })
 const ServiceAreaMap = dynamic(() => import('@/components/service-area-map'), { ssr: false })
+const TestimonialsCarousel = dynamic(() => import('@/components/testimonials-carousel'), { ssr: false })
 
 export default function Page() {
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -378,6 +379,13 @@ export default function Page() {
                 </Card>
               ))}
             </div>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+          <div className="max-w-7xl mx-auto">
+            <TestimonialsCarousel locale="fr" />
           </div>
         </section>
 

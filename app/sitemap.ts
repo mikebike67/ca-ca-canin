@@ -15,6 +15,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/fr/terms",
     "/privacy",
     "/fr/privacy",
+    "/free-cleanup",
+    "/fr/nettoyage-gratuit",
   ];
 
   const staticEntries = staticPages.map((path) => ({
