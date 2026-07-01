@@ -45,7 +45,7 @@ export default function Page() {
       >
         Skip to content
       </a>
-      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" />
+      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" showAnnouncement />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script

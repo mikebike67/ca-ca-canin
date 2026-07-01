@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, PawPrint } from 'lucide-react'
 import { REGULAR_SERVICE_LOCATIONS } from '@/lib/regular-service-area'
 
 type Props = {
@@ -13,6 +13,7 @@ type Props = {
   altHref: string
   ctaLabel?: string
   ctaHref?: string
+  showAnnouncement?: boolean
 }
 
 export default function SiteHeader({
@@ -20,6 +21,7 @@ export default function SiteHeader({
   altHref,
   ctaLabel,
   ctaHref = '#quote-form',
+  showAnnouncement = false,
 }: Props) {
   const isFrench = locale === 'fr'
   const router = useRouter()
@@ -191,6 +193,22 @@ export default function SiteHeader({
         )}
       </nav>
 
+      {showAnnouncement && (
+        <Link
+          href={isFrench ? '/fr/nettoyage-gratuit' : '/free-cleanup'}
+          className="relative block overflow-hidden bg-brand-green px-10 py-2 text-center text-xs font-semibold text-white transition-colors hover:bg-brand-green-dark sm:px-12 sm:text-sm"
+        >
+          <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 select-none opacity-70" aria-hidden="true">
+            <PawPrint className="h-4 w-4" />
+          </span>
+          {isFrench
+            ? 'Premier nettoyage gratuit avec un service récurrent. Réclamez le vôtre →'
+            : 'Your first cleanup is free with recurring service. Claim yours →'}
+          <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 select-none opacity-70" aria-hidden="true">
+            <PawPrint className="h-4 w-4" />
+          </span>
+        </Link>
+      )}
     </header>
   )
 }

@@ -45,7 +45,7 @@ export default function Page() {
       >
         Passer au contenu
       </a>
-      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" />
+      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" showAnnouncement />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script
