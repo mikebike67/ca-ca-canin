@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
-import { calculateBookingPrice, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency } from "@/lib/booking";
+import { applyDiscount, calculateBookingPrice, getMonthlyVisits, isCanadianPostalCode, normalizePostalCode, type DogCount, type ServiceFrequency } from "@/lib/booking";
 import { isRegularServicePostalCode } from "@/lib/regular-service-area";
+import { lookupReferralCode } from "@/lib/referral";
 
 declare global {
   interface CloudflareEnv {
@@ -27,9 +28,10 @@ type BookingPayload = {
   price: number;
   consent?: boolean;
   website?: string;
-  source?: "home-calculator";
+  source?: "home-calculator" | "free-first-cleanup";
   locale?: "en" | "fr";
   outOfArea?: boolean;
+  referralCode?: string;
 };
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -120,7 +122,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as Partial<BookingPayload>;
-    const { name, phone, email, postalCode, frequency, dogs, yardSqft, price, consent, website, source, locale, outOfArea } = body;
+    const { name, phone, email, postalCode, frequency, dogs, yardSqft, price, consent, website, source, locale, outOfArea, referralCode } = body;
 
     if (website) {
       return NextResponse.json({ ok: true });
@@ -184,6 +186,25 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid quote request." }, { status: 400 });
     }
 
+    const isOneTime = frequency === "onetime";
+    const monthlyTotal = Math.round(serverPrice * getMonthlyVisits(frequency as ServiceFrequency) * 100) / 100;
+    const discountBase = isOneTime ? serverPrice : monthlyTotal;
+
+    const referral = referralCode ? await lookupReferralCode(referralCode) : { valid: false as const };
+    const referralInfo = referral.valid
+      ? {
+          code: referralCode!.trim().toUpperCase(),
+          discount: referral.discount,
+          type: referral.type,
+          recurring: referral.recurring,
+          requiresProof: referral.requiresProof,
+          isPartner: referral.isPartner,
+          referrerLabel: referral.referrerLabel,
+          isOneTime,
+          discountedTotal: applyDiscount(discountBase, { type: referral.type, amount: referral.discount }),
+        }
+      : null;
+
     const { host, port, user, pass, from, adminTo } = await getMailConfig();
 
     if (!host || !port || !user || !pass || !from) {
@@ -215,28 +236,90 @@ export async function POST(req: NextRequest) {
         ? "One-time visit"
         : `${frequency} service`;
     const subject = `${outOfArea ? "[Hors zone] " : ""}${requestLabel} | ${normalizedPostalCode || "No postal code"} | ${dogs} dog${dogs === "1" ? "" : "s"} | ${yardSqft} sq ft`;
-    const text = [
-      isFrench ? `Bonjour ${name.trim()},` : `Hi ${name.trim()},`,
-      ``,
-      isFrench ? `Merci d'avoir contacte Ca-Ca Canin.` : `Thanks for reaching out to Ca-Ca Canin.`,
-      ``,
-      isFrench ? `Nous avons bien recu votre demande.` : `We received your ${requestLabel.toLowerCase()}.`,
-      ``,
-      isFrench ? `Resume de la demande :` : `Request details:`,
-      `- ${isFrench ? "Code postal" : "Postal code"}: ${normalizedPostalCode || (isFrench ? "Non fourni" : "Not provided")}`,
-      `- ${isFrench ? "Type de service" : "Service type"}: ${cadenceLabel}`,
-      `- ${isFrench ? "Chiens" : "Dogs"}: ${dogs}`,
-      `- ${isFrench ? "Taille du terrain" : "Yard size"}: ${yardSqft} sq ft`,
-      `- ${estimateLabel}: $${serverPrice.toFixed(2)}${frequency === "onetime" ? " for the first 30 minutes" : " per visit"}`,
-      `- ${isFrench ? "Telephone" : "Phone"}: ${phone.trim()}`,
-      `- ${isFrench ? "Courriel" : "Email"}: ${email.trim()}`,
-      ``,
-      isFrench ? `Nous vous contacterons sous peu pour confirmer les details et la suite.` : `We'll reach out soon to finalize your schedule.`,
-      ``,
-      `Ca-Ca Canin`,
-    ].join("\n");
 
-    const html = `
+    const referralPeriodLabel = referralInfo
+      ? referralInfo.isOneTime
+        ? (isFrench ? "Visite unique" : "One-time visit")
+        : referralInfo.recurring
+          ? (isFrench ? "Chaque mois" : "Every month")
+          : (isFrench ? "1er mois" : "First month")
+      : "";
+    const referralDiscountLabel = referralInfo
+      ? referralInfo.type === "percent"
+        ? `-${referralInfo.discount}%`
+        : `-$${referralInfo.discount.toFixed(2)}`
+      : "";
+    const referralTextLine = referralInfo
+      ? `- ${isFrench ? "Rabais de parrainage" : "Referral discount"}: ${referralDiscountLabel} (${referralInfo.code}) → ${referralPeriodLabel}: $${referralInfo.discountedTotal.toFixed(2)}`
+      : "";
+    const referralAdminTextLine = referralInfo && !referralInfo.isPartner
+      ? `- ${isFrench ? "Credit parrain a verser" : "Referrer credit owed"}: $${referralInfo.discount.toFixed(2)} ${isFrench ? "a" : "to"} ${referralInfo.referrerLabel} (${isFrench ? "code" : "code"} ${referralInfo.code}) ${isFrench ? "une fois ce client confirme" : "once this becomes a confirmed customer"}`
+      : "";
+    const referralProofCustomerLine = referralInfo && referralInfo.requiresProof
+      ? (isFrench
+          ? "Note : ce rabais est confirme une fois que vous nous avez transmis une preuve d'adoption ou d'accueil (foster)."
+          : "Note: this discount is confirmed once you've shared proof of adoption/fostering with us.")
+      : "";
+    const referralProofAdminLine = referralInfo && referralInfo.requiresProof
+      ? (isFrench
+          ? `Preuve requise : cette reservation utilise le code partenaire ${referralInfo.code} (${referralInfo.referrerLabel}). Confirmez qu'ils ont fourni une preuve d'adoption ou d'accueil avant d'appliquer le rabais.`
+          : `Proof required: this booking used partner code ${referralInfo.code} (${referralInfo.referrerLabel}). Confirm they've provided proof of adoption/fostering before honoring the discount.`)
+      : "";
+
+    const buildText = (isAdmin: boolean) =>
+      [
+        isFrench ? `Bonjour ${name.trim()},` : `Hi ${name.trim()},`,
+        ``,
+        isFrench ? `Merci d'avoir contacte Ca-Ca Canin.` : `Thanks for reaching out to Ca-Ca Canin.`,
+        ``,
+        isFrench ? `Nous avons bien recu votre demande.` : `We received your ${requestLabel.toLowerCase()}.`,
+        ``,
+        isFrench ? `Resume de la demande :` : `Request details:`,
+        `- ${isFrench ? "Code postal" : "Postal code"}: ${normalizedPostalCode || (isFrench ? "Non fourni" : "Not provided")}`,
+        `- ${isFrench ? "Type de service" : "Service type"}: ${cadenceLabel}`,
+        `- ${isFrench ? "Chiens" : "Dogs"}: ${dogs}`,
+        `- ${isFrench ? "Taille du terrain" : "Yard size"}: ${yardSqft} sq ft`,
+        `- ${estimateLabel}: $${serverPrice.toFixed(2)}${frequency === "onetime" ? " for the first 30 minutes" : " per visit"}`,
+        ...(referralTextLine ? [referralTextLine] : []),
+        `- ${isFrench ? "Telephone" : "Phone"}: ${phone.trim()}`,
+        `- ${isFrench ? "Courriel" : "Email"}: ${email.trim()}`,
+        ...(!isAdmin && referralProofCustomerLine ? [``, referralProofCustomerLine] : []),
+        ...(isAdmin && referralAdminTextLine ? [``, referralAdminTextLine] : []),
+        ...(isAdmin && referralProofAdminLine ? [``, referralProofAdminLine] : []),
+        ``,
+        isFrench ? `Nous vous contacterons sous peu pour confirmer les details et la suite.` : `We'll reach out soon to finalize your schedule.`,
+        ``,
+        `Ca-Ca Canin`,
+      ].join("\n");
+
+    const referralHtmlRow = referralInfo
+      ? `<tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Rabais de parrainage" : "Referral discount"} (${referralPeriodLabel})</td><td style="padding:8px 0; text-align:right; font-weight:600; color:#307944;">${referralDiscountLabel} → $${referralInfo.discountedTotal.toFixed(2)} (${referralInfo.code})</td></tr>`
+      : "";
+    const referralAdminCreditHtmlBlock = referralInfo && !referralInfo.isPartner
+      ? `<div style="margin-top:16px; border:1px solid #fbbf24; border-radius:12px; padding:14px; background:#fffbeb;">
+          <p style="margin:0; font-size:14px; color:#92400e; font-weight:600;">
+            ${isFrench ? "Credit parrain a verser" : "Referrer credit owed"}: $${referralInfo.discount.toFixed(2)} ${isFrench ? "a" : "to"} ${referralInfo.referrerLabel} (${isFrench ? "code" : "code"} ${referralInfo.code})
+          </p>
+          <p style="margin:4px 0 0; font-size:13px; color:#92400e;">
+            ${isFrench ? "A verser une fois que ce client est confirme." : "Credit once this becomes a confirmed customer."}
+          </p>
+        </div>`
+      : "";
+    const referralProofAdminHtmlBlock = referralInfo && referralInfo.requiresProof
+      ? `<div style="margin-top:16px; border:1px solid #fbbf24; border-radius:12px; padding:14px; background:#fffbeb;">
+          <p style="margin:0; font-size:14px; color:#92400e; font-weight:600;">
+            ${isFrench ? "Preuve requise" : "Proof required"}
+          </p>
+          <p style="margin:4px 0 0; font-size:13px; color:#92400e;">
+            ${referralProofAdminLine}
+          </p>
+        </div>`
+      : "";
+    const referralProofCustomerHtml = referralInfo && referralInfo.requiresProof
+      ? `<p style="margin:16px 0 0; font-size:14px; line-height:1.6; color:#4b5563;">${referralProofCustomerLine}</p>`
+      : "";
+
+    const buildHtml = (isAdmin: boolean) => `
       <div style="font-family: Arial, sans-serif; background:#f7faf7; padding:24px; color:#1f2937;">
         <div style="max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #d7e6da; border-radius:20px; overflow:hidden;">
           <div style="background:linear-gradient(135deg, #307944 0%, #3d8b52 100%); color:#ffffff; padding:20px 24px;">
@@ -258,10 +341,14 @@ export async function POST(req: NextRequest) {
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Chiens" : "Dogs"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${dogs}</td></tr>
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Taille du terrain" : "Yard size"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${yardSqft} sq ft</td></tr>
                 <tr><td style="padding:8px 0; color:#6b7280;">${estimateLabel}</td><td style="padding:8px 0; text-align:right; font-weight:600;">$${serverPrice.toFixed(2)}${frequency === "onetime" ? " / first 30 min" : " / visit"}</td></tr>
+                ${referralHtmlRow}
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Telephone" : "Phone"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${phone.trim()}</td></tr>
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Courriel" : "Email"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${email.trim()}</td></tr>
               </table>
             </div>
+            ${isAdmin ? referralAdminCreditHtmlBlock : ""}
+            ${isAdmin ? referralProofAdminHtmlBlock : ""}
+            ${!isAdmin ? referralProofCustomerHtml : ""}
             <p style="margin:20px 0 0; font-size:15px; line-height:1.6; color:#4b5563;">
               ${isFrench ? "Nous vous contacterons sous peu pour confirmer les details et la suite." : "We&apos;ll be in touch soon to confirm the details and next steps."}
             </p>
@@ -280,16 +367,25 @@ export async function POST(req: NextRequest) {
       </div>
     `;
 
-    const recipients = [email, adminTo].filter((value): value is string => Boolean(value));
-
     await transporter.sendMail({
       from,
-      to: recipients,
+      to: email,
       subject,
-      text,
-      html,
-      replyTo: email.trim(),
+      text: buildText(false),
+      html: buildHtml(false),
+      replyTo: adminTo || from,
     });
+
+    if (adminTo && adminTo !== email) {
+      await transporter.sendMail({
+        from,
+        to: adminTo,
+        subject,
+        text: buildText(true),
+        html: buildHtml(true),
+        replyTo: email.trim(),
+      });
+    }
 
     return NextResponse.json({ ok: true });
   } catch (error) {

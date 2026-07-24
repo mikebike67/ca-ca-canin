@@ -59,6 +59,12 @@ const testimonials: Testimonial[] = [
     text: "Excellent travail! Je recommande fortement!",
     source: 'Facebook',
   },
+  {
+    name: 'Cel Yne',
+    location: 'Laval',
+    text: "Excellent service ! Je le recommande à tous les propriétaires de chiens qui ne veulent pas ou ne peuvent pas ramasser les petits (ou gros selon le chien) dégâts. C'est un casse tête en moins sur la liste. Merci !",
+    source: 'Facebook',
+  },
 ]
 
 const copy = {

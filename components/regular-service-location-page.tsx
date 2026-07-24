@@ -1,9 +1,8 @@
 'use client'
 
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import {
   Bell,
   Camera,
@@ -20,52 +19,9 @@ import LocationSwitcher from "@/components/location-switcher";
 import RegularServiceCalculator from "@/components/regular-service-calculator";
 import SiteFooter from "@/components/site-footer";
 import {
-  calculateBookingPrice,
-  getMonthlyVisits,
-  getYardCategory,
-  isCanadianPostalCode,
-  normalizePostalCode,
-  type DogCount,
-  type ServiceFrequency,
-} from "@/lib/booking";
-import {
-  getRegularServiceLocationBySlug,
-  isRegularServicePostalCode,
   REGULAR_SERVICE_LOCATIONS,
   type RegularServiceLocation,
 } from "@/lib/regular-service-area";
-
-const yardOptions = {
-  en: [
-    { key: "small", label: "Standard / Small", detail: "~1,000-3,000 sq ft" },
-    { key: "medium", label: "Medium", detail: "~3,000-6,000 sq ft" },
-    { key: "large", label: "Large", detail: "~6,000-10,000 sq ft" },
-    { key: "xlarge", label: "X-Large", detail: "10,000+ sq ft" },
-  ],
-  fr: [
-    { key: "small", label: "Standard / Petit", detail: "~1 000-3 000 pi²" },
-    { key: "medium", label: "Moyen", detail: "~3 000-6 000 pi²" },
-    { key: "large", label: "Grand", detail: "~6 000-10 000 pi²" },
-    { key: "xlarge", label: "Très grand", detail: "10 000+ pi²" },
-  ],
-} as const;
-
-const frequencyNotes = {
-  en: {
-    weekly: "Best for keeping the yard under control every week.",
-    biweekly: "A practical balance of upkeep and cost.",
-    monthly: "A lighter maintenance option for lower buildup.",
-    onetime: "A one-time cleanup visit with up to 30 minutes included.",
-  },
-  fr: {
-    weekly: "Le meilleur choix pour garder la cour sous contrôle chaque semaine.",
-    biweekly: "Un bon équilibre entre l'entretien et le prix.",
-    monthly: "Une option plus légère lorsque l'accumulation est moindre.",
-    onetime: "Une visite ponctuelle avec jusqu'à 30 minutes incluses.",
-  },
-} as const;
-
-const formatMoney = (value: number) => `$${value.toFixed(2)}`;
 
 type RegularServiceLocationPageProps = {
   locale: "en" | "fr";
@@ -83,55 +39,9 @@ export default function RegularServiceLocationPage({
   const altHref = isFrench ? `/dog-poop-cleanup/${location.slug}` : `/fr/ramassage-dejections/${location.slug}`;
   const legalHref = isFrench ? "/fr/terms" : "/terms";
   const privacyHref = isFrench ? "/fr/privacy" : "/privacy";
-  const router = useRouter();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [frequency, setFrequency] = useState<ServiceFrequency>("weekly");
-  const [dogs, setDogs] = useState<DogCount>("1");
-  const [yardSqft, setYardSqft] = useState(3000);
-  const [displayPrice, setDisplayPrice] = useState(0);
-  const [postalCode, setPostalCode] = useState("");
-  const [name, setName] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [postalStatus, setPostalStatus] = useState<"idle" | "valid" | "invalid">("idle");
-  const [bookingStatus, setBookingStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-  const [bookingMessage, setBookingMessage] = useState("");
-  const [consentChecked, setConsentChecked] = useState(false);
-  const [consentError, setConsentError] = useState("");
-  const [websiteField, setWebsiteField] = useState("");
   const observerRef = useRef<IntersectionObserver | null>(null);
-
-  const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft]);
-
-  const pricingDetails = useMemo(() => {
-    const perVisit = calculateBookingPrice(frequency, dogs, yardSqft);
-    return { perVisit, note: frequencyNotes[locale][frequency] };
-  }, [dogs, frequency, locale, yardSqft]);
-
-  const monthlyTotal = useMemo(() => {
-    const visitsPerMonth = getMonthlyVisits(frequency);
-    return Math.round(pricingDetails.perVisit * visitsPerMonth * 100) / 100;
-  }, [frequency, pricingDetails.perVisit]);
-
-  useEffect(() => {
-    const duration = 350;
-    const start = displayPrice;
-    const end = pricingDetails.perVisit;
-    const startTime = performance.now();
-    let raf: number;
-
-    const tick = (now: number) => {
-      const t = Math.min(1, (now - startTime) / duration);
-      const eased = 1 - Math.pow(1 - t, 3);
-      const value = start + (end - start) * eased;
-      setDisplayPrice(value);
-      if (t < 1) raf = requestAnimationFrame(tick);
-    };
-
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [pricingDetails.perVisit]);
 
   useEffect(() => {
     observerRef.current = new IntersectionObserver((entries) => {
@@ -146,103 +56,6 @@ export default function RegularServiceLocationPage({
 
     return () => observerRef.current?.disconnect();
   }, []);
-
-  const handlePostalCodeCheck = () => {
-    const normalized = normalizePostalCode(postalCode);
-
-    if (!isCanadianPostalCode(normalized)) {
-      setPostalStatus("invalid");
-      setBookingStatus("idle");
-      setBookingMessage("");
-      return;
-    }
-
-    if (!isRegularServicePostalCode(normalized)) {
-      setPostalStatus("invalid");
-      setBookingStatus("idle");
-      setBookingMessage("");
-      return;
-    }
-
-    if (!consentChecked) {
-      setConsentError(
-        isFrench
-          ? "Veuillez accepter les conditions et la politique de confidentialité pour continuer."
-          : "Please agree to the Terms and Privacy Policy to continue.",
-      );
-      setPostalStatus("idle");
-      return;
-    }
-
-    setConsentError("");
-    setPostalStatus("valid");
-  };
-
-  const handleBookingSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!consentChecked) {
-      setConsentError(
-        isFrench
-          ? "Veuillez accepter les conditions et la politique de confidentialité avant l'envoi."
-          : "Please agree to the Terms and Privacy Policy before submitting.",
-      );
-      return;
-    }
-
-    if (!isCanadianPostalCode(postalCode) || !isRegularServicePostalCode(postalCode)) {
-      setPostalStatus("invalid");
-      setBookingStatus("idle");
-      setBookingMessage("");
-      return;
-    }
-
-    setBookingStatus("loading");
-    setBookingMessage("");
-
-    try {
-      const res = await fetch("/api/book", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name,
-          phone,
-          email,
-          postalCode: normalizePostalCode(postalCode),
-          consent: true,
-          website: websiteField,
-          source: "home-calculator",
-          locale,
-          frequency,
-          dogs,
-          yardSqft,
-          price: pricingDetails.perVisit,
-        }),
-      });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(
-          data.error || (isFrench ? "Échec de l'envoi de la confirmation." : "Failed to send confirmation."),
-        );
-      }
-
-      setPostalCode("");
-      setName("");
-      setPhone("");
-      setEmail("");
-      setConsentChecked(false);
-      setConsentError("");
-      setPostalStatus("idle");
-      setWebsiteField("");
-      router.push(`/thank-you?lang=${locale}&type=quote`);
-    } catch (err: any) {
-      setBookingStatus("error");
-      setBookingMessage(
-        err?.message || (isFrench ? "Une erreur s'est produite. Veuillez réessayer." : "Something went wrong. Please try again."),
-      );
-    }
-  };
 
   const heroBullets = isFrench
     ? [
@@ -320,38 +133,10 @@ export default function RegularServiceLocationPage({
     heroTitle: isFrench ? "RAMASSAGE DE DÉJECTIONS CANINES" : "DOG POOP CLEANUP",
     heroSubtitle: isFrench ? location.regularIntroFr : location.regularIntroEn,
     howItWorks: howItWorksCopy,
-    pricingTitle: isFrench ? "Calculateur de prix" : "Pricing Calculator",
-    pricingSubtitle: isFrench
-      ? "Entrez vos détails, voyez votre prix estimé et demandez un service régulier dans votre secteur."
-      : "Enter your details, see your estimated price, and request recurring service in your area.",
     faqTitle: isFrench ? "Questions fréquentes" : "Frequently asked questions",
     faqSubtitle: isFrench
       ? "Réponses sur la fréquence, la tarification et la zone desservie."
       : "Answers about frequency, pricing, and the served area.",
-    validPostal: isFrench
-      ? "Nous desservons ce code postal. Passez à l'étape 2."
-      : "We service that postal code. Continue to step 2.",
-    invalidPostal: isFrench
-      ? "Désolé, ce code postal est hors de notre zone de service régulière."
-      : "Sorry, that postal code is outside our regular service area.",
-    invalidCanadian: isFrench
-      ? "Veuillez entrer un code postal canadien valide."
-      : "Please enter a valid Canadian postal code.",
-    consent: isFrench
-      ? "J'accepte les conditions et la politique de confidentialité et j'autorise Ca-Ca Canin à me contacter au sujet de ma demande de devis."
-      : "I agree to the Terms and Privacy Policy and allow Ca-Ca Canin to contact me about my quote request.",
-    note: isFrench
-      ? "Le prix dépend de la fréquence, de la taille de la cour et du nombre de chiens. Le prix final est confirmé après vérification."
-      : "Pricing depends on frequency, yard size, and dog count. Final pricing is confirmed after review.",
-    estimate: isFrench ? "Estimation du service" : "Service estimate",
-    thankYou: isFrench ? "Votre demande de devis est envoyée." : "Your quote request is in.",
-    thankYouBody: isFrench
-      ? "Nous avons bien reçu votre demande et nous vous contacterons sous peu. Inutile de renvoyer le formulaire."
-      : "We received your request and will follow up shortly. No need to send the form again.",
-    thankYouFoot: isFrench ? "Vous ne l'avez pas reçu? Vérifiez vos courriels indésirables." : "Didn't receive it? Check your junk folder.",
-    submit: isFrench ? "Demander mon devis" : "Request My Quote",
-    sending: isFrench ? "Envoi..." : "Sending...",
-    replyTime: isFrench ? "Nous répondons habituellement en 1 jour ouvrable." : "We usually reply within 1 business day.",
     relatedTitle: isFrench ? "Autres villes desservies" : "Other served locations",
     relatedIntro: isFrench ? "Consultez aussi les autres pages locales du service régulier." : "Browse the other local recurring-service pages as well.",
   };

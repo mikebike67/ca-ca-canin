@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import {
+  applyDiscount,
   calculateBookingPrice,
   getMonthlyVisits,
   getYardCategory,
@@ -44,6 +45,7 @@ const frequencyNotes: Record<"en" | "fr", Record<PromoFrequency, string>> = {
 }
 
 const formatMoney = (v: number) => `$${v.toFixed(2)}`
+const formatDiscountLabel = (type: "flat" | "percent", amount: number) => (type === "percent" ? `${amount}%` : formatMoney(amount))
 
 export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" }) {
   const isFrench = locale === "fr"
@@ -66,6 +68,13 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
   const [submitStatus,   setSubmitStatus]   = useState<"idle" | "loading" | "error">("idle")
   const [errorMessage,   setErrorMessage]   = useState("")
 
+  const [referralCode, setReferralCode] = useState("")
+  const [referralStatus, setReferralStatus] = useState<"idle" | "checking" | "valid" | "invalid">("idle")
+  const [referralDiscount, setReferralDiscount] = useState(0)
+  const [referralType, setReferralType] = useState<"flat" | "percent">("flat")
+  const [referralRecurring, setReferralRecurring] = useState(false)
+  const [referralRequiresProof, setReferralRequiresProof] = useState(false)
+
   const yardCategory = useMemo(() => getYardCategory(yardSqft), [yardSqft])
 
   const perVisit = useMemo(
@@ -77,6 +86,47 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
     () => Math.round(perVisit * getMonthlyVisits(frequency) * 100) / 100,
     [frequency, perVisit],
   )
+
+  const discountedFirstPaidMonthPrice = useMemo(
+    () => (referralStatus === "valid" ? applyDiscount(monthlyTotal, { type: referralType, amount: referralDiscount }) : null),
+    [referralStatus, referralDiscount, referralType, monthlyTotal],
+  )
+
+  const handleApplyReferral = async () => {
+    const code = referralCode.trim()
+    if (!code) return
+
+    setReferralStatus("checking")
+
+    try {
+      const res = await fetch("/api/validate-referral", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      })
+      const data = await res.json().catch(() => ({ valid: false }))
+
+      if (data.valid) {
+        setReferralStatus("valid")
+        setReferralDiscount(data.discount ?? 0)
+        setReferralType(data.type === "percent" ? "percent" : "flat")
+        setReferralRecurring(Boolean(data.recurring))
+        setReferralRequiresProof(Boolean(data.requiresProof))
+      } else {
+        setReferralStatus("invalid")
+        setReferralDiscount(0)
+        setReferralType("flat")
+        setReferralRecurring(false)
+        setReferralRequiresProof(false)
+      }
+    } catch {
+      setReferralStatus("invalid")
+      setReferralDiscount(0)
+      setReferralType("flat")
+      setReferralRecurring(false)
+      setReferralRequiresProof(false)
+    }
+  }
 
   // Animate price counter
   useEffect(() => {
@@ -147,6 +197,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
           yardSqft,
           price: perVisit,
           outOfArea,
+          referralCode: referralStatus === "valid" ? referralCode.trim() : undefined,
         }),
       })
 
@@ -157,6 +208,12 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
         )
       }
 
+      setReferralCode("")
+      setReferralStatus("idle")
+      setReferralDiscount(0)
+      setReferralType("flat")
+      setReferralRecurring(false)
+      setReferralRequiresProof(false)
       router.push(`/thank-you?lang=${locale}&type=quote`)
     } catch (err: any) {
       setSubmitStatus("error")
@@ -170,7 +227,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
     <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
       <div className="grid gap-8 lg:grid-cols-2">
 
-        {/* LEFT — Selectors + price preview */}
+        {/* LEFT: Selectors + price preview */}
         <div className="space-y-6">
 
           {/* Frequency */}
@@ -283,12 +340,39 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
                 <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                   {isFrench ? "Total mensuel estimé" : "Estimated monthly"}
                 </p>
-                <p className="text-xl font-extrabold tabular-nums text-brand-green">
-                  {formatMoney(monthlyTotal)}
-                  <span className="ml-1 text-sm font-semibold text-gray-500">
-                    {isFrench ? "/mois" : "/month"}
-                  </span>
-                </p>
+                {referralStatus === "valid" && discountedFirstPaidMonthPrice !== null ? (
+                  <>
+                    <p className="flex flex-wrap items-baseline gap-2">
+                      <span className="text-base font-semibold text-gray-400 line-through">
+                        {formatMoney(monthlyTotal)}
+                      </span>
+                      <span className="text-xl font-extrabold tabular-nums text-brand-green">
+                        {formatMoney(discountedFirstPaidMonthPrice)}
+                        <span className="ml-1 text-sm font-semibold text-gray-500">
+                          {referralRecurring
+                            ? (isFrench ? "chaque mois" : "every month")
+                            : (isFrench ? "ce premier mois payant" : "this first paid month")}
+                        </span>
+                      </span>
+                    </p>
+                    <p className="text-sm text-gray-600">
+                      {referralRecurring
+                        ? (isFrench
+                            ? `${formatDiscountLabel(referralType, referralDiscount)} de rabais applique en continu.`
+                            : `${formatDiscountLabel(referralType, referralDiscount)} off, applied on an ongoing basis.`)
+                        : (isFrench
+                            ? `Puis ${formatMoney(monthlyTotal)}/mois par la suite.`
+                            : `Then ${formatMoney(monthlyTotal)}/month after that.`)}
+                    </p>
+                  </>
+                ) : (
+                  <p className="text-xl font-extrabold tabular-nums text-brand-green">
+                    {formatMoney(monthlyTotal)}
+                    <span className="ml-1 text-sm font-semibold text-gray-500">
+                      {isFrench ? "/mois" : "/month"}
+                    </span>
+                  </p>
+                )}
               </div>
             </div>
             <p className="mt-3 text-sm font-semibold text-brand-green">
@@ -297,10 +381,61 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
             <p className="mt-1 text-xs text-gray-500">
               {isFrench ? "Sans contrat. Annulation facile." : "No contracts. Cancel anytime."}
             </p>
+
+            <div className="mt-4 border-t border-brand-green/10 pt-4">
+              <label className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80">
+                {isFrench ? "Code de parrainage ou de partenaire (optionnel)" : "Referral or partner code (optional)"}
+              </label>
+              <div className="mt-2 flex gap-2">
+                <input
+                  type="text"
+                  value={referralCode}
+                  onChange={(e) => {
+                    setReferralCode(e.target.value)
+                    setReferralStatus("idle")
+                  }}
+                  placeholder={isFrench ? "Entrez le code" : "Enter code"}
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
+                />
+                <Button
+                  type="button"
+                  onClick={handleApplyReferral}
+                  disabled={referralStatus === "checking" || !referralCode.trim()}
+                  className="shrink-0 bg-brand-green text-white hover:bg-brand-green-dark"
+                >
+                  {referralStatus === "checking"
+                    ? "..."
+                    : (isFrench ? "Appliquer" : "Apply")}
+                </Button>
+              </div>
+              {referralStatus === "valid" && discountedFirstPaidMonthPrice !== null && (
+                <p className="mt-2 text-sm font-semibold text-brand-green" role="status" aria-live="polite">
+                  {referralRecurring
+                    ? (isFrench
+                        ? `Code appliqué : ${formatDiscountLabel(referralType, referralDiscount)} de rabais chaque mois → ${formatMoney(discountedFirstPaidMonthPrice)}`
+                        : `Code applied: ${formatDiscountLabel(referralType, referralDiscount)} off every month → ${formatMoney(discountedFirstPaidMonthPrice)}`)
+                    : (isFrench
+                        ? `Code appliqué : ${formatDiscountLabel(referralType, referralDiscount)} de rabais sur votre premier mois payant → ${formatMoney(discountedFirstPaidMonthPrice)}`
+                        : `Code applied: ${formatDiscountLabel(referralType, referralDiscount)} off your first paid month → ${formatMoney(discountedFirstPaidMonthPrice)}`)}
+                </p>
+              )}
+              {referralStatus === "valid" && referralRequiresProof && (
+                <p className="mt-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800" role="status" aria-live="polite">
+                  {isFrench
+                    ? "Ce code necessite une preuve d'adoption ou d'accueil (foster). Ayez votre certificat pret, nous confirmerons le rabais apres verification."
+                    : "This code requires proof of adoption/fostering. Please have your certificate ready, we'll confirm the discount after verification."}
+                </p>
+              )}
+              {referralStatus === "invalid" && (
+                <p className="mt-2 text-sm text-red-600" role="alert">
+                  {isFrench ? "Code de parrainage invalide." : "That referral code isn't valid."}
+                </p>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* RIGHT — Contact form */}
+        {/* RIGHT: Contact form */}
         <div>
           <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
 

@@ -59,3 +59,8 @@ export function getMonthlyVisits(frequency: ServiceFrequency) {
   if (frequency === "monthly") return 1;
   return 0;
 }
+
+export function applyDiscount(price: number, discount: { type: "flat" | "percent"; amount: number }) {
+  const reduced = discount.type === "percent" ? price * (1 - discount.amount / 100) : price - discount.amount;
+  return Math.max(0, Math.round(reduced * 100) / 100);
+}
