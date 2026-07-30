@@ -50,7 +50,7 @@ export default function PremierNettoyageGratuitPage() {
         <section className="bg-white px-4 pt-12 pb-6 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-3xl mx-auto text-center">
             <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
-              Offre limitée · Expire le 31 juillet 2026
+              Offre limitée · Expire le 16 août 2026
             </span>
             <h1 className="mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl">
               Votre premier nettoyage<br />
