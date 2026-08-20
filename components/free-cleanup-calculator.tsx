@@ -576,8 +576,8 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
 
             <p className="text-xs text-gray-500">
               {isFrench
-                ? "Offre valable pour les nouveaux clients récurrents seulement. Expire le 16 août 2026. La plupart des demandes sont confirmées en 1 jour ouvrable."
-                : "Offer valid for new recurring customers only. Expires August 16, 2026. Most requests confirmed within 1 business day."}
+                ? "Offre valable pour les nouveaux clients récurrents seulement. Expire le 30 septembre 2026. La plupart des demandes sont confirmées en 1 jour ouvrable."
+                : "Offer valid for new recurring customers only. Expires September 30, 2026. Most requests confirmed within 1 business day."}
             </p>
           </form>
         </div>
