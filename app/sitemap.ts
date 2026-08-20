@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area";
+import { BLOG_POSTS } from "@/lib/blog-posts";
 
 const siteUrl = "https://cacacanin.com";
 
@@ -38,5 +39,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ]);
 
-  return [...staticEntries, ...regularServiceEntries];
+  const blogEntries = [
+    { url: `${siteUrl}/blog`, changeFrequency: "weekly" as const, priority: 0.8 },
+    { url: `${siteUrl}/fr/blogue`, changeFrequency: "weekly" as const, priority: 0.8 },
+    ...BLOG_POSTS.flatMap((post) => [
+      { url: `${siteUrl}/blog/${post.slug}`, changeFrequency: "monthly" as const, priority: 0.6 },
+      { url: `${siteUrl}/fr/blogue/${post.slugFr}`, changeFrequency: "monthly" as const, priority: 0.6 },
+    ]),
+  ];
+
+  return [...staticEntries, ...regularServiceEntries, ...blogEntries];
 }

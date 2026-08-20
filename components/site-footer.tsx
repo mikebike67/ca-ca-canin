@@ -19,6 +19,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       about: [
         { href: "/about", label: "About" },
         { href: "/faq", label: "FAQ" },
+        { href: "/blog", label: "Blog" },
         { href: "/contact", label: "Contact" },
       ],
       contactHeading: "Contact",
@@ -50,6 +51,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       about: [
         { href: "/fr/a-propos", label: "À propos" },
         { href: "/fr/faq", label: "FAQ" },
+        { href: "/fr/blogue", label: "Blogue" },
         { href: "/fr/contact", label: "Contact" },
       ],
       contactHeading: "Nous joindre",

@@ -1,0 +1,50 @@
+Ca-Ca Canin blog images — source and license record
+=====================================================
+
+All images in this folder are sourced from Pexels (pexels.com) under the
+Pexels License: https://www.pexels.com/license/
+
+Pexels License summary (confirmed 2026-08-20):
+- Free for commercial and non-commercial use
+- No attribution required (credit is appreciated but not necessary)
+- Must not be resold unaltered (e.g. as a poster/print with no modification)
+- Must not imply endorsement by any person or brand shown in the photo
+- Must not be used as a trademark or business name
+- Must not be redistributed on other stock photo platforms
+Our use (resized/compressed images embedded in our own blog posts) is fully
+within these terms.
+
+Per-image record
+-----------------
+
+hero-dog-yard.jpg
+  Title: A Golden Retriever Sitting on Grass
+  Photographer: Mathias Reding (@matreding)
+  Source: https://www.pexels.com/photo/a-golden-retriever-sitting-on-grass-12127037/
+  Photo ID: 12127037
+  Used in: dog-poop-removal-cost-laval (hero image)
+
+clean-backyard-lawn.jpg
+  Title: House Backyard with Lawn Green Grass
+  Photographer: Max Vakhtbovych (@artbovich)
+  Source: https://www.pexels.com/photo/house-backyard-with-lawn-green-grass-7546775/
+  Photo ID: 7546775
+  Used in: dog-poop-removal-cost-laval (in-body image)
+
+dog-playing-grass.jpg
+  Title: A Dog on Grass
+  Photographer: Barnabas Davoti
+  Source: https://www.pexels.com/photo/a-dog-on-grass-13701757/
+  Photo ID: 13701757
+  Used in: dog-poop-removal-cost-laval (in-body image)
+
+canadian-currency-wallet.jpg
+  Title: Close-up of a Wallet with Canadian Currency in a Car Interior
+  Photographer: Erik Mclean (@introspectivedsgn)
+  Source: https://www.pexels.com/photo/close-up-of-a-wallet-with-canadian-currency-in-a-car-interior-8266750/
+  Photo ID: 8266750
+  Used in: dog-poop-removal-cost-laval (in-body image)
+
+When adding new blog posts, add every new image to this file with the same
+fields (title, photographer, source URL, photo ID, which post it's used in)
+before publishing.
