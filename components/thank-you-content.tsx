@@ -42,6 +42,60 @@ const leadTypes = {
       ctaHref: "/fr",
     },
   },
+  trial: {
+    en: {
+      label: "Free trial signup",
+      title: "You're in! Your spot is reserved.",
+      body: "We received your free trial signup. We'll be in touch shortly to schedule your first visit.",
+      next: "Didn't receive it? Check your junk folder.",
+      cta: "Back to home",
+      ctaHref: "/",
+    },
+    fr: {
+      label: "Inscription a l'essai gratuit",
+      title: "C'est confirme! Votre place est reservee.",
+      body: "Nous avons bien recu votre inscription a l'essai gratuit. Nous vous contacterons sous peu pour planifier votre premiere visite.",
+      next: "Vous ne l'avez pas recu? Verifiez vos courriels indesirables.",
+      cta: "Retour a l'accueil",
+      ctaHref: "/fr",
+    },
+  },
+  "trial-waitlist": {
+    en: {
+      label: "Free trial waitlist",
+      title: "You're on the waitlist.",
+      body: "All 10 free trial spots are currently claimed. We've added you to the waitlist and will reach out if a spot opens up.",
+      next: "Didn't receive it? Check your junk folder.",
+      cta: "Back to home",
+      ctaHref: "/",
+    },
+    fr: {
+      label: "Liste d'attente de l'essai gratuit",
+      title: "Vous etes sur la liste d'attente.",
+      body: "Les 10 places de l'essai gratuit sont actuellement prises. Nous vous avons ajoute a la liste d'attente et vous contacterons si une place se libere.",
+      next: "Vous ne l'avez pas recu? Verifiez vos courriels indesirables.",
+      cta: "Retour a l'accueil",
+      ctaHref: "/fr",
+    },
+  },
+  "trial-duplicate": {
+    en: {
+      label: "Free trial signup",
+      title: "We already have your address on file.",
+      body: "This address already has a free trial signup with us, so no need to submit again. We'll be in touch.",
+      next: "Didn't receive it? Check your junk folder.",
+      cta: "Back to home",
+      ctaHref: "/",
+    },
+    fr: {
+      label: "Inscription a l'essai gratuit",
+      title: "Nous avons deja votre adresse au dossier.",
+      body: "Cette adresse a deja une inscription a l'essai gratuit chez nous, inutile de soumettre de nouveau. Nous vous contacterons.",
+      next: "Vous ne l'avez pas recu? Verifiez vos courriels indesirables.",
+      cta: "Retour a l'accueil",
+      ctaHref: "/fr",
+    },
+  },
 } as const;
 
 type LeadType = keyof typeof leadTypes;
@@ -51,7 +105,8 @@ export default function ThankYouContent() {
   const searchParams = useSearchParams();
   const locale: Locale = searchParams.get("lang") === "fr" ? "fr" : "en";
   const typeParam = searchParams.get("type");
-  const type: LeadType = typeParam === "contact" ? typeParam : "quote";
+  const type: LeadType =
+    typeParam && typeParam in leadTypes ? (typeParam as LeadType) : "quote";
   const copy = leadTypes[type][locale];
 
   return (

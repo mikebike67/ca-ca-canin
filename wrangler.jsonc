@@ -8,6 +8,13 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "kv_namespaces": [
+    {
+      "binding": "PROMO_KV",
+      "id": "a708f767014448278e1e236a38197db3",
+      "preview_id": "1ced5f16544740d99965bde136db3786"
+    }
+  ],
   "observability": {
     "enabled": true
   }
