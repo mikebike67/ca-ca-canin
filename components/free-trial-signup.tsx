@@ -201,14 +201,14 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
   }
 
   return (
-    <div id="signup" className="scroll-mt-12 bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
+    <div id="signup" className="scroll-mt-12 bg-white border border-brand-border rounded-2xl shadow-brand-lg p-6 md:p-8">
       <div className="mb-6 text-center">
         {spotsStatus === "ready" && remaining !== null && (
           <span
             className={`inline-flex items-center rounded-full border px-4 py-1.5 text-sm font-semibold ${
               isFull
                 ? "border-amber-300 bg-amber-50 text-amber-700"
-                : "border-brand-green/30 bg-[#eef7f0] text-brand-green"
+                : "border-brand-green/30 bg-brand-green-light text-brand-green"
             }`}
           >
             {isFull
@@ -316,7 +316,7 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
                     onMouseDown={(e) => e.preventDefault()}
                     onClick={() => selectSuggestion(suggestion)}
                     className={`w-full px-3 py-2 text-left text-sm ${
-                      index === highlightedIndex ? "bg-[#eef7f0] text-brand-green" : "text-gray-700 hover:bg-gray-50"
+                      index === highlightedIndex ? "bg-brand-green-light text-brand-green" : "text-gray-700 hover:bg-gray-50"
                     }`}
                   >
                     {suggestion.placeName}
@@ -354,7 +354,7 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
         </div>
 
         {/* Consent */}
-        <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
+        <div className="rounded-xl border border-brand-border bg-brand-green-lighter p-4">
           <label className="flex items-start gap-3 text-sm text-gray-700">
             <input
               type="checkbox"

@@ -37,8 +37,8 @@ export const metadata: Metadata = {
 export default function ContactPage() {
   return (
     <LegalPageShell locale="en">
-      <div className="bg-[#f7faf7] px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
-        <section className="mx-auto max-w-5xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
+      <div className="bg-brand-green-lighter px-4 py-16 text-gray-900 sm:px-6 lg:px-8">
+        <section className="mx-auto max-w-5xl rounded-[2rem] border border-brand-border bg-white p-8 shadow-brand-sm sm:p-10">
           <p className="text-sm font-semibold uppercase tracking-[0.3em] text-brand-brown">
             Laval and North Shore, QC
           </p>
@@ -52,14 +52,14 @@ export default function ContactPage() {
             <a href="tel:+14388808922" className="inline-flex items-center justify-center rounded-full bg-brand-green px-6 py-3 text-sm font-semibold text-white hover:bg-brand-green-dark">
               Call 438 880 8922
             </a>
-            <a href="mailto:cacacaninqc@gmail.com" className="inline-flex items-center justify-center rounded-full border border-brand-green px-6 py-3 text-sm font-semibold text-brand-green hover:bg-[#eef7f0]">
+            <a href="mailto:cacacaninqc@gmail.com" className="inline-flex items-center justify-center rounded-full border border-brand-green px-6 py-3 text-sm font-semibold text-brand-green hover:bg-brand-green-light">
               Email us
             </a>
           </div>
         </section>
 
         <div className="mx-auto mt-10 grid max-w-5xl gap-6 md:grid-cols-3">
-          <section className="rounded-[1.75rem] border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+          <section className="rounded-[1.75rem] border border-brand-border bg-white p-6 shadow-brand-sm">
             <h2 className="text-2xl font-bold text-gray-900">Phone</h2>
             <p className="mt-3 text-gray-600">The fastest way to confirm service availability or ask about a quote.</p>
             <p className="mt-4">
@@ -69,7 +69,7 @@ export default function ContactPage() {
             </p>
           </section>
 
-          <section className="rounded-[1.75rem] border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+          <section className="rounded-[1.75rem] border border-brand-border bg-white p-6 shadow-brand-sm">
             <h2 className="text-2xl font-bold text-gray-900">Email</h2>
             <p className="mt-3 text-gray-600">Best for quote details, service-area questions, or follow-up after a form submission.</p>
             <p className="mt-4">
@@ -79,7 +79,7 @@ export default function ContactPage() {
             </p>
           </section>
 
-          <section className="rounded-[1.75rem] border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+          <section className="rounded-[1.75rem] border border-brand-border bg-white p-6 shadow-brand-sm">
             <h2 className="text-2xl font-bold text-gray-900">Service area</h2>
             <p className="mt-3 text-gray-600">
               Regular dog waste removal and spring cleanup are available in Laval and select North Shore locations shown on the dedicated service pages.
@@ -87,8 +87,8 @@ export default function ContactPage() {
           </section>
         </div>
 
-        <div className="mx-auto mt-10 max-w-5xl rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
-          <div className="mb-6 border-b border-[#d7e6da] pb-6">
+        <div className="mx-auto mt-10 max-w-5xl rounded-[2rem] border border-brand-border bg-white p-8 shadow-brand-sm sm:p-10">
+          <div className="mb-6 border-b border-brand-border pb-6">
             <Link href="/" className="text-sm font-semibold text-brand-green hover:underline">
               Back to home
             </Link>

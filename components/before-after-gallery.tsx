@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { X, ChevronLeft, ChevronRight } from "lucide-react";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 
 
 const pairs = [
@@ -60,16 +61,7 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
   const touchStartX = useRef<number | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
 
-  useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("animate-in"); }),
-      { threshold: 0.1, rootMargin: "50px" }
-    );
-    section.querySelectorAll(".scroll-animation").forEach((el) => observer.observe(el));
-    return () => observer.disconnect();
-  }, []);
+  useScrollReveal();
 
   const prev = useCallback(() =>
     setActiveIndex((i) => (i === null ? null : (i - 1 + allImages.length) % allImages.length)),
@@ -112,8 +104,8 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
     <>
       <section ref={sectionRef} className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-6xl">
-          <div className="mb-8 text-center scroll-animation">
-            <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>
+          <div className="mb-8 text-center reveal-up">
+            <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>
               {isFrench ? "Avant et après" : "Before & after"}
             </h2>
             <p className="text-base text-gray-600 sm:text-lg">
@@ -127,7 +119,7 @@ export default function BeforeAfterGallery({ locale = "en" }: BeforeAfterGallery
             {pairs.map((pair, index) => (
               <div
                 key={index}
-                className="scroll-animation overflow-hidden rounded-xl sm:rounded-2xl border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]"
+                className="reveal-scale overflow-hidden rounded-xl sm:rounded-2xl border border-brand-border bg-white shadow-brand-sm"
                 style={{ transitionDelay: `${index * 0.05}s` }}
               >
                 <div className="grid grid-cols-2">

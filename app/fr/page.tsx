@@ -6,7 +6,7 @@ import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import Image from "next/image"
 import dynamic from 'next/dynamic'
-import { useEffect, useRef } from "react"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText } from 'lucide-react'
 import SiteHeader from "@/components/site-header"
 
@@ -16,26 +16,7 @@ const ServiceAreaMap = dynamic(() => import('@/components/service-area-map'), { 
 const TestimonialsCarousel = dynamic(() => import('@/components/testimonials-carousel'), { ssr: false })
 
 export default function Page() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px'
-    });
-
-    document.querySelectorAll('.scroll-animation').forEach((element) => {
-      observerRef.current?.observe(element);
-    });
-
-    return () => observerRef.current?.disconnect();
-  }, []);
+  useScrollReveal();
 
   return (
     <div lang="fr" className={`flex flex-col min-h-screen bg-white text-gray-900`}>
@@ -126,7 +107,7 @@ export default function Page() {
                 </div>
               </div>
               <div className="text-center lg:text-left">
-                <h1 className={`mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl`}>
+                <h1 className={`mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl`}>
                   Ramassage de déjections canines<br />
                   <span className="text-brand-green">à Laval et sur la Rive-Nord</span>
                 </h1>
@@ -137,7 +118,7 @@ export default function Page() {
                 <div className="flex flex-col items-stretch justify-center gap-4 lg:items-start">
                   <Button
                     size="lg"
-                    className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
+                    className="w-full rounded-full px-6 py-4 text-base sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
                     asChild
                   >
                     <Link
@@ -176,7 +157,7 @@ export default function Page() {
                   ].map((item) => (
                     <div
                       key={item}
-                      className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 text-sm font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
+                      className="rounded-2xl border border-brand-green/15 bg-brand-green-light px-4 py-3 text-sm font-semibold text-gray-700 shadow-brand-xs"
                     >
                       {item}
                     </div>
@@ -188,7 +169,7 @@ export default function Page() {
         </section>
 
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto scroll-animation">
+          <div className="max-w-5xl mx-auto reveal-up">
             <RegularServiceCalculator locale="fr" />
 
           </div>
@@ -198,16 +179,16 @@ export default function Page() {
         {/* RESPONSIVE: add breathing room below the hero on mobile so the next section does not feel cramped. */}
         <section className="bg-white px-4 pb-16 pt-8 sm:px-6 sm:pt-0 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                 Ce que vous évitez avec un service régulier
               </h2>
             </div>
             {/* RESPONSIVE: cards stay single-column until medium screens to avoid cramped content. */}
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
-              <Card className="scroll-animation scroll-delay-1 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-1">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                     <CheckCircle2 className="w-6 h-6 text-brand-green" />
                   </div>
                   <CardTitle className="text-xl">Finis les dégâts dans la cour</CardTitle>
@@ -219,9 +200,9 @@ export default function Page() {
                 </CardContent>
               </Card>
 
-              <Card className="scroll-animation scroll-delay-2 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-2">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                     <Shield className="w-6 h-6 text-brand-green" />
                   </div>
                   <CardTitle className="text-xl">Service simple et rapide</CardTitle>
@@ -233,9 +214,9 @@ export default function Page() {
                 </CardContent>
               </Card>
 
-              <Card className="scroll-animation scroll-delay-3 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-3">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                     <Heart className="w-6 h-6 text-brand-green" />
                   </div>
                   <CardTitle className="text-xl">Une cour qu’on a envie d’utiliser</CardTitle>
@@ -255,8 +236,8 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             {/* RESPONSIVE: tighten stacked section spacing on mobile to reduce long scroll jumps. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation order-2 md:order-1">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
+              <div className="reveal-up order-2 md:order-1">
+                <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
                   Pourquoi les propriétaires réservent sur Laval et la Rive-Nord
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
@@ -279,7 +260,7 @@ export default function Page() {
                   L’objectif est simple : vous faire gagner du temps et enlever une corvée de plus de votre semaine.
                 </p>
               </div>
-              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
+              <div className="reveal-up scroll-delay-1 order-1 hidden md:order-2 md:block">
                 <Image
                   src="/images/our dog waste renewal company.png"
                   alt="Équipe Ca-Ca Canin dans une cour résidentielle avec outils de nettoyage et camion de service"
@@ -301,8 +282,8 @@ export default function Page() {
           <div className="max-w-7xl mx-auto">
             {/* RESPONSIVE: keep the service image/text pair balanced as the layout collapses to one column. */}
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation order-2 md:order-2">
-                <h2 className={`text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
+              <div className="reveal-up order-2 md:order-2">
+                <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-6 text-gray-900`}>
                   Gardez votre cour propre sans le faire vous-même
                 </h2>
                 {/* RESPONSIVE: render the section image after the heading on mobile while preserving the desktop side-by-side layout. */}
@@ -330,7 +311,7 @@ export default function Page() {
                   </li>
                 </ul>
               </div>
-              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-1 md:block">
+              <div className="reveal-up scroll-delay-1 order-1 hidden md:order-1 md:block">
                 <Image
                   src="/images/revised residential pooper scooper services.png"
                   alt="Équipe de ramassage résidentiel en train de nettoyer une cour avec un chien à proximité"
@@ -348,8 +329,8 @@ export default function Page() {
         {/* Why Choose Us */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                   Pourquoi les propriétaires restent avec nous
               </h2>
               <p className="text-xl text-gray-600">
@@ -364,9 +345,9 @@ export default function Page() {
                 { icon: Camera, title: "Photos du portail", desc: "Vous voyez la preuve après chaque visite pour savoir que le travail a été fait." },
                 { icon: Bell, title: "Mises à jour de visite", desc: "Vous savez quand nous arrivons, sans vous demander où on en est." },
               ].map((feature, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
+                <Card key={index} variant="flat" className="reveal-up" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <feature.icon className="w-6 h-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -395,8 +376,8 @@ export default function Page() {
         {/* FAQ Section */}
         <section id="faq" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900`}>
                 Questions que les propriétaires posent avant de réserver
               </h2>
               <p className="text-xl text-gray-600">
@@ -412,7 +393,7 @@ export default function Page() {
                 { q: "Que se passe-t-il après chaque visite?", a: "Vous recevez une confirmation de service et, au besoin, une photo du portail après la visite." },
                 { q: "Comment les déchets sont-ils disposés?", a: "Les déchets sont mis dans des sacs et déposés dans la poubelle extérieure lorsqu’elle est accessible. Sinon, la disposition suit l’entente prévue pour le service." },
               ].map((faq, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
+                <Card key={index} variant="flat" className="reveal-fade" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>
                     <CardTitle className="text-lg">{faq.q}</CardTitle>
                   </CardHeader>

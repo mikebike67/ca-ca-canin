@@ -119,7 +119,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
       <div className="mx-auto max-w-5xl">
 
         <div className="mb-8 text-center">
-          <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>
+          <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>
             {isFrench ? 'Notre zone de service' : 'Our service area'}
           </h2>
           <p className="text-gray-500">
@@ -147,7 +147,7 @@ export default function ServiceAreaMap({ locale = 'en' }: Props) {
         </div>
 
         <div
-          className="overflow-hidden rounded-2xl border border-[#d7e6da] shadow-[0_20px_50px_rgba(48,121,68,0.12)]"
+          className="overflow-hidden rounded-2xl border border-brand-border shadow-brand-md"
           style={{ height: 'clamp(320px, 55vw, 540px)' }}
         >
           <Map

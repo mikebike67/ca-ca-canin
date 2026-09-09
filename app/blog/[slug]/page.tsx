@@ -38,18 +38,18 @@ export function generateMetadata({ params }: BlogSlugPageProps): Metadata {
       locale: "en_CA",
       images: [
         {
-          url: "/images/cacacaninlogo.jpg",
-          width: 1200,
-          height: 630,
-          alt: post.titleEn,
+          url: post.heroImage.src,
+          width: post.heroImage.width,
+          height: post.heroImage.height,
+          alt: post.heroImage.alt,
         },
       ],
     },
     twitter: {
-      card: "summary",
+      card: "summary_large_image",
       title: `${post.titleEn} | Ca-Ca Canin`,
       description: post.metaDescriptionEn,
-      images: ["/images/cacacaninlogo.jpg"],
+      images: [post.heroImage.src],
     },
   };
 }

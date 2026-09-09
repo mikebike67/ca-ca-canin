@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import SiteHeader from "@/components/site-header";
 import SiteFooter from "@/components/site-footer";
 import { getRegularServiceLocationBySlug } from "@/lib/regular-service-area";
+import { getBlogPostBySlug } from "@/lib/blog-posts";
 import type { BlogBlock, BlogImageCredit, BlogPost } from "@/lib/blog-posts";
 
 const siteUrl = "https://cacacanin.com";
@@ -38,6 +39,45 @@ function ImageCredit({ credit }: { credit: BlogImageCredit }) {
   );
 }
 
+// Renders plain text with inline [label](/path) links. Internal paths (starting with "/")
+// use next/link; anything else renders as a regular external anchor.
+function renderInlineText(text: string) {
+  const pattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  const nodes: Array<string | JSX.Element> = [];
+  let cursor = 0;
+  let match: RegExpExecArray | null;
+  let key = 0;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > cursor) {
+      nodes.push(text.slice(cursor, match.index));
+    }
+    const [, label, href] = match;
+    const linkClass =
+      "font-medium text-brand-green underline decoration-brand-green/40 underline-offset-2 hover:decoration-brand-green";
+    if (href.startsWith("/")) {
+      nodes.push(
+        <Link key={key++} href={href} className={linkClass}>
+          {label}
+        </Link>,
+      );
+    } else {
+      nodes.push(
+        <a key={key++} href={href} target="_blank" rel="noopener noreferrer" className={linkClass}>
+          {label}
+        </a>,
+      );
+    }
+    cursor = match.index + match[0].length;
+  }
+
+  if (cursor < text.length) {
+    nodes.push(text.slice(cursor));
+  }
+
+  return nodes;
+}
+
 function BlockRenderer({ block, isFrench, quoteHref }: { block: BlogBlock; isFrench: boolean; quoteHref: string }) {
   switch (block.type) {
     case "heading": {
@@ -48,22 +88,41 @@ function BlockRenderer({ block, isFrench, quoteHref }: { block: BlogBlock; isFre
       return <h2 className="mb-4 mt-10 text-2xl font-bold text-gray-900 sm:text-3xl">{text}</h2>;
     }
     case "paragraph":
-      return <p className="mb-5 text-base leading-8 text-gray-700 sm:text-lg">{isFrench ? block.textFr : block.textEn}</p>;
+      return (
+        <p className="mb-5 text-base leading-8 text-gray-700 sm:text-lg">
+          {renderInlineText(isFrench ? block.textFr : block.textEn)}
+        </p>
+      );
     case "list": {
       const items = isFrench ? block.itemsFr : block.itemsEn;
       const ListTag = block.ordered ? "ol" : "ul";
       return (
         <ListTag className={`mb-6 space-y-2 pl-6 text-base leading-7 text-gray-700 sm:text-lg ${block.ordered ? "list-decimal" : "list-disc"}`}>
           {items.map((item) => (
-            <li key={item}>{item}</li>
+            <li key={item}>{renderInlineText(item)}</li>
           ))}
         </ListTag>
+      );
+    }
+    case "keypoints": {
+      const items = isFrench ? block.itemsFr : block.itemsEn;
+      return (
+        <div className="my-8 rounded-3xl border border-brand-border bg-gray-50 p-6 sm:p-7">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
+            {isFrench ? block.titleFr : block.titleEn}
+          </h2>
+          <ul className="list-disc space-y-2 pl-5 text-base leading-7 text-gray-700">
+            {items.map((item) => (
+              <li key={item}>{renderInlineText(item)}</li>
+            ))}
+          </ul>
+        </div>
       );
     }
     case "image":
       return (
         <figure className="my-8">
-          <div className="overflow-hidden rounded-3xl border border-[#d7e6da]">
+          <div className="overflow-hidden rounded-3xl border border-brand-border">
             <Image
               src={block.src}
               alt={isFrench ? block.altFr : block.alt}
@@ -82,7 +141,7 @@ function BlockRenderer({ block, isFrench, quoteHref }: { block: BlogBlock; isFre
       );
     case "callout":
       return (
-        <div className="my-8 rounded-3xl border border-brand-green/20 bg-[#eef7f0] p-6 sm:p-8">
+        <div className="my-8 rounded-3xl border border-brand-green/20 bg-brand-green-light p-6 sm:p-8">
           <h3 className="mb-2 text-lg font-bold text-gray-900">{isFrench ? block.titleFr : block.titleEn}</h3>
           <p className="mb-4 leading-7 text-gray-700">{isFrench ? block.bodyFr : block.bodyEn}</p>
           <Button className="rounded-full bg-brand-green text-white hover:bg-brand-green-dark" asChild>
@@ -104,6 +163,9 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
   const contactHref = isFrench ? "/fr/contact" : "/contact";
 
   const location = post.locationSlug ? getRegularServiceLocationBySlug(post.locationSlug) : undefined;
+  const relatedPosts = (post.relatedSlugs ?? [])
+    .map((slug) => getBlogPostBySlug(slug))
+    .filter((entry): entry is BlogPost => Boolean(entry) && entry!.slug !== post.slug);
   const locationHref = location
     ? isFrench
       ? `/fr/ramassage-dejections/${location.slug}`
@@ -210,7 +272,7 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
             </p>
 
             <div className="mb-10">
-              <div className="overflow-hidden rounded-3xl border border-[#d7e6da]">
+              <div className="overflow-hidden rounded-3xl border border-brand-border">
                 <Image
                   src={post.heroImage.src}
                   alt={isFrench ? post.heroImage.altFr : post.heroImage.alt}
@@ -236,7 +298,7 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
                 </h2>
                 <div className="space-y-4">
                   {post.faq.map((item) => (
-                    <Card key={item.qEn} className="border border-[#d7e6da] bg-white shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
+                    <Card key={item.qEn} className="border border-brand-border bg-white shadow-brand-xs">
                       <CardHeader>
                         <CardTitle className="text-lg">{isFrench ? item.qFr : item.qEn}</CardTitle>
                       </CardHeader>
@@ -271,7 +333,7 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
               </section>
             )}
 
-            <section className="mt-12 rounded-3xl border border-[#d7e6da] bg-gray-50 p-8 text-center">
+            <section className="mt-12 rounded-3xl border border-brand-border bg-gray-50 p-8 text-center">
               <h2 className="mb-3 text-2xl font-bold text-gray-900">
                 {isFrench ? "Prêt à réserver?" : "Ready to book?"}
               </h2>
@@ -283,7 +345,7 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                 <Link
                   href={contactHref}
-                  className="rounded-full border-2 border-brand-green px-6 py-3 font-semibold text-brand-green transition-colors hover:bg-[#eef7f0]"
+                  className="rounded-full border-2 border-brand-green px-6 py-3 font-semibold text-brand-green transition-colors hover:bg-brand-green-light"
                 >
                   {isFrench ? "Nous contacter" : "Contact us"}
                 </Link>
@@ -299,7 +361,7 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
             {location && (
               <Link
                 href={locationHref}
-                className="mt-6 block rounded-3xl border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(17,24,39,0.05)] transition-all hover:-translate-y-1 hover:border-brand-green/40"
+                className="mt-6 block rounded-3xl border border-brand-border bg-white p-6 shadow-brand-xs transition-all hover:-translate-y-1 hover:border-brand-green/40"
               >
                 <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
                   {isFrench ? "Service à" : "Service in"} {isFrench ? location.nameFr : location.name}
@@ -309,6 +371,30 @@ export default function BlogPostPage({ locale, post }: BlogPostPageProps) {
                 </h3>
                 <p className="mt-3 text-gray-600">{isFrench ? location.regularIntroFr : location.regularIntroEn}</p>
               </Link>
+            )}
+
+            {relatedPosts.length > 0 && (
+              <section className="mt-8">
+                <h2 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
+                  {isFrench ? "À lire aussi" : "Related reading"}
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {relatedPosts.map((relatedPost) => (
+                    <Link
+                      key={relatedPost.slug}
+                      href={isFrench ? `/fr/blogue/${relatedPost.slugFr}` : `/blog/${relatedPost.slug}`}
+                      className="block rounded-3xl border border-brand-border bg-white p-6 shadow-brand-xs transition-all hover:-translate-y-1 hover:border-brand-green/40"
+                    >
+                      <h3 className="text-lg font-bold text-gray-900">
+                        {isFrench ? relatedPost.titleFr : relatedPost.titleEn}
+                      </h3>
+                      <p className="mt-2 text-sm text-gray-600">
+                        {isFrench ? relatedPost.excerptFr : relatedPost.excerptEn}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </section>
             )}
           </div>
         </article>

@@ -107,8 +107,8 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
   };
 
   return (
-    <section className="rounded-[2rem] border border-[#d7e6da] bg-white p-8 shadow-[0_18px_45px_rgba(48,121,68,0.08)] sm:p-10">
-      <div className="mb-6 border-b border-[#d7e6da] pb-6">
+    <section className="rounded-[2rem] border border-brand-border bg-white p-8 shadow-brand-sm sm:p-10">
+      <div className="mb-6 border-b border-brand-border pb-6">
         <h2 className="text-3xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">{copy.title}</h2>
         <p className="mt-3 text-base text-gray-600">{copy.subtitle}</p>
       </div>
@@ -117,7 +117,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
         <div
           id={`contact-thank-you-${locale}`}
           tabIndex={-1}
-          className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
+          className="rounded-2xl border border-brand-green/20 bg-brand-green-light p-6 text-center shadow-brand-sm outline-none"
         >
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">{copy.thankYouEyebrow}</p>
           <h3 className="mt-2 text-2xl font-bold text-gray-900">{copy.thankYouTitle}</h3>
@@ -201,7 +201,7 @@ export default function ContactForm({ locale = "en" }: ContactFormProps) {
             />
           </div>
 
-          <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
+          <div className="rounded-xl border border-brand-border bg-brand-green-lighter p-4">
             <label className="flex items-start gap-3 text-sm text-gray-700">
               <input
                 type="checkbox"

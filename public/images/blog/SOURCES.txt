@@ -36,7 +36,7 @@ dog-playing-grass.jpg
   Photographer: Barnabas Davoti
   Source: https://www.pexels.com/photo/a-dog-on-grass-13701757/
   Photo ID: 13701757
-  Used in: dog-poop-removal-cost-laval (in-body image)
+  Used in: dog-poop-removal-cost-laval (in-body image), does-dog-poop-kill-grass (in-body image)
 
 canadian-currency-wallet.jpg
   Title: Close-up of a Wallet with Canadian Currency in a Car Interior
@@ -48,3 +48,45 @@ canadian-currency-wallet.jpg
 When adding new blog posts, add every new image to this file with the same
 fields (title, photographer, source URL, photo ID, which post it's used in)
 before publishing.
+
+family-yard-dog.jpg
+  Title: A young child joyfully interacts with a dog outdoors in a sunny backyard setting
+  Photographer: Jonathan Borba
+  Source: https://www.pexels.com/photo/child-playing-with-dog-in-sunny-backyard-32504638/
+  Photo ID: 32504638
+  Used in: dog-poop-health-risks-yard (hero image)
+
+dog-backyard-lawn.jpg
+  Title: Photo of Dog Lying on Grass
+  Photographer: Mathias Reding (@matreding)
+  Source: https://www.pexels.com/photo/8195886/
+  Photo ID: 8195886
+  Used in: dog-poop-health-risks-yard (in-body image)
+
+child-on-grass.jpg
+  Title: Adorable baby sitting on blanket outdoors, playing happily on a lawn
+  Photographer: Helena Lopes
+  Source: https://www.pexels.com/photo/baby-enjoying-outdoor-playtime-on-lawn-27176347/
+  Photo ID: 27176347
+  Used in: dog-poop-health-risks-yard (in-body image)
+
+washing-hands.jpg
+  Title: Man washing hands with soap in stone basin for hygiene and cleanliness
+  Photographer: Ron Lach
+  Source: https://www.pexels.com/photo/man-washing-hands-with-soap-in-stone-basin-for-hygiene-and-cleanliness-9145340/
+  Photo ID: 9145340
+  Used in: dog-poop-health-risks-yard (in-body image)
+
+healthy-lawn-backyard.jpg
+  Title: Empty wooden pathway near green grass and trees on meadow near cottage facade in sunny summer day
+  Photographer: Max Vakhtbovych (@artbovich)
+  Source: https://www.pexels.com/photo/7174104/
+  Photo ID: 7174104
+  Used in: does-dog-poop-kill-grass (hero image)
+
+patchy-lawn-damage.jpg
+  Title: A vibrant mix of green and brown grass in an outdoor meadow showing natural growth and variation
+  Photographer: Engin Akyurt (@enginakyurt)
+  Source: https://www.pexels.com/photo/green-and-brown-grass-11054959/
+  Photo ID: 11054959
+  Used in: does-dog-poop-kill-grass (in-body image)

@@ -59,7 +59,7 @@ export default function SiteHeader({
               height={40}
               className="h-10 w-10"
             />
-            <span className={`text-lg font-bold text-brand-green sm:text-2xl`}>
+            <span className={`font-logo text-lg font-bold text-brand-green sm:text-2xl`}>
               CA-CA CANIN
             </span>
           </Link>
@@ -86,7 +86,7 @@ export default function SiteHeader({
                 <span>{isFrench ? 'Villes' : 'Locations'}</span>
                 <ChevronDown className="h-4 w-4" />
               </button>
-              <div className="invisible absolute left-0 top-full z-50 mt-3 w-64 max-h-[21rem] overflow-y-auto rounded-2xl border border-[#d7e6da] bg-white p-2 opacity-0 shadow-[0_18px_45px_rgba(17,24,39,0.08)] transition-all duration-200 group-hover:visible group-hover:opacity-100">
+              <div className="invisible absolute left-0 top-full z-50 mt-3 w-64 max-h-[21rem] overflow-y-auto rounded-2xl border border-brand-border bg-white p-2 opacity-0 shadow-brand-xs transition-all duration-200 group-hover:visible group-hover:opacity-100">
                 {REGULAR_SERVICE_LOCATIONS.map((location) => (
                   <Link
                     key={location.slug}
@@ -95,14 +95,14 @@ export default function SiteHeader({
                         ? `/fr/ramassage-dejections/${location.slug}`
                         : `/dog-poop-cleanup/${location.slug}`
                     }
-                    className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition-colors hover:bg-[#eef7f0] hover:text-brand-green"
+                    className="block rounded-xl px-4 py-3 text-sm text-gray-700 transition-colors hover:bg-brand-green-light hover:text-brand-green"
                   >
                     {location.name}
                   </Link>
                 ))}
                 <Link
                   href={isFrench ? '/fr/ramassage-dejections' : '/dog-poop-cleanup'}
-                  className="block rounded-xl border-t border-gray-100 px-4 py-3 text-sm font-semibold text-brand-green transition-colors hover:bg-[#eef7f0]"
+                  className="block rounded-xl border-t border-gray-100 px-4 py-3 text-sm font-semibold text-brand-green transition-colors hover:bg-brand-green-light"
                 >
                   {isFrench ? 'Voir toutes les villes →' : 'See all locations →'}
                 </Link>
@@ -121,7 +121,7 @@ export default function SiteHeader({
               {isFrench ? 'English' : 'Français'}
             </Link>
 
-            <Button size="lg" className="bg-brand-green hover:bg-brand-green-dark text-white" asChild>
+            <Button size="lg" asChild>
               <Link href={ctaHref} data-cta="header-cta">
                 {label}
               </Link>
@@ -170,7 +170,7 @@ export default function SiteHeader({
                   )
                   setIsMenuOpen(false)
                 }}
-                className="h-11 w-full rounded-xl border border-[#d7e6da] px-3 text-sm text-gray-700"
+                className="h-11 w-full rounded-xl border border-brand-border px-3 text-sm text-gray-700"
               >
                 {REGULAR_SERVICE_LOCATIONS.map((location) => (
                   <option key={location.slug} value={location.slug}>
@@ -186,7 +186,7 @@ export default function SiteHeader({
             >
               {isFrench ? 'English' : 'Français'}
             </Link>
-            <Button className="w-full bg-brand-green hover:bg-brand-green-dark text-white" asChild>
+            <Button className="w-full" asChild>
               <Link href={ctaHref} data-cta="header-cta" onClick={() => setIsMenuOpen(false)}>
                 {label}
               </Link>

@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 import { REGULAR_SERVICE_LOCATIONS } from "@/lib/regular-service-area"
 import Link from "next/link"
 import Image from "next/image"
-import { useEffect, useRef } from "react"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { CheckCircle2, Heart, Camera, Bell, ClipboardCheck, MapPin, PawPrint, Smartphone } from 'lucide-react'
 import SiteHeader from "@/components/site-header"
 
@@ -16,7 +16,7 @@ const BeforeAfterGallery = dynamic(() => import('@/components/before-after-galle
 const ServiceAreaMap = dynamic(() => import('@/components/service-area-map'), { ssr: false })
 
 export default function DogPoopCleanupPage() {
-  const observerRef = useRef<IntersectionObserver | null>(null);
+  useScrollReveal();
 
   const faqItems = [
     {
@@ -36,25 +36,6 @@ export default function DogPoopCleanupPage() {
       a: "Every request is checked by postal code before booking so availability is confirmed first.",
     },
   ];
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '50px'
-    });
-
-    document.querySelectorAll('.scroll-animation').forEach((element) => {
-      observerRef.current?.observe(element);
-    });
-
-    return () => observerRef.current?.disconnect();
-  }, []);
 
   return (
     <div className={`flex flex-col min-h-screen bg-white text-gray-900`}>
@@ -122,14 +103,14 @@ export default function DogPoopCleanupPage() {
             <p className="text-sm uppercase tracking-[0.3em] text-brand-brown font-semibold mb-3">
               Laval and North Shore, QC
             </p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
+            <h1 className={`mb-4 font-heading text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl`}>
               DOG POOP CLEANUP IN LAVAL AND THE NORTH SHORE
             </h1>
             <p className="mb-6 text-lg text-gray-600 sm:text-xl md:text-2xl">
               Never deal with yard waste again. Recurring dog waste removal starting at $20/visit — weekly, biweekly, or monthly.
             </p>
             <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
-              <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
+              <Button size="lg" className="w-full rounded-full px-6 py-4 text-base sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form">Get My Free Quote</Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -161,7 +142,7 @@ export default function DogPoopCleanupPage() {
               ].map((item) => (
                 <div
                   key={item}
-                  className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]"
+                  className="rounded-2xl border border-brand-green/15 bg-brand-green-light px-4 py-3 font-semibold text-gray-700 shadow-brand-xs"
                 >
                   {item}
                 </div>
@@ -171,15 +152,15 @@ export default function DogPoopCleanupPage() {
         </section>
 
         <section id="quote-form" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto scroll-animation">
+          <div className="max-w-5xl mx-auto reveal-up">
             <RegularServiceCalculator locale="en" />
           </div>
         </section>
 
         <section id="how-it-works" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
+            <div className="text-center mb-10 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 How it works
               </h2>
               <p className="text-lg text-gray-600">
@@ -192,9 +173,9 @@ export default function DogPoopCleanupPage() {
                 { icon: PawPrint, title: "Choose your schedule", desc: "We confirm your service area and lock in the best frequency for your yard." },
                 { icon: Smartphone, title: "We keep the yard clean", desc: "Once booked, the service follows the selected schedule to prevent buildup." },
               ].map((step, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+                <Card key={index} variant="featured" className="reveal-up">
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <step.icon className="w-6 h-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{step.title}</CardTitle>
@@ -210,8 +191,8 @@ export default function DogPoopCleanupPage() {
 
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-5xl mx-auto">
-            <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
+            <div className="text-center mb-10 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 What our customers say
               </h2>
               <p className="text-lg text-gray-600">
@@ -219,9 +200,9 @@ export default function DogPoopCleanupPage() {
               </p>
             </div>
             <div className="grid gap-6 lg:grid-cols-3">
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
+              <Card variant="flat" className="reveal-up lg:col-span-2">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     5-star review
                   </div>
                   <CardTitle className="text-xl">Zander M. | Laval</CardTitle>
@@ -232,9 +213,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+              <Card variant="flat" className="reveal-up">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     5-star review
                   </div>
                   <CardTitle className="text-xl">Julie B. | Laval</CardTitle>
@@ -245,9 +226,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+              <Card variant="flat" className="reveal-up">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     5-star review
                   </div>
                   <CardTitle className="text-xl">Daniella H. | Deux-Montagnes</CardTitle>
@@ -258,9 +239,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+              <Card variant="flat" className="reveal-up">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     5-star review
                   </div>
                   <CardTitle className="text-xl">Mohamed L. | Boisbriand</CardTitle>
@@ -271,9 +252,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+              <Card variant="flat" className="reveal-up">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Elisa A. | Laval</CardTitle>
@@ -284,9 +265,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] lg:col-span-2">
+              <Card variant="flat" className="reveal-up lg:col-span-2">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Pete B. | Lorraine</CardTitle>
@@ -297,9 +278,9 @@ export default function DogPoopCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+              <Card variant="flat" className="reveal-up">
                 <CardHeader>
-                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-[#eef7f0] px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
+                  <div className="mb-3 inline-flex max-w-fit rounded-full border border-brand-green/20 bg-brand-green-light px-4 py-2 text-xs font-bold uppercase tracking-[0.18em] text-brand-green">
                     Facebook recommendation
                   </div>
                   <CardTitle className="text-xl">Sylvain D. | Mirabel</CardTitle>
@@ -318,8 +299,8 @@ export default function DogPoopCleanupPage() {
 
         <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
+            <div className="text-center mb-10 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Why book recurring service
               </h2>
               <p className="text-lg text-gray-600">
@@ -332,9 +313,9 @@ export default function DogPoopCleanupPage() {
                 { icon: Camera, title: "Visit confirmation", desc: "We send a confirmation after each completed visit." },
                 { icon: Bell, title: "Flexible frequency", desc: "Choose weekly, biweekly, monthly, or one-time cleanup based on your yard." },
               ].map((feature, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+                <Card key={index} className="reveal-up">
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <feature.icon className="w-6 h-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -352,8 +333,8 @@ export default function DogPoopCleanupPage() {
 
         <section id="faq" className="scroll-mt-12 py-12 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-10 scroll-animation">
-              <h2 className={`text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
+            <div className="text-center mb-10 reveal-up">
+              <h2 className={`font-heading text-3xl md:text-4xl font-bold mb-3 text-gray-900`}>
                 Frequently asked questions
               </h2>
               <p className="text-lg text-gray-600">
@@ -362,7 +343,7 @@ export default function DogPoopCleanupPage() {
             </div>
             <div className="space-y-4">
               {faqItems.map((faq, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
+                <Card key={index} variant="flat" className="reveal-fade" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader>
                     <CardTitle className="text-lg">{faq.q}</CardTitle>
                   </CardHeader>

@@ -1,6 +1,5 @@
 'use client'
 
-import { useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteHeader from "@/components/site-header"
@@ -8,26 +7,14 @@ import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import Image from "next/image"
 import dynamic from "next/dynamic"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { CheckCircle2, Shield, Heart, Bell, Camera, Smartphone, FileText } from "lucide-react"
 
 const FreeCleanupCalculator = dynamic(() => import("@/components/free-cleanup-calculator"), { ssr: false })
 const TestimonialsCarousel = dynamic(() => import("@/components/testimonials-carousel"), { ssr: false })
 
 export default function FreeFirstCleanupPage() {
-  const observerRef = useRef<IntersectionObserver | null>(null)
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("animate-in")
-        })
-      },
-      { threshold: 0.1, rootMargin: "50px" },
-    )
-    document.querySelectorAll(".scroll-animation").forEach((el) => observerRef.current?.observe(el))
-    return () => observerRef.current?.disconnect()
-  }, [])
+  useScrollReveal()
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-gray-900">
@@ -52,7 +39,7 @@ export default function FreeFirstCleanupPage() {
             <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
               Limited Time Offer · Expires September 30, 2026
             </span>
-            <h1 className="mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl">
+            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
               Your First Cleanup<br />
               <span className="text-brand-green">Is Free</span>
             </h1>
@@ -62,7 +49,7 @@ export default function FreeFirstCleanupPage() {
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Button
                 size="lg"
-                className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
+                className="w-full rounded-full px-6 py-4 text-base sm:w-auto sm:px-8 sm:py-6 sm:text-lg"
                 asChild
               >
                 <Link href="#calculator" data-cta="hero-quote">Get your free cleanup</Link>
@@ -90,7 +77,7 @@ export default function FreeFirstCleanupPage() {
             </div>
             <div className="mt-6 grid gap-3 sm:grid-cols-3 max-w-2xl mx-auto">
               {["Laval and North Shore service", "Usually replies within 1 business day", "Gate photo after each visit"].map((item) => (
-                <div key={item} className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] px-4 py-3 text-sm font-semibold text-gray-700 shadow-[0_12px_30px_rgba(48,121,68,0.08)]">
+                <div key={item} className="rounded-2xl border border-brand-green/15 bg-brand-green-light px-4 py-3 text-sm font-semibold text-gray-700 shadow-brand-xs">
                   {item}
                 </div>
               ))}
@@ -100,9 +87,9 @@ export default function FreeFirstCleanupPage() {
 
         {/* Calculator */}
         <section id="calculator" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto scroll-animation">
+          <div className="max-w-5xl mx-auto reveal-up">
             <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 See your price and claim your free visit
               </h2>
               <p className="text-gray-500">Fill in your details and we&rsquo;ll be in touch within 1 business day.</p>
@@ -114,17 +101,17 @@ export default function FreeFirstCleanupPage() {
         {/* Customer Promise */}
         <section className="bg-white px-4 pb-16 pt-8 sm:px-6 sm:pt-0 lg:px-8">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">
                 What You Get Instead of Another Messy Weekend
               </h2>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
-              <Card className="scroll-animation scroll-delay-1 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-1">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
-                    <CheckCircle2 className="w-6 h-6 text-brand-green" />
-                  </div>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
+                      <CheckCircle2 className="w-6 h-6 text-brand-green" />
+                    </div>
                   <CardTitle className="text-xl">Stop Stepping In It</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -133,11 +120,11 @@ export default function FreeFirstCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation scroll-delay-2 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-2">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
-                    <Shield className="w-6 h-6 text-brand-green" />
-                  </div>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
+                      <Shield className="w-6 h-6 text-brand-green" />
+                    </div>
                   <CardTitle className="text-xl">Simple, Fast, Local Service</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -146,11 +133,11 @@ export default function FreeFirstCleanupPage() {
                   </CardDescription>
                 </CardContent>
               </Card>
-              <Card className="scroll-animation scroll-delay-3 border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]">
+              <Card variant="featured" className="reveal-up scroll-delay-3">
                 <CardHeader>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
-                    <Heart className="w-6 h-6 text-brand-green" />
-                  </div>
+                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
+                      <Heart className="w-6 h-6 text-brand-green" />
+                    </div>
                   <CardTitle className="text-xl">A Yard You Actually Want to Use</CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -174,8 +161,8 @@ export default function FreeFirstCleanupPage() {
         <section className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation order-2 md:order-1">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Why Homeowners Call Us</h2>
+              <div className="reveal-up order-2 md:order-1">
+                <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 text-gray-900">Why Homeowners Call Us</h2>
                 <Image
                   src="/images/our dog waste renewal company.png"
                   alt="Ca-Ca Canin team in a residential yard with cleanup tools and service truck"
@@ -192,7 +179,7 @@ export default function FreeFirstCleanupPage() {
                   You get a local team, clear pricing, and a simple way to keep the yard ready for kids, guests, and everyday use.
                 </p>
               </div>
-              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-2 md:block">
+              <div className="reveal-up scroll-delay-1 order-1 hidden md:order-2 md:block">
                 <Image
                   src="/images/our dog waste renewal company.png"
                   alt="Ca-Ca Canin team in a residential yard with cleanup tools and service truck"
@@ -211,8 +198,8 @@ export default function FreeFirstCleanupPage() {
         <section className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
             <div className="grid items-center gap-8 md:grid-cols-2 lg:gap-12">
-              <div className="scroll-animation order-2 md:order-2">
-                <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">
+              <div className="reveal-up order-2 md:order-2">
+                <h2 className="font-heading text-3xl md:text-4xl font-bold mb-6 text-gray-900">
                   Keep Your Yard Clean Without Doing It Yourself
                 </h2>
                 <Image
@@ -239,7 +226,7 @@ export default function FreeFirstCleanupPage() {
                   </li>
                 </ul>
               </div>
-              <div className="scroll-animation scroll-delay-1 order-1 hidden md:order-1 md:block">
+              <div className="reveal-up scroll-delay-1 order-1 hidden md:order-1 md:block">
                 <Image
                   src="/images/revised residential pooper scooper services.png"
                   alt="Residential pooper scooper team cleaning a backyard with a dog nearby"
@@ -257,8 +244,8 @@ export default function FreeFirstCleanupPage() {
         {/* Why Choose Us */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Why Homeowners Stick With Us</h2>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">Why Homeowners Stick With Us</h2>
               <p className="text-xl text-gray-600">
                 Built for homeowners who want the smell gone, the mess gone, and one less thing to worry about.
               </p>
@@ -271,9 +258,9 @@ export default function FreeFirstCleanupPage() {
                 { icon: Camera,      title: "Gate Photos",                     desc: "See the proof after each visit so you know the job was done." },
                 { icon: Bell,        title: "Arrival Updates",                 desc: "Know when we are coming so you are not left wondering." },
               ].map((feature, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
+                <Card key={index} variant="flat" className="reveal-up" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <feature.icon className="w-6 h-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -290,8 +277,8 @@ export default function FreeFirstCleanupPage() {
         {/* FAQ */}
         <section className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">
                 Questions Homeowners Ask Before They Book
               </h2>
               <p className="text-xl text-gray-600">
@@ -307,7 +294,7 @@ export default function FreeFirstCleanupPage() {
                 { q: "Do I need a contract?", a: "No. You can start, pause, or cancel service by contacting our team." },
                 { q: "What happens after each visit?", a: "You receive service confirmation, and we can provide a gate photo after the visit." },
               ].map((faq, index) => (
-                <Card key={index} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]" style={{ transitionDelay: `${index * 0.05}s` }}>
+                <Card key={index} variant="flat" className="reveal-fade" style={{ transitionDelay: `${index * 0.05}s` }}>
                   <CardHeader><CardTitle className="text-lg">{faq.q}</CardTitle></CardHeader>
                   <CardContent>
                     <CardDescription className="text-base leading-7 text-gray-600">{faq.a}</CardDescription>

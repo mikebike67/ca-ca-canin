@@ -1,31 +1,18 @@
 'use client'
 
-import { useEffect, useRef } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import SiteHeader from "@/components/site-header"
 import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
 import dynamic from "next/dynamic"
+import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { CheckCircle2, MessageSquareHeart, CalendarClock, Camera, Bell } from "lucide-react"
 
 const FreeTrialSignup = dynamic(() => import("@/components/free-trial-signup"), { ssr: false })
 const TestimonialsCarousel = dynamic(() => import("@/components/testimonials-carousel"), { ssr: false })
 
 export default function FreeTrialPage() {
-  const observerRef = useRef<IntersectionObserver | null>(null)
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) entry.target.classList.add("animate-in")
-        })
-      },
-      { threshold: 0.1, rootMargin: "50px" },
-    )
-    document.querySelectorAll(".scroll-animation").forEach((el) => observerRef.current?.observe(el))
-    return () => observerRef.current?.disconnect()
-  }, [])
+  useScrollReveal()
 
   return (
     <div className="flex flex-col min-h-screen bg-white text-gray-900">
@@ -50,7 +37,7 @@ export default function FreeTrialPage() {
             <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
               Only 10 spots available
             </span>
-            <h1 className="mb-5 text-3xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl lg:text-7xl">
+            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
               2 Weeks of Cleanup,<br />
               <span className="text-brand-green">On Us</span>
             </h1>
@@ -88,9 +75,9 @@ export default function FreeTrialPage() {
 
         {/* Signup form */}
         <section className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-2xl mx-auto scroll-animation">
+          <div className="max-w-2xl mx-auto reveal-up">
             <div className="text-center mb-8">
-              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
+              <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
                 Reserve one of the 10 free spots
               </h2>
               <p className="text-gray-500">Tell us where to show up and we&rsquo;ll confirm your first visit.</p>
@@ -102,8 +89,8 @@ export default function FreeTrialPage() {
         {/* How it works */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">How the Trial Works</h2>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">How the Trial Works</h2>
               <p className="text-xl text-gray-600">Three steps, two weeks, zero cost.</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3 md:gap-8">
@@ -112,9 +99,9 @@ export default function FreeTrialPage() {
                 { icon: CalendarClock, title: "2. We Visit Weekly", desc: "One full yard cleanup a week, for 2 weeks, completely free." },
                 { icon: CheckCircle2, title: "3. Share Your Feedback", desc: "Tell us honestly how it went. No obligation to continue after the trial." },
               ].map((step, index) => (
-                <Card key={step.title} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] transition-all duration-300 hover:-translate-y-1 hover:border-brand-green/40 hover:shadow-[0_24px_60px_rgba(48,121,68,0.14)]" style={{ transitionDelay: `${index * 0.1}s` }}>
+                <Card key={step.title} className="reveal-up" style={{ transitionDelay: `${index * 0.1}s` }}>
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <step.icon className="w-6 h-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{step.title}</CardTitle>
@@ -131,8 +118,8 @@ export default function FreeTrialPage() {
         {/* Reviews */}
         <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">What Current Customers Say</h2>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">What Current Customers Say</h2>
             </div>
             <TestimonialsCarousel locale="en" />
           </div>
@@ -141,8 +128,8 @@ export default function FreeTrialPage() {
         {/* FAQ */}
         <section className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-12 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">Questions About the Trial</h2>
+            <div className="text-center mb-12 reveal-up">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">Questions About the Trial</h2>
             </div>
             <div className="space-y-4">
               {[
@@ -152,7 +139,7 @@ export default function FreeTrialPage() {
                 { q: "What kind of feedback do you need?", a: "Just your honest experience, what worked, what didn't, and whether you'd recommend us. A short review helps the most." },
                 { q: "How many spots are left?", a: "The counter above the signup form updates live. Once all 10 are claimed, new signups join a waitlist." },
               ].map((faq) => (
-                <Card key={faq.q} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_14px_34px_rgba(17,24,39,0.05)] transition-all duration-300 hover:border-brand-green/30 hover:shadow-[0_18px_45px_rgba(48,121,68,0.10)]">
+                <Card key={faq.q} variant="flat" className="reveal-fade">
                   <CardHeader><CardTitle className="text-lg">{faq.q}</CardTitle></CardHeader>
                   <CardContent>
                     <CardDescription className="text-base leading-7 text-gray-600">{faq.a}</CardDescription>

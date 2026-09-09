@@ -20,10 +20,10 @@ export default function AboutPage() {
 
       <main id="main-content" className="flex-grow pt-16">
         {/* Hero */}
-        <section className="bg-[#eef7f0] px-4 py-16 sm:px-6 lg:px-8">
+        <section className="bg-brand-green-light px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand-green">About Us</p>
-            <h1 className="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">
+            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 md:text-5xl">
               We take care of the mess so you don't have to
             </h1>
             <p className="mx-auto max-w-2xl text-lg text-gray-600">
@@ -36,7 +36,7 @@ export default function AboutPage() {
         <section className="px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto grid gap-10 md:grid-cols-2 md:items-center">
             <div>
-              <h2 className="mb-4 text-3xl font-bold text-gray-900">Why Ca-Ca Canin exists</h2>
+              <h2 className="mb-4 font-heading text-3xl font-bold text-gray-900">Why Ca-Ca Canin exists</h2>
               <p className="mb-4 text-lg text-gray-700">
                 We started this service because we kept hearing the same thing from local dog owners: the yard cleanup is the one chore that never gets done, and it makes the whole backyard feel off-limits.
               </p>
@@ -64,7 +64,7 @@ export default function AboutPage() {
         {/* Values */}
         <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <h2 className="mb-10 text-center text-3xl font-bold text-gray-900">How we work</h2>
+            <h2 className="mb-10 text-center font-heading text-3xl font-bold text-gray-900">How we work</h2>
             <div className="grid gap-6 md:grid-cols-3">
               {[
                 {
@@ -82,9 +82,9 @@ export default function AboutPage() {
               ].map((v) => (
                 <div
                   key={v.title}
-                  className="rounded-2xl border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(48,121,68,0.08)]"
+                  className="rounded-2xl border border-brand-border bg-white p-6 shadow-brand-sm"
                 >
-                  <h3 className="mb-2 text-lg font-bold text-gray-900">{v.title}</h3>
+                  <h3 className="mb-2 font-heading text-lg font-bold text-gray-900">{v.title}</h3>
                   <p className="text-gray-600">{v.body}</p>
                 </div>
               ))}
@@ -95,7 +95,7 @@ export default function AboutPage() {
         {/* CTA */}
         <section className="px-4 py-16 sm:px-6 lg:px-8 text-center">
           <div className="max-w-2xl mx-auto">
-            <h2 className="mb-4 text-3xl font-bold text-gray-900">Ready to get started?</h2>
+            <h2 className="mb-4 font-heading text-3xl font-bold text-gray-900">Ready to get started?</h2>
             <p className="mb-8 text-lg text-gray-600">
               Check availability in your area and get a quote in minutes. Most requests are confirmed within 1 business day.
             </p>

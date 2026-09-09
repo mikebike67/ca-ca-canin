@@ -25,11 +25,11 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       contactHeading: "Contact",
       hoursHeading: "Hours",
       hours: [
-        { day: "Monday", time: "5pm-9pm" },
-        { day: "Tuesday", time: "5pm-9pm" },
+        { day: "Monday", time: "7am-12pm" },
+        { day: "Tuesday", time: "Closed" },
         { day: "Wednesday", time: "5pm-9pm" },
         { day: "Thursday", time: "5pm-9pm" },
-        { day: "Friday", time: "5pm-9pm" },
+        { day: "Friday", time: "12pm-9pm" },
         { day: "Saturday", time: "7am-9pm" },
         { day: "Sunday", time: "7am-9pm" },
       ],
@@ -57,11 +57,11 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
       contactHeading: "Nous joindre",
       hoursHeading: "Heures d'ouverture",
       hours: [
-        { day: "Lundi", time: "17 h-21 h" },
-        { day: "Mardi", time: "17 h-21 h" },
+        { day: "Lundi", time: "7 h-12 h" },
+        { day: "Mardi", time: "Fermé" },
         { day: "Mercredi", time: "17 h-21 h" },
         { day: "Jeudi", time: "17 h-21 h" },
-        { day: "Vendredi", time: "17 h-21 h" },
+        { day: "Vendredi", time: "12 h-21 h" },
         { day: "Samedi", time: "7 h-21 h" },
         { day: "Dimanche", time: "7 h-21 h" },
       ],
@@ -90,7 +90,7 @@ export default function SiteFooter({ locale = "en" }: SiteFooterProps) {
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 text-center sm:text-left">
             <div className="mb-4 flex items-center justify-center space-x-3 sm:justify-start">
               <Image src="/images/cacacaninlogo.jpg" alt={copy.logoAlt} width={40} height={40} className="h-10 w-10 rounded-full" />
-              <span className="text-lg font-bold tracking-[0.12em] text-[#7bd18f] sm:text-xl">CA-CA CANIN</span>
+              <span className="font-logo text-lg font-bold tracking-[0.12em] text-[#7bd18f] sm:text-xl">CA-CA CANIN</span>
             </div>
             <p className="max-w-md text-sm leading-7 text-gray-300">{copy.description}</p>
           </div>

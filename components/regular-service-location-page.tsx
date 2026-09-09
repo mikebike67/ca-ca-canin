@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -18,6 +18,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import LocationSwitcher from "@/components/location-switcher";
 import RegularServiceCalculator from "@/components/regular-service-calculator";
 import SiteFooter from "@/components/site-footer";
+import { useScrollReveal } from "@/hooks/use-scroll-reveal";
 import {
   REGULAR_SERVICE_LOCATIONS,
   type RegularServiceLocation,
@@ -41,21 +42,7 @@ export default function RegularServiceLocationPage({
   const privacyHref = isFrench ? "/fr/privacy" : "/privacy";
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const observerRef = useRef<IntersectionObserver | null>(null);
-
-  useEffect(() => {
-    observerRef.current = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add("animate-in");
-      });
-    }, { threshold: 0.1, rootMargin: "50px" });
-
-    document.querySelectorAll(".scroll-animation").forEach((element) => {
-      observerRef.current?.observe(element);
-    });
-
-    return () => observerRef.current?.disconnect();
-  }, []);
+  useScrollReveal();
 
   const heroBullets = isFrench
     ? [
@@ -170,7 +157,7 @@ export default function RegularServiceLocationPage({
           <div className="flex h-16 items-center justify-between">
             <Link href={homeHref} className="flex min-w-0 items-center space-x-3">
               <Image src="/images/cacacaninlogo.jpg" alt={isFrench ? "Logo Ca-Ca Canin" : "Ca-Ca Canin logo"} width={40} height={40} className="h-10 w-10" />
-              <span className={`text-lg font-bold text-brand-green sm:text-2xl`}>CA-CA CANIN</span>
+              <span className={`font-logo text-lg font-bold text-brand-green sm:text-2xl`}>CA-CA CANIN</span>
             </Link>
 
             <div className="hidden items-center space-x-6 md:flex">
@@ -271,7 +258,7 @@ export default function RegularServiceLocationPage({
               </ol>
             </nav>
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.3em] text-brand-brown">{copy.heroEyebrow}</p>
-            <h1 className={`mb-4 text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-6xl`}>
+            <h1 className={`mb-4 font-heading text-3xl font-extrabold text-gray-900 sm:text-4xl md:text-5xl`}>
               {copy.heroTitle}
             </h1>
             <p className="mb-4 text-lg text-gray-600 sm:text-xl md:text-2xl">{copy.heroSubtitle}</p>
@@ -279,7 +266,7 @@ export default function RegularServiceLocationPage({
               {isFrench ? location.regularFitFr : location.regularFitEn}
             </p>
             <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
-              <Button size="lg" className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
+              <Button size="lg" className="w-full rounded-full px-6 py-4 text-base sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
                 <Link href="#quote-form">{isFrench ? "Demander mon devis" : "Request My Quote"}</Link>
               </Button>
               <Button size="lg" variant="outline" className="w-full rounded-full border-2 border-brand-brown bg-brand-brown px-6 py-4 text-base text-white hover:bg-brand-brown/90 hover:text-white sm:w-auto sm:px-8 sm:py-5 sm:text-lg" asChild>
@@ -299,22 +286,22 @@ export default function RegularServiceLocationPage({
         </section>
 
         <section id="quote-form" className="scroll-mt-12 py-16 px-4 sm:px-6 lg:px-8 bg-white">
-          <div className="max-w-5xl mx-auto scroll-animation">
+          <div className="max-w-5xl mx-auto reveal-up">
             <RegularServiceCalculator locale={locale} />
           </div>
         </section>
 
         <section id="how-it-works" className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.howItWorks.title}</h2>
+            <div className="mb-10 text-center reveal-up">
+              <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.howItWorks.title}</h2>
               <p className="text-lg text-gray-600">{copy.howItWorks.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {copy.howItWorks.steps.map((step) => (
-                <Card key={step.title} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <Card key={step.title} variant="featured" className="reveal-up">
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <step.icon className="h-6 w-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{step.title}</CardTitle>
@@ -330,15 +317,15 @@ export default function RegularServiceLocationPage({
 
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{whyBookCopy.title}</h2>
+            <div className="mb-10 text-center reveal-up">
+              <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>{whyBookCopy.title}</h2>
               <p className="text-lg text-gray-600">{whyBookCopy.subtitle}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-3">
               {whyBookCopy.items.map((item) => (
-                <Card key={item.title} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+                <Card key={item.title} variant="flat" className="reveal-up">
                   <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-[#eef7f0]">
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl border border-brand-green/15 bg-brand-green-light">
                       <item.icon className="h-6 w-6 text-brand-green" />
                     </div>
                     <CardTitle className="text-xl">{item.title}</CardTitle>
@@ -354,13 +341,13 @@ export default function RegularServiceLocationPage({
 
         <section id="faq" className="bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.faqTitle}</h2>
+            <div className="mb-10 text-center reveal-up">
+              <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.faqTitle}</h2>
               <p className="text-lg text-gray-600">{copy.faqSubtitle}</p>
             </div>
             <div className="space-y-4">
               {faqItems.map((item) => (
-                <Card key={item.q} className="scroll-animation border border-[#d7e6da] bg-white shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
+                <Card key={item.q} variant="flat" className="reveal-fade">
                   <CardHeader>
                     <CardTitle className="text-xl">{item.q}</CardTitle>
                   </CardHeader>
@@ -375,8 +362,8 @@ export default function RegularServiceLocationPage({
 
         <section className="bg-white px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-6xl">
-            <div className="mb-10 text-center scroll-animation">
-              <h2 className={`mb-3 text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.relatedTitle}</h2>
+            <div className="mb-10 text-center reveal-up">
+              <h2 className={`mb-3 font-heading text-3xl font-bold text-gray-900 md:text-4xl`}>{copy.relatedTitle}</h2>
               <p className="text-lg text-gray-600">{copy.relatedIntro}</p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
@@ -384,10 +371,10 @@ export default function RegularServiceLocationPage({
                 <Link
                   key={item.slug}
                   href={`${baseHref}/${item.slug}`}
-                  className="scroll-animation rounded-3xl border border-[#d7e6da] bg-white p-6 shadow-[0_18px_45px_rgba(17,24,39,0.05)] transition-all hover:-translate-y-1 hover:border-brand-green/40"
+                  className="reveal-fade rounded-3xl border border-brand-border bg-white p-6 shadow-brand-xs transition-all hover:-translate-y-1 hover:border-brand-green/40"
                 >
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">{isFrench ? item.nameFr : item.name}</p>
-                  <h3 className="mt-2 text-2xl font-bold text-gray-900">{isFrench ? item.regularPrimaryKeywordFr : item.regularPrimaryKeywordEn}</h3>
+                  <h3 className="mt-2 font-heading text-2xl font-bold text-gray-900">{isFrench ? item.regularPrimaryKeywordFr : item.regularPrimaryKeywordEn}</h3>
                   <p className="mt-3 text-gray-600">{isFrench ? item.regularIntroFr : item.regularIntroEn}</p>
                 </Link>
               ))}

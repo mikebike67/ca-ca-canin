@@ -224,7 +224,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
+    <div className="bg-white border border-brand-border rounded-2xl shadow-brand-lg p-6 md:p-8">
       <div className="grid gap-8 lg:grid-cols-2">
 
         {/* LEFT: Selectors + price preview */}
@@ -307,7 +307,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
                     ? (isFrench ? "10 000+ pi²" : "10,000+ sq ft")
                     : (isFrench ? `${yardSqft.toLocaleString()} pi²` : `${yardSqft.toLocaleString()} sq ft`)}
                 </span>
-                <span className="inline-flex rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green">
+                <span className="inline-flex rounded-full border border-brand-green/20 bg-brand-green-light px-3 py-1 text-xs font-semibold text-brand-green">
                   {yardOptions[locale].find((o) => o.key === yardCategory)?.label}
                   {" · "}
                   {yardOptions[locale].find((o) => o.key === yardCategory)?.detail}
@@ -317,7 +317,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
           </div>
 
           {/* Price preview */}
-          <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+          <div className="rounded-2xl border border-brand-green/15 bg-brand-green-light p-5 shadow-brand-sm">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-brand-green/80 mb-1">
               {isFrench ? "Votre 1re visite" : "Your first visit"}
             </p>
@@ -437,7 +437,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
 
         {/* RIGHT: Contact form */}
         <div>
-          <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
+          <form onSubmit={handleSubmit} className="space-y-4 rounded-2xl border border-brand-border bg-white p-4 shadow-brand-xs">
 
             <p className="text-sm font-semibold text-brand-green">
               {isFrench ? "Vos coordonnées" : "Your contact information"}
@@ -530,7 +530,7 @@ export default function FreeCleanupCalculator({ locale }: { locale: "en" | "fr" 
             </div>
 
             {/* Consent — immediately above CTA */}
-            <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
+            <div className="rounded-xl border border-brand-border bg-brand-green-lighter p-4">
               <label className="flex items-start gap-3 text-sm text-gray-700">
                 <input
                   type="checkbox"

@@ -6,6 +6,7 @@ export type BlogBlock =
   | { type: "paragraph"; textEn: string; textFr: string }
   | { type: "heading"; level: 2 | 3; textEn: string; textFr: string }
   | { type: "list"; ordered?: boolean; itemsEn: string[]; itemsFr: string[] }
+  | { type: "keypoints"; titleEn: string; titleFr: string; itemsEn: string[]; itemsFr: string[] }
   | { type: "callout"; titleEn: string; titleFr: string; bodyEn: string; bodyFr: string }
   | {
       type: "image";
@@ -32,6 +33,7 @@ export type BlogPost = {
   metaDescriptionFr: string;
   category: BlogCategory;
   locationSlug?: string;
+  relatedSlugs?: string[];
   publishedAt: string;
   updatedAt?: string;
   heroImage: { src: string; alt: string; altFr: string; width: number; height: number; credit: BlogImageCredit };
@@ -56,6 +58,7 @@ export const BLOG_POSTS: readonly BlogPost[] = [
       "Les vrais prix à Laval pour le ramassage de déjections canines : ce que coûtent le service hebdomadaire et le nettoyage printanier ponctuel, ce qui fait varier le prix, et comment obtenir un devis exact.",
     category: "local",
     locationSlug: "laval",
+    relatedSlugs: ["dog-poop-health-risks-yard", "does-dog-poop-kill-grass"],
     publishedAt: "2026-08-20",
     heroImage: {
       src: "/images/blog/hero-dog-yard.jpg",
@@ -196,9 +199,9 @@ export const BLOG_POSTS: readonly BlogPost[] = [
       {
         type: "paragraph",
         textEn:
-          "Dog waste is not just an eyesore. A single gram of dog feces can carry tens of millions of bacteria, including strains like E. coli, and parasites such as roundworm and hookworm eggs can survive in soil for months after the waste itself is gone. For households with kids or a dog that spends time in the grass, keeping the yard clear on a schedule is closer to routine hygiene than a luxury add-on. Weighed against the time it takes to scoop a yard properly every week, especially through a Quebec winter with snow cover hiding the mess until it melts, a $20 starting visit is often less than the value of the hour or more it would take to do it consistently yourself.",
+          "Dog waste is not just an eyesore. It carries bacteria and parasite eggs that can linger in the soil for months, which is a real [health risk in a yard where kids and pets play](/blog/dog-poop-health-risks-yard), and left in place it also [burns and yellows the lawn in patches](/blog/does-dog-poop-kill-grass). For households with kids or a dog that spends time in the grass, keeping the yard clear on a schedule is closer to routine hygiene than a luxury add-on. Weighed against the time it takes to scoop a yard properly every week, especially through a Quebec winter with snow cover hiding the mess until it melts, a $20 starting visit is often less than the value of the hour or more it would take to do it consistently yourself.",
         textFr:
-          "Les déjections canines ne sont pas qu'un problème esthétique. Un seul gramme de matières fécales de chien peut contenir des dizaines de millions de bactéries, y compris des souches comme E. coli, et des parasites comme les œufs de vers ronds et d'ankylostomes peuvent survivre dans le sol pendant des mois après la disparition des déjections elles-mêmes. Pour les foyers avec des enfants ou un chien qui passe du temps sur le gazon, garder la cour propre sur une base régulière relève davantage de l'hygiène courante que d'un luxe. Comparé au temps que prend un ramassage sérieux chaque semaine, surtout pendant un hiver québécois où la neige cache le problème jusqu'à la fonte, une visite à partir de 20 $ vaut souvent moins que l'heure ou plus qu'il faudrait y consacrer soi-même de façon constante.",
+          "Les déjections canines ne sont pas qu'un problème esthétique. Elles contiennent des bactéries et des œufs de parasites qui peuvent persister dans le sol pendant des mois, ce qui représente un vrai [risque pour la santé dans une cour où jouent enfants et animaux](/fr/blogue/risques-sante-dejections-canines-cour), et laissées en place elles [brûlent et jaunissent aussi le gazon par plaques](/fr/blogue/les-crottes-de-chien-tuent-elles-le-gazon). Pour les foyers avec des enfants ou un chien qui passe du temps sur le gazon, garder la cour propre sur une base régulière relève davantage de l'hygiène courante que d'un luxe. Comparé au temps que prend un ramassage sérieux chaque semaine, surtout pendant un hiver québécois où la neige cache le problème jusqu'à la fonte, une visite à partir de 20 $ vaut souvent moins que l'heure ou plus qu'il faudrait y consacrer soi-même de façon constante.",
       },
       {
         type: "callout",
@@ -254,14 +257,515 @@ export const BLOG_POSTS: readonly BlogPost[] = [
     ],
     sources: [
       {
-        labelEn: "American Kennel Club — Dog Poop Disposal: The Importance of Cleaning Up After Your Dog",
-        labelFr: "American Kennel Club — L'importance de ramasser les déjections de votre chien",
+        labelEn: "American Kennel Club: Dog Poop Disposal and the Importance of Cleaning Up After Your Dog",
+        labelFr: "American Kennel Club : L'importance de ramasser les déjections de votre chien",
         url: "https://www.akc.org/expert-advice/advice/dog-poop-cleanup/",
       },
       {
-        labelEn: "PetMD — The Scoop on Poop: Facts on How to Dispose of Dog Poop",
-        labelFr: "PetMD — Les faits sur l'élimination des déjections canines",
+        labelEn: "PetMD: The Scoop on Poop, Facts on How to Dispose of Dog Poop",
+        labelFr: "PetMD : Les faits sur l'élimination des déjections canines",
         url: "https://www.petmd.com/dog/care/scoop-poop-facts-and-fiction-about-disposing-it",
+      },
+    ],
+  },
+  {
+    slug: "dog-poop-health-risks-yard",
+    slugFr: "risques-sante-dejections-canines-cour",
+    titleEn: "Is Dog Poop in Your Yard a Health Risk?",
+    titleFr: "Les déjections canines dans votre cour sont-elles un risque pour la santé?",
+    metaDescriptionEn:
+      "Uncollected dog waste carries bacteria and parasite eggs that survive in soil for months. Here is who is most at risk, why winter does not kill it, and how regular removal keeps a yard safe.",
+    metaDescriptionFr:
+      "Les déjections canines non ramassées contiennent des bactéries et des œufs de parasites qui survivent dans le sol pendant des mois. Voici qui est le plus à risque, pourquoi l'hiver ne les élimine pas, et comment un ramassage régulier garde une cour sécuritaire.",
+    category: "general",
+    relatedSlugs: ["does-dog-poop-kill-grass", "dog-poop-removal-cost-laval"],
+    publishedAt: "2026-09-09",
+    heroImage: {
+      src: "/images/blog/family-yard-dog.jpg",
+      alt: "Young child playing with a dog on the grass in a sunny fenced backyard",
+      altFr: "Jeune enfant qui joue avec un chien sur le gazon dans une cour clôturée ensoleillée",
+      width: 1600,
+      height: 1067,
+      credit: {
+        photographer: "Jonathan Borba",
+        url: "https://www.pexels.com/photo/child-playing-with-dog-in-sunny-backyard-32504638/",
+      },
+    },
+    excerptEn:
+      "Yes, dog waste left sitting in a yard is a real health risk, but a very manageable one. The single most effective control is not letting it pile up.",
+    excerptFr:
+      "Oui, les déjections canines laissées dans une cour représentent un vrai risque pour la santé, mais un risque très gérable. Le moyen de contrôle le plus efficace est de ne pas les laisser s'accumuler.",
+    keywordsEn: [
+      "is dog poop a health risk",
+      "dog poop parasites yard",
+      "dangers of not picking up dog poop",
+      "dog waste health risks kids",
+    ],
+    keywordsFr: [
+      "risques santé déjections canines",
+      "parasites crottes de chien cour",
+      "dangers de ne pas ramasser les crottes de chien",
+    ],
+    body: [
+      {
+        type: "paragraph",
+        textEn:
+          "Yes. Dog waste left sitting in a yard is a genuine health risk. It carries bacteria and parasite eggs that can survive in the soil for months, and the people and dogs who use the yard every day are the ones exposed. The risk is very manageable, though. It comes down to how long the waste sits, so removing it on a regular schedule is by far the most effective thing you can do.",
+        textFr:
+          "Oui. Les déjections canines laissées dans une cour représentent un vrai risque pour la santé. Elles contiennent des bactéries et des œufs de parasites qui peuvent survivre dans le sol pendant des mois, et ce sont les personnes et les chiens qui utilisent la cour tous les jours qui y sont exposés. Ce risque reste toutefois très gérable. Tout dépend du temps que les déjections restent au sol, donc les ramasser selon un horaire régulier est de loin la mesure la plus efficace.",
+      },
+      {
+        type: "keypoints",
+        titleEn: "The short version",
+        titleFr: "En bref",
+        itemsEn: [
+          "Uncollected dog waste carries bacteria (E. coli, Salmonella) and parasite eggs (roundworm, hookworm) that can stay infective in soil for months.",
+          "Young children and other dogs are the most exposed, through ordinary yard use.",
+          "Winter does not neutralize it. Snow hides the waste, and the spring thaw exposes a whole season at once.",
+          "Removing waste weekly, or every few days with more than one dog, keeps a yard ahead of the risk. See [pricing and service options](/dog-poop-cleanup).",
+        ],
+        itemsFr: [
+          "Les déjections non ramassées contiennent des bactéries (E. coli, salmonelle) et des œufs de parasites (vers ronds, ankylostomes) qui peuvent rester infectieux dans le sol pendant des mois.",
+          "Les jeunes enfants et les autres chiens sont les plus exposés, par l'usage normal de la cour.",
+          "L'hiver ne neutralise pas le problème. La neige cache les déjections, et le dégel printanier en expose toute une saison d'un coup.",
+          "Ramasser les déjections chaque semaine, ou tous les quelques jours avec plus d'un chien, garde une cour en avance sur le risque. Voyez [les prix et options de service](/fr/ramassage-dejections).",
+        ],
+      },
+      { type: "heading", level: 2, textEn: "What is actually in dog waste", textFr: "Ce que contiennent réellement les déjections canines" },
+      {
+        type: "list",
+        itemsEn: [
+          "Bacteria: E. coli, Salmonella, and Campylobacter. A single gram of dog waste holds an average of about 23 million fecal coliform bacteria.",
+          "Protozoa: Giardia and Cryptosporidium, both of which cause stubborn digestive illness in people and dogs.",
+          "Parasite eggs: roundworm (Toxocara), hookworm, whipworm, and tapeworm, which pass in the stool and then mature in the soil.",
+          "Viruses: parvovirus from an infected dog, which is hardy and can linger in the ground for months.",
+          "Waste from a healthy, symptom-free dog can still carry any of these.",
+        ],
+        itemsFr: [
+          "Bactéries : E. coli, salmonelle et campylobacter. Un seul gramme de déjections canines contient en moyenne environ 23 millions de bactéries coliformes fécales.",
+          "Protozoaires : Giardia et Cryptosporidium, qui causent tous deux des troubles digestifs tenaces chez les humains et les chiens.",
+          "Œufs de parasites : vers ronds (Toxocara), ankylostomes, trichures et ténias, qui sont excrétés dans les selles puis arrivent à maturité dans le sol.",
+          "Virus : le parvovirus provenant d'un chien infecté, qui est robuste et peut persister dans le sol pendant des mois.",
+          "Les déjections d'un chien en bonne santé et sans symptômes peuvent tout de même contenir n'importe lequel de ces agents.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/images/blog/dog-backyard-lawn.jpg",
+        alt: "Dog lying on a green backyard lawn beside a garden path",
+        altFr: "Chien couché sur le gazon d'une cour arrière, près d'une allée de jardin",
+        width: 1600,
+        height: 1067,
+        captionEn: "The lawn your dog uses is the same lawn your family walks on.",
+        captionFr: "Le gazon que votre chien utilise est le même gazon sur lequel votre famille marche.",
+        credit: {
+          photographer: "Mathias Reding",
+          url: "https://www.pexels.com/photo/8195886/",
+        },
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "Most of these spread the same way, through tiny amounts of contaminated soil reaching the mouth. Freshly passed roundworm eggs are not infective right away. They need roughly one to four weeks in the soil to develop, and after that they can stay infective in lawns, garden beds, and sandboxes for many months.",
+        textFr:
+          "La plupart se transmettent de la même façon : de minuscules quantités de sol contaminé qui se rendent à la bouche. Les œufs de vers ronds fraîchement excrétés ne sont pas infectieux immédiatement. Il leur faut environ une à quatre semaines dans le sol pour se développer, et par la suite ils peuvent rester infectieux dans le gazon, les plates-bandes et les carrés de sable pendant plusieurs mois.",
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "People pick them up through hand to mouth contact after gardening or yard work, from bare feet, or from produce grown in contaminated soil. Rain and spring melt also rinse bacteria off the grass and into flower beds and storm drains.",
+        textFr:
+          "Les gens les attrapent par contact main-bouche après avoir jardiné ou travaillé dans la cour, par les pieds nus, ou par des légumes cultivés dans un sol contaminé. La pluie et la fonte printanière rincent aussi les bactéries du gazon vers les plates-bandes et les égouts pluviaux.",
+      },
+      {
+        type: "image",
+        src: "/images/blog/child-on-grass.jpg",
+        alt: "Baby sitting on a lawn in a backyard, holding a toy to their mouth",
+        altFr: "Bébé assis sur le gazon d'une cour arrière, portant un jouet à sa bouche",
+        width: 1600,
+        height: 1067,
+        captionEn: "Young children are the most exposed. They play at ground level and put their hands in their mouths.",
+        captionFr: "Les jeunes enfants sont les plus exposés. Ils jouent au niveau du sol et portent leurs mains à leur bouche.",
+        credit: {
+          photographer: "Helena Lopes",
+          url: "https://www.pexels.com/photo/baby-enjoying-outdoor-playtime-on-lawn-27176347/",
+        },
+      },
+      { type: "heading", level: 2, textEn: "Who is most at risk", textFr: "Qui est le plus à risque" },
+      {
+        type: "paragraph",
+        textEn:
+          "Young children carry the most human risk. Swallowed roundworm larvae can migrate through the body, and while serious cases are rare, they can involve the eyes, liver, or lungs. Pregnant people and anyone with a weakened immune system are also more vulnerable to the bacteria and protozoa involved.",
+        textFr:
+          "Ce sont les jeunes enfants qui courent le plus grand risque. Les larves de vers ronds avalées peuvent migrer dans le corps et, même si les cas graves sont rares, elles peuvent toucher les yeux, le foie ou les poumons. Les personnes enceintes et celles dont le système immunitaire est affaibli sont aussi plus vulnérables aux bactéries et aux protozoaires en cause.",
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "Other dogs are at risk too. Parvovirus and roundworm eggs stay in the ground long after the waste itself is gone, so an unscooped yard becomes a reinfection loop for your own dog and a hazard for any visiting or unvaccinated dog.",
+        textFr:
+          "Les autres chiens sont également à risque. Le parvovirus et les œufs de vers ronds restent dans le sol longtemps après la disparition des déjections, si bien qu'une cour non ramassée devient une boucle de réinfection pour votre propre chien et un danger pour tout chien de passage ou non vacciné.",
+      },
+      {
+        type: "list",
+        itemsEn: [
+          "Children under about six years old",
+          "Household members who are pregnant or immunocompromised",
+          "Other dogs, especially puppies that are not fully vaccinated",
+          "Anyone who gardens or does lawn work barefoot or bare handed",
+        ],
+        itemsFr: [
+          "Les enfants d'environ six ans et moins",
+          "Les membres du foyer qui sont enceintes ou immunodéprimés",
+          "Les autres chiens, surtout les chiots qui ne sont pas complètement vaccinés",
+          "Toute personne qui jardine ou travaille sur le terrain pieds nus ou à mains nues",
+        ],
+      },
+      { type: "heading", level: 2, textEn: "Does winter kill it?", textFr: "Est-ce que l'hiver l'élimine?" },
+      {
+        type: "paragraph",
+        textEn:
+          "No. Freezing does not reliably destroy roundworm eggs or parvovirus. Snow cover hides the waste and slows decomposition, which preserves the problem rather than solving it.",
+        textFr:
+          "Non. Le gel ne détruit pas de façon fiable les œufs de vers ronds ni le parvovirus. La couche de neige cache les déjections et ralentit leur décomposition, ce qui préserve le problème au lieu de le régler.",
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "Picture a yard with one dog, left unscooped from the first snowfall to the spring melt. In a climate with real winter that is four or five months of waste, well over a hundred piles for an average dog, surfacing within a week or two as the snow goes. Meltwater carries the bacteria straight into garden beds and storm drains, so the yard is a higher risk after the thaw than it was before the first snow, not a lower one.",
+        textFr:
+          "Imaginez une cour avec un seul chien, qui n'est pas ramassée de la première neige jusqu'à la fonte printanière. Dans un climat où l'hiver est bien réel, cela représente quatre ou cinq mois de déjections, bien plus d'une centaine de tas pour un chien moyen, qui refont surface en une semaine ou deux à mesure que la neige disparaît. L'eau de fonte entraîne les bactéries directement dans les plates-bandes et les égouts pluviaux, si bien que la cour présente plus de risque après le dégel qu'avant la première neige, pas moins.",
+      },
+      {
+        type: "image",
+        src: "/images/blog/washing-hands.jpg",
+        alt: "Person washing their hands with soap",
+        altFr: "Personne qui se lave les mains avec du savon",
+        width: 1600,
+        height: 1067,
+        captionEn: "Washing hands after yard time is a good habit, not a substitute for removing the waste.",
+        captionFr: "Se laver les mains après un moment dans la cour est une bonne habitude, mais ne remplace pas le ramassage des déjections.",
+        credit: {
+          photographer: "Ron Lach",
+          url: "https://www.pexels.com/photo/man-washing-hands-with-soap-in-stone-basin-for-hygiene-and-cleanliness-9145340/",
+        },
+      },
+      { type: "heading", level: 2, textEn: "How to lower the risk", textFr: "Comment réduire le risque" },
+      {
+        type: "list",
+        itemsEn: [
+          "Remove waste at least once a week, and every few days if you have more than one dog",
+          "Bag it and put it in the trash rather than composting or burying it",
+          "Keep young children's play areas and sandboxes separate from where the dog goes, and cover the sandbox when it is not in use",
+          "Follow your veterinarian's deworming and vaccination schedule",
+          "Wash hands after gardening or yard play, and rinse off shoes that have been on the grass",
+          "Pick up promptly after any visiting dog",
+        ],
+        itemsFr: [
+          "Ramasser les déjections au moins une fois par semaine, et tous les quelques jours si vous avez plus d'un chien",
+          "Les mettre dans un sac et à la poubelle plutôt que de les composter ou de les enfouir",
+          "Garder les aires de jeu et les carrés de sable des jeunes enfants à l'écart de l'endroit où va le chien, et couvrir le carré de sable quand il ne sert pas",
+          "Suivre le calendrier de vermifugation et de vaccination recommandé par votre vétérinaire",
+          "Se laver les mains après avoir jardiné ou joué dans la cour, et rincer les chaussures qui ont été sur le gazon",
+          "Ramasser sans tarder après le passage de tout chien visiteur",
+        ],
+      },
+      {
+        type: "callout",
+        titleEn: "Keep the yard clear without the chore",
+        titleFr: "Gardez la cour propre sans la corvée",
+        bodyEn:
+          "Recurring service removes the waste on a set schedule, bags it, puts it in your bin, and sends a photo afterward. Weekly or biweekly, no contract, year round.",
+        bodyFr:
+          "Le service récurrent ramasse les déjections selon un horaire fixe, les met en sac, les dépose dans votre bac et vous envoie une photo par la suite. Hebdomadaire ou aux deux semaines, sans contrat, toute l'année.",
+      },
+      { type: "heading", level: 2, textEn: "How often does waste need to be removed to stay ahead of it?", textFr: "À quelle fréquence faut-il ramasser pour garder une longueur d'avance?" },
+      {
+        type: "paragraph",
+        textEn:
+          "Because roundworm eggs take about one to four weeks to become infective, weekly or biweekly removal keeps the yard ahead of that window and stops eggs from ever maturing in your soil. Households with more than one dog, or with young kids using the yard, are better off on weekly service. On our [service pages](/dog-poop-cleanup), the calculator prices weekly and biweekly visits from the same base rate, so you can pick the frequency that fits without a penalty for choosing more often.",
+        textFr:
+          "Comme les œufs de vers ronds prennent environ une à quatre semaines pour devenir infectieux, un ramassage hebdomadaire ou aux deux semaines garde la cour en avance sur cette fenêtre et empêche les œufs d'arriver à maturité dans votre sol. Les foyers avec plus d'un chien, ou avec de jeunes enfants qui utilisent la cour, ont avantage à choisir le service hebdomadaire. Sur nos [pages de service](/fr/ramassage-dejections), le calculateur établit le prix des visites hebdomadaires et aux deux semaines à partir du même tarif de base, donc vous pouvez choisir la fréquence qui vous convient sans être pénalisé pour un passage plus fréquent.",
+      },
+      { type: "heading", level: 2, textEn: "The bottom line", textFr: "En résumé" },
+      {
+        type: "paragraph",
+        textEn:
+          "Uncollected dog waste is a real risk, but a very controllable one. The fix is consistency rather than any special product: do not let it pile up. It is the same routine that keeps waste from [burning patches into your lawn](/blog/does-dog-poop-kill-grass). Whether you scoop it yourself every few days or [have it done for you](/dog-poop-cleanup#quote-form), the goal is the same. Recurring service runs year round, including through the winter, you do not need to be home for a visit, and you get a gate photo after every cleanup so you know it was done.",
+        textFr:
+          "Les déjections canines non ramassées représentent un vrai risque, mais un risque très maîtrisable. La solution tient à la constance plutôt qu'à un produit particulier : il ne faut pas les laisser s'accumuler. C'est la même routine qui empêche les déjections de [brûler des plaques dans votre gazon](/fr/blogue/les-crottes-de-chien-tuent-elles-le-gazon). Que vous les ramassiez vous-même tous les quelques jours ou que vous [en confiiez la tâche](/fr/ramassage-dejections#quote-form), l'objectif est le même. Le service récurrent est offert toute l'année, y compris l'hiver, vous n'avez pas besoin d'être présent lors d'une visite, et vous recevez une photo du portail après chaque nettoyage pour savoir que le travail a été fait.",
+      },
+    ],
+    faq: [
+      {
+        qEn: "Can you get sick from dog poop in your own yard?",
+        qFr: "Peut-on tomber malade à cause des crottes de chien dans sa propre cour?",
+        aEn: "Yes. Dog waste can carry bacteria like E. coli and Salmonella and parasites like roundworm and Giardia, and people are exposed mainly through hand to mouth contact or bare skin. The risk is low when waste is removed promptly and hands are washed, and it climbs the longer the waste sits.",
+        aFr: "Oui. Les déjections canines peuvent contenir des bactéries comme E. coli et la salmonelle ainsi que des parasites comme le ver rond et Giardia, et les gens y sont exposés surtout par contact main-bouche ou par la peau nue. Le risque est faible quand les déjections sont ramassées rapidement et qu'on se lave les mains, et il augmente plus les déjections restent au sol longtemps.",
+      },
+      {
+        qEn: "How long do dog parasite eggs survive in soil?",
+        qFr: "Combien de temps les œufs de parasites de chien survivent-ils dans le sol?",
+        aEn: "Roundworm (Toxocara) eggs need about one to four weeks in the soil to become infective, and after that they can remain infective for many months, longer in shaded, moist ground. Removing waste before the eggs mature is the main way to break that cycle.",
+        aFr: "Les œufs de vers ronds (Toxocara) ont besoin d'environ une à quatre semaines dans le sol pour devenir infectieux, et par la suite ils peuvent le rester pendant plusieurs mois, plus longtemps dans un sol ombragé et humide. Ramasser les déjections avant que les œufs arrivent à maturité est le principal moyen de briser ce cycle.",
+      },
+      {
+        qEn: "Is frozen dog poop still a health risk?",
+        qFr: "Les crottes de chien gelées présentent-elles encore un risque pour la santé?",
+        aEn: "Yes. Freezing does not reliably kill roundworm eggs or parvovirus. Winter mostly hides and preserves the waste, and the spring thaw exposes a whole season of it at once.",
+        aFr: "Oui. Le gel ne tue pas de façon fiable les œufs de vers ronds ni le parvovirus. L'hiver ne fait surtout que cacher et préserver les déjections, et le dégel printanier en expose toute une saison d'un coup.",
+      },
+      {
+        qEn: "How often should I remove dog waste to reduce the health risk?",
+        qFr: "À quelle fréquence dois-je ramasser les déjections pour réduire le risque pour la santé?",
+        aEn: "At least once a week. Move to every few days if you have more than one dog or young children who use the yard, since that keeps the yard ahead of the one to four week window parasite eggs need to become infective.",
+        aFr: "Au moins une fois par semaine. Passez à tous les quelques jours si vous avez plus d'un chien ou de jeunes enfants qui utilisent la cour, car cela garde la cour en avance sur la fenêtre de une à quatre semaines dont les œufs de parasites ont besoin pour devenir infectieux.",
+      },
+    ],
+    sources: [
+      {
+        labelEn: "CDC: How Toxocariasis Spreads",
+        labelFr: "CDC : Comment se transmet la toxocarose",
+        url: "https://www.cdc.gov/toxocariasis/spreads/index.html",
+      },
+      {
+        labelEn: "CDC: About Toxocariasis",
+        labelFr: "CDC : À propos de la toxocarose",
+        url: "https://www.cdc.gov/toxocariasis/about/index.html",
+      },
+      {
+        labelEn: "US EPA: Pet Waste and Water Quality",
+        labelFr: "US EPA : Les déjections animales et la qualité de l'eau",
+        url: "https://cfpub.epa.gov/npstbx/files/cwc_petwastefactsheet.pdf",
+      },
+      {
+        labelEn: "American Kennel Club: Dog Poop Disposal and Why Cleaning Up Matters",
+        labelFr: "American Kennel Club : L'élimination des crottes de chien et pourquoi le ramassage compte",
+        url: "https://www.akc.org/expert-advice/advice/dog-poop-cleanup/",
+      },
+    ],
+  },
+  {
+    slug: "does-dog-poop-kill-grass",
+    slugFr: "les-crottes-de-chien-tuent-elles-le-gazon",
+    titleEn: "Does Dog Poop Kill Grass?",
+    titleFr: "Les crottes de chien tuent-elles le gazon?",
+    metaDescriptionEn:
+      "Dog waste is not lawn fertilizer. It is acidic and high in nitrogen, so it yellows and burns grass in patches, breaks down slowly, and leaves dead spots. Here is what it does and how to prevent it.",
+    metaDescriptionFr:
+      "Les déjections canines ne sont pas un engrais à gazon. Elles sont acides et riches en azote, donc elles jaunissent et brûlent le gazon par plaques, se décomposent lentement et laissent des zones mortes. Voici ce qu'elles font et comment l'éviter.",
+    category: "general",
+    relatedSlugs: ["dog-poop-health-risks-yard", "dog-poop-removal-cost-laval"],
+    publishedAt: "2026-09-09",
+    heroImage: {
+      src: "/images/blog/healthy-lawn-backyard.jpg",
+      alt: "Neatly kept green backyard lawn beside a wooden deck and mature trees",
+      altFr: "Cour arrière au gazon vert bien entretenu, à côté d'une terrasse en bois et d'arbres matures",
+      width: 1600,
+      height: 1068,
+      credit: {
+        photographer: "Max Vakhtbovych",
+        url: "https://www.pexels.com/photo/7174104/",
+      },
+    },
+    excerptEn:
+      "Dog poop is not the free fertilizer people assume it is. It is acidic, high in nitrogen, and slow to break down, so it burns the lawn in yellow and brown patches.",
+    excerptFr:
+      "Les crottes de chien ne sont pas l'engrais gratuit qu'on imagine. Elles sont acides, riches en azote et lentes à se décomposer, donc elles brûlent le gazon en plaques jaunes et brunes.",
+    keywordsEn: [
+      "does dog poop kill grass",
+      "is dog poop bad for grass",
+      "dog poop lawn damage",
+      "dog poop fertilizer",
+      "yellow grass patches dog",
+    ],
+    keywordsFr: [
+      "les crottes de chien tuent le gazon",
+      "crottes de chien mauvaises pour le gazon",
+      "dommages pelouse crottes de chien",
+      "taches jaunes gazon chien",
+    ],
+    body: [
+      {
+        type: "paragraph",
+        textEn:
+          "Short answer: yes, over time. Dog waste is not the free lawn fertilizer people assume it is. A dog's high-protein diet makes its poop acidic and heavy in nitrogen and salts, and it breaks down slowly. Left on the lawn, it yellows and burns the grass in patches, smothers whatever is under it, and eventually leaves bare dead spots that need reseeding.",
+        textFr:
+          "Réponse courte : oui, avec le temps. Les déjections canines ne sont pas l'engrais gratuit qu'on imagine. L'alimentation riche en protéines du chien rend ses crottes acides et chargées d'azote et de sels, et elles se décomposent lentement. Laissées sur le gazon, elles le jaunissent et le brûlent par plaques, étouffent ce qui se trouve dessous et finissent par laisser des zones mortes à nu qu'il faut réensemencer.",
+      },
+      {
+        type: "keypoints",
+        titleEn: "The short version",
+        titleFr: "En bref",
+        itemsEn: [
+          "Dog poop is acidic and high in nitrogen, so concentrated waste burns grass the way over-applied fertilizer does.",
+          "It breaks down slowly, up to about a year, smothering the grass underneath the whole time.",
+          "Damage shows up in stages: a dark green tuft, then a yellow patch, then a dead brown spot.",
+          "Urine causes the fast yellow rings; poop is the slower, deeper problem. Both come down to removing waste promptly. See [service options](/dog-poop-cleanup).",
+        ],
+        itemsFr: [
+          "Les crottes de chien sont acides et riches en azote, donc les déjections concentrées brûlent le gazon comme un engrais appliqué en excès.",
+          "Elles se décomposent lentement, jusqu'à environ un an, en étouffant le gazon en dessous pendant tout ce temps.",
+          "Les dommages apparaissent par étapes : une touffe vert foncé, puis une plaque jaune, puis une zone brune morte.",
+          "L'urine cause les anneaux jaunes rapides; les crottes sont le problème plus lent et plus profond. Dans les deux cas, il faut ramasser sans tarder. Voyez [les options de service](/fr/ramassage-dejections).",
+        ],
+      },
+      { type: "heading", level: 2, textEn: "Why dog waste is not fertilizer", textFr: "Pourquoi les déjections ne sont pas un engrais" },
+      {
+        type: "paragraph",
+        textEn:
+          "Cow and horse manure work as fertilizer because those animals are herbivores. Their waste is already broken-down plant matter with a fairly balanced mix of nutrients. Dogs are not herbivores. Their diet is mostly meat and protein, which makes the waste acidic, salty, and far too concentrated in nitrogen to feed a lawn safely.",
+        textFr:
+          "Le fumier de vache ou de cheval fonctionne comme engrais parce que ces animaux sont herbivores. Leur fumier est déjà de la matière végétale décomposée, avec un mélange de nutriments assez équilibré. Le chien n'est pas herbivore. Son alimentation est surtout composée de viande et de protéines, ce qui rend ses déjections acides, salées et beaucoup trop concentrées en azote pour nourrir un gazon en toute sécurité.",
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "Nitrogen is a real lawn nutrient, but grass can only use so much at once. A pile of waste delivers a large dose to one small spot. The grass right there gets scorched, the same effect as spilling concentrated fertilizer or a dog urinating in the same place every day.",
+        textFr:
+          "L'azote est un vrai nutriment pour le gazon, mais l'herbe ne peut en absorber qu'une certaine quantité à la fois. Un tas de déjections libère une forte dose au même petit endroit. Le gazon à cet endroit est brûlé, exactement comme si on renversait de l'engrais concentré ou comme lorsqu'un chien urine toujours au même endroit.",
+      },
+      { type: "heading", level: 2, textEn: "What the damage looks like, stage by stage", textFr: "À quoi ressemblent les dommages, étape par étape" },
+      {
+        type: "list",
+        ordered: true,
+        itemsEn: [
+          "A small tuft of tall, dark green grass. The waste has started to break down and is releasing a little nitrogen, which briefly overfeeds that spot.",
+          "A yellow patch. The nitrogen and salt load has passed what the grass can handle and the blades start to burn.",
+          "A brown, dead patch. The grass is gone. Once it is fully brown it does not recover on its own and the spot has to be reseeded.",
+        ],
+        itemsFr: [
+          "Une petite touffe d'herbe haute et vert foncé. Les déjections ont commencé à se décomposer et libèrent un peu d'azote, ce qui suralimente brièvement cet endroit.",
+          "Une plaque jaune. La charge d'azote et de sels a dépassé ce que le gazon peut tolérer et les brins commencent à brûler.",
+          "Une zone brune et morte. Le gazon a disparu. Une fois complètement brun, il ne récupère pas seul et il faut réensemencer l'endroit.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/images/blog/patchy-lawn-damage.jpg",
+        alt: "Lawn with healthy green blades mixed with dead brown patches",
+        altFr: "Gazon où des brins verts en santé se mêlent à des plaques brunes mortes",
+        width: 1600,
+        height: 1200,
+        captionEn: "Green blades mixed with dead brown is the middle stage. The brown areas will not come back without reseeding.",
+        captionFr: "Des brins verts mêlés à du brun mort, c'est l'étape intermédiaire. Les zones brunes ne reviendront pas sans réensemencement.",
+        credit: {
+          photographer: "Engin Akyurt",
+          url: "https://www.pexels.com/photo/green-and-brown-grass-11054959/",
+        },
+      },
+      { type: "heading", level: 2, textEn: "It is not just the nitrogen", textFr: "Ce n'est pas seulement l'azote" },
+      {
+        type: "paragraph",
+        textEn:
+          "Waste that sits also physically blocks light and air from the grass under it, which smothers those blades regardless of the chemistry. Because it breaks down slowly, up to about a year in cooler climates, that smothering lasts a long time. Decomposing waste also lowers the soil pH in that spot, attracts flies and pests, and can seed weeds that move in wherever the grass has thinned out.",
+        textFr:
+          "Les déjections qui restent bloquent aussi physiquement la lumière et l'air pour le gazon en dessous, ce qui étouffe ces brins peu importe la chimie. Comme elles se décomposent lentement, jusqu'à environ un an dans les climats plus frais, cet étouffement dure longtemps. Les déjections en décomposition abaissent aussi le pH du sol à cet endroit, attirent les mouches et les ravageurs, et peuvent semer des mauvaises herbes qui s'installent partout où le gazon s'est éclairci.",
+      },
+      { type: "heading", level: 2, textEn: "Poop or urine: which is worse for the lawn?", textFr: "Crottes ou urine : qu'est-ce qui est pire pour le gazon?" },
+      {
+        type: "paragraph",
+        textEn:
+          "Urine does the faster visible damage. It is basically a liquid nitrogen dose, so it creates the classic yellow spot with a dark green ring within days. Poop is slower but harder to undo, because it smothers, acidifies, and keeps releasing nitrogen for months while it breaks down. A yard with a dog gets both, and the only real control for either is to keep the waste picked up and rinse fresh urine spots when you can.",
+        textFr:
+          "L'urine fait les dommages visibles les plus rapides. C'est essentiellement une dose liquide d'azote, donc elle crée en quelques jours la fameuse tache jaune bordée de vert foncé. Les crottes sont plus lentes mais plus difficiles à corriger, car elles étouffent, acidifient et continuent de libérer de l'azote pendant des mois en se décomposant. Une cour avec un chien subit les deux, et le seul vrai moyen de contrôle dans les deux cas est de garder les déjections ramassées et de rincer les taches d'urine fraîches quand c'est possible.",
+      },
+      { type: "heading", level: 2, textEn: "How to protect the lawn", textFr: "Comment protéger le gazon" },
+      {
+        type: "list",
+        itemsEn: [
+          "Remove waste at least weekly, ideally every few days, so it never gets the two to four weeks it needs to start breaking down into the soil.",
+          "Do not mow over it. Mowing spreads the waste and pushes it down into the turf.",
+          "Rinse fresh urine spots with water when you notice them, which dilutes the nitrogen before it burns.",
+          "Reseed brown patches once the source is gone. They will not fill back in on their own.",
+          "Never compost dog waste in a regular bin or use it on vegetable beds. It is a health hazard, not garden material.",
+        ],
+        itemsFr: [
+          "Ramasser les déjections au moins une fois par semaine, idéalement tous les quelques jours, pour qu'elles n'aient jamais les deux à quatre semaines nécessaires pour commencer à se décomposer dans le sol.",
+          "Ne pas passer la tondeuse dessus. La tonte étale les déjections et les enfonce dans le gazon.",
+          "Rincer les taches d'urine fraîches à l'eau dès qu'on les remarque, ce qui dilue l'azote avant qu'il ne brûle.",
+          "Réensemencer les zones brunes une fois la source éliminée. Elles ne se regarnissent pas d'elles-mêmes.",
+          "Ne jamais composter les déjections canines dans un bac ordinaire ni les utiliser sur un potager. C'est un risque sanitaire, pas de la matière à jardin.",
+        ],
+      },
+      {
+        type: "callout",
+        titleEn: "A clear lawn without the daily walk-around",
+        titleFr: "Un gazon propre sans la ronde quotidienne",
+        bodyEn:
+          "Recurring service picks up the waste on a set schedule, before it has time to damage the grass, bags it, and sends a photo afterward. Weekly or biweekly, no contract.",
+        bodyFr:
+          "Le service récurrent ramasse les déjections selon un horaire fixe, avant qu'elles n'aient le temps d'abîmer le gazon, les met en sac et envoie une photo par la suite. Hebdomadaire ou aux deux semaines, sans contrat.",
+      },
+      {
+        type: "image",
+        src: "/images/blog/dog-playing-grass.jpg",
+        alt: "Dog playing with a ball on a green lawn",
+        altFr: "Chien qui joue avec une balle sur un gazon vert",
+        width: 1600,
+        height: 1067,
+        captionEn: "The point of a lawn is a dog that can use it and grass that survives the year.",
+        captionFr: "L'intérêt d'un gazon, c'est un chien qui peut en profiter et de l'herbe qui passe l'année.",
+        credit: {
+          photographer: "Barnabas Davoti",
+          url: "https://www.pexels.com/photo/a-dog-on-grass-13701757/",
+        },
+      },
+      { type: "heading", level: 2, textEn: "The bottom line", textFr: "En résumé" },
+      {
+        type: "paragraph",
+        textEn:
+          "Dog waste will not fertilize a lawn. It is too acidic, too salty, and too concentrated, and it works against the grass the whole time it sits there. The lawn damage and the [health risks](/blog/dog-poop-health-risks-yard) have the same fix: keep the yard picked up on a schedule so nothing has time to break down where the grass, and your family, actually are. If you would rather not do it yourself, here is [what recurring pickup costs](/blog/dog-poop-removal-cost-laval).",
+        textFr:
+          "Les déjections canines ne fertilisent pas un gazon. Elles sont trop acides, trop salées et trop concentrées, et elles nuisent au gazon pendant tout le temps qu'elles restent là. Les dommages au gazon et les [risques pour la santé](/fr/blogue/risques-sante-dejections-canines-cour) ont la même solution : garder la cour ramassée selon un horaire pour que rien n'ait le temps de se décomposer là où se trouvent le gazon, et votre famille. Si vous préférez ne pas vous en occuper vous-même, voici [ce que coûte un ramassage récurrent](/fr/blogue/cout-ramassage-dejections-canines-laval).",
+      },
+    ],
+    faq: [
+      {
+        qEn: "Is dog poop good fertilizer for grass?",
+        qFr: "Les crottes de chien sont-elles un bon engrais pour le gazon?",
+        aEn: "No. Unlike herbivore manure, dog waste is acidic, salty, and too high in nitrogen for a lawn. Concentrated in one spot, it burns the grass rather than feeding it.",
+        aFr: "Non. Contrairement au fumier d'herbivore, les déjections canines sont acides, salées et trop riches en azote pour un gazon. Concentrées au même endroit, elles brûlent le gazon au lieu de le nourrir.",
+      },
+      {
+        qEn: "How long does it take dog poop to damage a lawn?",
+        qFr: "Combien de temps faut-il pour que les crottes de chien abîment un gazon?",
+        aEn: "It starts breaking down into the soil after about two to four weeks and can take up to a year to decompose fully. Yellowing often shows within a few weeks, and a fully brown dead patch can follow if the waste is left in place.",
+        aFr: "Elles commencent à se décomposer dans le sol après environ deux à quatre semaines et peuvent prendre jusqu'à un an pour se décomposer complètement. Le jaunissement apparaît souvent en quelques semaines, et une zone morte complètement brune peut suivre si les déjections restent en place.",
+      },
+      {
+        qEn: "Will dead patches from dog waste grow back?",
+        qFr: "Les zones mortes causées par les déjections repoussent-elles?",
+        aEn: "Once grass is fully brown it usually does not recover on its own. After you remove the source, loosen the soil, reseed the patch, and keep it watered until it fills in.",
+        aFr: "Une fois que le gazon est complètement brun, il ne récupère généralement pas seul. Après avoir éliminé la source, ameublissez le sol, réensemencez la zone et gardez-la arrosée jusqu'à ce qu'elle se regarnisse.",
+      },
+      {
+        qEn: "Is dog urine or dog poop worse for grass?",
+        qFr: "L'urine ou les crottes de chien : qu'est-ce qui est pire pour le gazon?",
+        aEn: "Urine causes faster visible burns, the yellow spots with a green ring. Poop is slower but harder to reverse because it also smothers the grass and lowers soil pH while it breaks down. Both are controlled by prompt cleanup.",
+        aFr: "L'urine cause des brûlures visibles plus rapides, les taches jaunes bordées de vert. Les crottes sont plus lentes mais plus difficiles à corriger parce qu'elles étouffent aussi le gazon et abaissent le pH du sol en se décomposant. Dans les deux cas, un ramassage rapide règle le problème.",
+      },
+    ],
+    sources: [
+      {
+        labelEn: "TruGreen: How Does Pet Waste Affect Your Lawn's Health?",
+        labelFr: "TruGreen : comment les déjections animales affectent-elles la santé de votre pelouse?",
+        url: "https://www.trugreen.com/lawn-care-101/blog/lawn-care-tips/pet-waste-and-lawn-damage",
+      },
+      {
+        labelEn: "Angi: Is Dog Poop Good for Your Grass?",
+        labelFr: "Angi : les crottes de chien sont-elles bonnes pour votre gazon?",
+        url: "https://www.angi.com/articles/dog-poop-good-grass.htm",
+      },
+      {
+        labelEn: "American Kennel Club: Dog Poop Disposal and Why Cleaning Up Matters",
+        labelFr: "American Kennel Club : L'élimination des crottes de chien et pourquoi le ramassage compte",
+        url: "https://www.akc.org/expert-advice/advice/dog-poop-cleanup/",
+      },
+      {
+        labelEn: "US EPA: Pet Waste and Water Quality",
+        labelFr: "US EPA : Les déjections animales et la qualité de l'eau",
+        url: "https://cfpub.epa.gov/npstbx/files/cwc_petwastefactsheet.pdf",
       },
     ],
   },

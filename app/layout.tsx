@@ -1,15 +1,26 @@
 import type { Metadata, Viewport } from "next";
-import { Montserrat } from "next/font/google";
+import { Josefin_Sans, Montserrat } from "next/font/google";
 import Script from "next/script";
 import { Suspense } from "react";
 import MetaRouteEvents from "@/components/meta-route-events";
 import "./globals.css";
 
-const montserrat = Montserrat({ 
+const josefinSans = Josefin_Sans({
   subsets: ['latin'],
   display: 'swap',
-  weight: ['400', '500', '600', '700', '800', '900'],
+  weight: ['300', '400', '500', '600', '700'],
   style: ['normal'],
+  variable: '--font-josefin-sans',
+})
+
+// Kept only for the "CA-CA CANIN" wordmark, which should not follow the
+// site-wide heading/body font.
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['700', '800'],
+  style: ['normal'],
+  variable: '--font-montserrat',
 })
 
 export const metadata: Metadata = {
@@ -130,7 +141,7 @@ export default function RootLayout({
           `}
         </Script>
       </head>
-      <body className={`${montserrat.className} min-h-screen bg-white text-gray-900`}>
+      <body className={`${josefinSans.variable} ${montserrat.variable} font-sans min-h-screen bg-white text-gray-900`}>
         {children}
         <Suspense fallback={null}>
           <MetaRouteEvents />

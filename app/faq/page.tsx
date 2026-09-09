@@ -2,6 +2,9 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import SiteHeader from "@/components/site-header"
 import SiteFooter from "@/components/site-footer"
+import { getBlogPostBySlug } from "@/lib/blog-posts"
+
+const relatedBlogSlugs = ["dog-poop-health-risks-yard", "dog-poop-removal-cost-laval"]
 
 export const metadata: Metadata = {
   title: "FAQ | Dog Poop Cleanup Laval & North Shore | Ca-Ca Canin",
@@ -62,10 +65,10 @@ export default function FaqPage() {
 
       <main id="main-content" className="flex-grow pt-16">
         {/* Hero */}
-        <section className="bg-[#eef7f0] px-4 py-16 sm:px-6 lg:px-8">
+        <section className="bg-brand-green-light px-4 py-16 sm:px-6 lg:px-8">
           <div className="max-w-3xl mx-auto text-center">
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand-green">FAQ</p>
-            <h1 className="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">
+            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 md:text-5xl">
               Questions about our service
             </h1>
             <p className="text-lg text-gray-600">
@@ -80,7 +83,7 @@ export default function FaqPage() {
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                className="rounded-2xl border border-[#d7e6da] bg-white p-6 shadow-[0_14px_34px_rgba(17,24,39,0.05)]"
+                className="rounded-2xl border border-brand-border bg-white p-6 shadow-brand-xs"
               >
                 <h2 className="mb-2 text-lg font-bold text-gray-900">{faq.q}</h2>
                 <p className="text-gray-600 leading-relaxed">{faq.a}</p>
@@ -89,17 +92,40 @@ export default function FaqPage() {
           </div>
         </section>
 
+        {/* From our blog */}
+        <section className="px-4 pb-4 sm:px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto">
+            <h2 className="mb-6 text-2xl font-bold text-gray-900">From our blog</h2>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {relatedBlogSlugs.map((slug) => {
+                const post = getBlogPostBySlug(slug)
+                if (!post) return null
+                return (
+                  <Link
+                    key={slug}
+                    href={`/blog/${post.slug}`}
+                    className="block rounded-2xl border border-brand-border bg-white p-6 shadow-brand-xs transition-all hover:-translate-y-1 hover:border-brand-green/40"
+                  >
+                    <h3 className="mb-2 text-base font-bold text-gray-900">{post.titleEn}</h3>
+                    <p className="text-sm text-gray-600">{post.excerptEn}</p>
+                  </Link>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+
         {/* CTA */}
         <section className="bg-gray-50 px-4 py-16 sm:px-6 lg:px-8 text-center">
           <div className="max-w-2xl mx-auto">
             <h2 className="mb-4 text-2xl font-bold text-gray-900">Still have a question?</h2>
             <p className="mb-6 text-gray-600">
-              Reach out directly — we respond quickly.
+              Reach out directly and we respond quickly.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
                 href="/contact"
-                className="rounded-full border-2 border-brand-green px-6 py-3 font-semibold text-brand-green hover:bg-[#eef7f0] transition-colors"
+                className="rounded-full border-2 border-brand-green px-6 py-3 font-semibold text-brand-green hover:bg-brand-green-light transition-colors"
               >
                 Contact us
               </Link>

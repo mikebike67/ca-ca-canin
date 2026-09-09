@@ -11,12 +11,27 @@ type BlogIndexPageProps = {
   posts: readonly BlogPost[];
 };
 
+function formatDate(isoDate: string, isFrench: boolean) {
+  return new Date(`${isoDate}T00:00:00`).toLocaleDateString(isFrench ? "fr-CA" : "en-CA", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 function PostCard({ post, isFrench }: { post: BlogPost; isFrench: boolean }) {
   const href = isFrench ? `/fr/blogue/${post.slugFr}` : `/blog/${post.slug}`;
+  const categoryLabel = isFrench
+    ? post.category === "local"
+      ? "Guide local"
+      : "Guide général"
+    : post.category === "local"
+      ? "Local guide"
+      : "General guide";
   return (
     <Link
       href={href}
-      className="block overflow-hidden rounded-3xl border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(17,24,39,0.05)] transition-all hover:-translate-y-1 hover:border-brand-green/40"
+      className="block overflow-hidden rounded-3xl border border-brand-border bg-white shadow-brand-xs transition-all hover:-translate-y-1 hover:border-brand-green/40"
     >
       <div className="aspect-[16/10] w-full overflow-hidden">
         <Image
@@ -28,6 +43,12 @@ function PostCard({ post, isFrench }: { post: BlogPost; isFrench: boolean }) {
         />
       </div>
       <div className="p-6">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
+          <span className="rounded-full bg-brand-green-light px-2.5 py-1 text-xs font-semibold uppercase tracking-wide text-brand-green">
+            {categoryLabel}
+          </span>
+          <span className="text-xs text-gray-400">{formatDate(post.publishedAt, isFrench)}</span>
+        </div>
         <h3 className="mb-2 text-xl font-bold text-gray-900">{isFrench ? post.titleFr : post.titleEn}</h3>
         <p className="text-gray-600">{isFrench ? post.excerptFr : post.excerptEn}</p>
       </div>
@@ -48,7 +69,7 @@ export default function BlogIndexPage({ locale, posts }: BlogIndexPageProps) {
       <SiteHeader locale={locale} altHref={altHref} />
 
       <main id="main-content" className="flex-1 pt-16">
-        <section className="bg-[#eef7f0] px-4 py-16 sm:px-6 lg:px-8">
+        <section className="bg-brand-green-light px-4 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <nav aria-label={isFrench ? "Fil d'Ariane" : "Breadcrumb"} className="mb-6">
               <ol className="flex flex-wrap items-center justify-center gap-2 text-sm text-gray-500">
@@ -64,7 +85,7 @@ export default function BlogIndexPage({ locale, posts }: BlogIndexPageProps) {
             <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-brand-green">
               {isFrench ? "Blogue" : "Blog"}
             </p>
-            <h1 className="mb-5 text-4xl font-bold text-gray-900 md:text-5xl">
+            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 md:text-5xl">
               {isFrench ? "Conseils pour propriétaires de chiens" : "Guides for dog owners"}
             </h1>
             <p className="text-lg text-gray-600">

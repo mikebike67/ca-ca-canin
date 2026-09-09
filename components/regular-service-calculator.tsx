@@ -244,7 +244,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
   return (
     <>
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold mb-3 text-gray-900">
+        <h2 className="font-heading text-3xl md:text-4xl font-bold mb-3 text-gray-900">
           {isFrench ? "Vérifiez votre disponibilité et voyez votre prix" : "Check Availability and See Your Price"}
         </h2>
         <p className="text-lg text-gray-600">
@@ -254,7 +254,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
         </p>
       </div>
 
-      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 md:p-8">
+      <div className="bg-white border border-brand-border rounded-2xl shadow-brand-lg p-6 md:p-8">
         <div className="grid gap-8 lg:grid-cols-2">
           {/* LEFT: Selectors + price preview */}
           <div className="space-y-6">
@@ -334,7 +334,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
                       ? (isFrench ? "10 000+ pi²" : "10,000+ sq ft")
                       : (isFrench ? `${yardSqft.toLocaleString()} pi²` : `${yardSqft.toLocaleString()} sq ft`)}
                   </span>
-                  <span className="inline-flex rounded-full border border-brand-green/20 bg-[#eef7f0] px-3 py-1 text-xs font-semibold text-brand-green">
+                  <span className="inline-flex rounded-full border border-brand-green/20 bg-brand-green-light px-3 py-1 text-xs font-semibold text-brand-green">
                     {yardOptions[locale].find((option) => option.key === yardCategory)?.label} · {yardOptions[locale].find((option) => option.key === yardCategory)?.detail}
                   </span>
                 </div>
@@ -342,7 +342,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
             </div>
 
             {/* Price preview */}
-            <div className="rounded-2xl border border-brand-green/15 bg-[#eef7f0] p-5 text-center lg:text-left shadow-[0_18px_45px_rgba(48,121,68,0.08)]">
+            <div className="rounded-2xl border border-brand-green/15 bg-brand-green-light p-5 text-center lg:text-left shadow-brand-sm">
               <p className="mb-1 text-sm font-semibold uppercase tracking-[0.14em] text-brand-green/80">
                 {frequency === "onetime"
                   ? (isFrench ? "Visite estimée" : "Estimated Visit")
@@ -482,13 +482,13 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
 
           {/* RIGHT: Form */}
           <div className="space-y-4">
-            <div className="rounded-2xl border border-[#d7e6da] bg-white p-4 text-sm text-gray-600 shadow-[0_12px_30px_rgba(17,24,39,0.05)]">
+            <div className="rounded-2xl border border-brand-border bg-white p-4 text-sm text-gray-600 shadow-brand-xs">
               {isFrench
                 ? "C’est la façon la plus rapide de voir si le service entre dans votre budget et de passer à l’étape suivante. Le prix final est confirmé après vérification."
                 : "This is the fastest way to see if the service fits your budget and lock in your next step. Final pricing is confirmed after we review your request."}
             </div>
 
-            <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-[#d7e6da] bg-white p-4 shadow-[0_18px_45px_rgba(17,24,39,0.05)]">
+            <form onSubmit={handleBookingSubmit} className="space-y-4 rounded-2xl border border-brand-border bg-white p-4 shadow-brand-xs">
               {bookingStatus !== "success" && (
                 <>
                   <p className="text-sm font-semibold text-brand-green">
@@ -585,7 +585,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
                     </div>
                   </div>
 
-                  <div className="rounded-xl border border-[#d7e6da] bg-[#f7faf7] p-4">
+                  <div className="rounded-xl border border-brand-border bg-brand-green-lighter p-4">
                     <label className="flex items-start gap-3 text-sm text-gray-700">
                       <input
                         type="checkbox"
@@ -641,7 +641,7 @@ export default function RegularServiceCalculator({ locale, instanceId }: Regular
                 <div
                   id={`quote-thank-you-${idPrefix}`}
                   tabIndex={-1}
-                  className="rounded-2xl border border-brand-green/20 bg-[#eef7f0] p-6 text-center shadow-[0_18px_45px_rgba(48,121,68,0.08)] outline-none"
+                  className="rounded-2xl border border-brand-green/20 bg-brand-green-light p-6 text-center shadow-brand-sm outline-none"
                 >
                   <p className="text-sm font-semibold uppercase tracking-[0.18em] text-brand-green">
                     {isFrench ? "Merci" : "Thank you"}

@@ -86,7 +86,7 @@ const copy = {
 
 function ReviewCard({ t }: { t: Testimonial }) {
   return (
-    <div className="border border-[#d7e6da] bg-white shadow-[0_18px_45px_rgba(48,121,68,0.08)] rounded-2xl p-8 flex flex-col h-[520px] sm:h-[460px] md:h-[400px]">
+    <div className="border border-brand-border bg-white shadow-brand-sm rounded-2xl p-8 flex flex-col h-[520px] sm:h-[460px] md:h-[400px]">
       <div className="flex items-start justify-between flex-wrap gap-3 mb-4 flex-shrink-0">
         <div>
           <p className="text-xl font-bold text-gray-900">{t.name}</p>
@@ -160,7 +160,7 @@ export default function TestimonialsCarousel({ locale }: { locale: 'en' | 'fr' }
   return (
     <div>
       <div className="text-center mb-10">
-        <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900">{c.title}</h2>
+        <h2 className="font-heading text-3xl md:text-4xl font-bold mb-4 text-gray-900">{c.title}</h2>
         <p className="text-xl text-gray-600">{c.subtitle}</p>
       </div>
 
@@ -193,14 +193,14 @@ export default function TestimonialsCarousel({ locale }: { locale: 'en' | 'fr' }
         <button
           onClick={handlePrev}
           aria-label={c.prevLabel}
-          className="absolute left-0 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-[#d7e6da] bg-white shadow-md hover:border-brand-green/40 transition-all sm:-left-5"
+          className="absolute left-0 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-brand-border bg-white shadow-md hover:border-brand-green/40 transition-all sm:-left-5"
         >
           <ChevronLeft className="h-5 w-5 text-gray-600" />
         </button>
         <button
           onClick={handleNext}
           aria-label={c.nextLabel}
-          className="absolute right-0 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-[#d7e6da] bg-white shadow-md hover:border-brand-green/40 transition-all sm:-right-5"
+          className="absolute right-0 top-1/2 -translate-y-1/2 flex h-10 w-10 items-center justify-center rounded-full border border-brand-border bg-white shadow-md hover:border-brand-green/40 transition-all sm:-right-5"
         >
           <ChevronRight className="h-5 w-5 text-gray-600" />
         </button>
