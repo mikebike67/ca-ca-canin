@@ -90,3 +90,17 @@ patchy-lawn-damage.jpg
   Source: https://www.pexels.com/photo/green-and-brown-grass-11054959/
   Photo ID: 11054959
   Used in: does-dog-poop-kill-grass (in-body image)
+
+suburban-houses-laval.jpg
+  Title: Houses in the Suburbs
+  Photographer: Raphael Loquellano
+  Source: https://www.pexels.com/photo/houses-in-the-suburbs-18093637/
+  Photo ID: 18093637
+  Used in: dog-poop-law-laval-yard (hero image)
+
+gavel-law-desk.jpg
+  Title: Black Wooden Gavel
+  Photographer: Sora Shimazaki
+  Source: https://www.pexels.com/photo/black-wooden-gavel-5668484/
+  Photo ID: 5668484
+  Used in: dog-poop-law-laval-yard (in-body image)

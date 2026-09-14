@@ -58,7 +58,7 @@ export const BLOG_POSTS: readonly BlogPost[] = [
       "Les vrais prix à Laval pour le ramassage de déjections canines : ce que coûtent le service hebdomadaire et le nettoyage printanier ponctuel, ce qui fait varier le prix, et comment obtenir un devis exact.",
     category: "local",
     locationSlug: "laval",
-    relatedSlugs: ["dog-poop-health-risks-yard", "does-dog-poop-kill-grass"],
+    relatedSlugs: ["dog-poop-health-risks-yard", "does-dog-poop-kill-grass", "dog-poop-law-laval-yard"],
     publishedAt: "2026-08-20",
     heroImage: {
       src: "/images/blog/hero-dog-yard.jpg",
@@ -278,7 +278,7 @@ export const BLOG_POSTS: readonly BlogPost[] = [
     metaDescriptionFr:
       "Les déjections canines non ramassées contiennent des bactéries et des œufs de parasites qui survivent dans le sol pendant des mois. Voici qui est le plus à risque, pourquoi l'hiver ne les élimine pas, et comment un ramassage régulier garde une cour sécuritaire.",
     category: "general",
-    relatedSlugs: ["does-dog-poop-kill-grass", "dog-poop-removal-cost-laval"],
+    relatedSlugs: ["does-dog-poop-kill-grass", "dog-poop-removal-cost-laval", "dog-poop-law-laval-yard"],
     publishedAt: "2026-09-09",
     heroImage: {
       src: "/images/blog/family-yard-dog.jpg",
@@ -766,6 +766,225 @@ export const BLOG_POSTS: readonly BlogPost[] = [
         labelEn: "US EPA: Pet Waste and Water Quality",
         labelFr: "US EPA : Les déjections animales et la qualité de l'eau",
         url: "https://cfpub.epa.gov/npstbx/files/cwc_petwastefactsheet.pdf",
+      },
+    ],
+  },
+  {
+    slug: "dog-poop-law-laval-yard",
+    slugFr: "loi-crottes-chien-cour-laval",
+    titleEn: "Do You Have to Pick Up Dog Poop in Your Own Yard in Laval? What the Bylaw Actually Says",
+    titleFr: "Est-il obligatoire de ramasser les crottes de son chien dans sa propre cour à Laval? Ce que dit vraiment le règlement",
+    metaDescriptionEn:
+      "Yes, Laval's bylaw requires you to regularly clean up dog poop in your own yard, with fines up to $1,000. Here's exactly what Règlement L-12430 (Articles 37 to 39) says.",
+    metaDescriptionFr:
+      "Oui, le règlement de Laval vous oblige à ramasser régulièrement les crottes de votre chien dans votre propre cour, sous peine d'amendes allant jusqu'à 1000 $. Voici ce que dit exactement le Règlement L-12430 (articles 37 à 39).",
+    category: "local",
+    locationSlug: "laval",
+    relatedSlugs: ["dog-poop-removal-cost-laval", "dog-poop-health-risks-yard"],
+    publishedAt: "2026-09-13",
+    heroImage: {
+      src: "/images/blog/suburban-houses-laval.jpg",
+      alt: "Row of suburban houses on a quiet residential street",
+      altFr: "Rangée de maisons de banlieue sur une rue résidentielle tranquille",
+      width: 1600,
+      height: 2000,
+      credit: {
+        photographer: "Raphael Loquellano",
+        url: "https://www.pexels.com/photo/houses-in-the-suburbs-18093637/",
+      },
+    },
+    excerptEn:
+      "Yes: Laval's bylaw requires 'regular and hygienic' removal of dog waste from your own yard, with the same fines as leaving it in public, up to $1,000. Here's exactly what the bylaw requires.",
+    excerptFr:
+      "Oui : le règlement de Laval exige un ramassage « régulier et hygiénique » des déjections canines dans votre propre cour, avec les mêmes amendes que si vous les laissiez dans un lieu public, jusqu'à 1000 $. Voici exactement ce que le règlement exige.",
+    keywordsEn: [
+      "dog poop law Laval",
+      "fine for not picking up dog poop Laval",
+      "Laval dog bylaw yard",
+      "is it illegal to not pick up dog poop in your yard",
+    ],
+    keywordsFr: [
+      "loi crotte de chien Laval",
+      "amende ne pas ramasser crotte de chien",
+      "règlement chien cour Laval",
+      "obligatoire ramasser crotte de chien Québec",
+    ],
+    body: [
+      {
+        type: "paragraph",
+        textEn:
+          "Yes. Laval's animal bylaw, Règlement L-12430, does not stop at public spaces. Article 39 specifically requires dog owners to clean up feces \"regularly and hygienically\" from the land where their home is located, your yard, and breaking it carries the same fine as leaving waste in a park: up to $1,000 for an individual. Here is exactly what the bylaw requires, article by article, and what \"regular\" actually means in practice.",
+        textFr:
+          "Oui. Le règlement sur les animaux de Laval, le Règlement L-12430, ne s'arrête pas aux lieux publics. L'article 39 oblige précisément les propriétaires de chien à ramasser les matières fécales « de façon régulière et hygiénique » sur le terrain où se trouve leur résidence, c'est-à-dire leur cour, et enfreindre cette règle entraîne la même amende que de laisser des déjections dans un parc : jusqu'à 1000 $ pour une personne physique. Voici exactement ce qu'exige le règlement, article par article, et ce que « régulier » veut vraiment dire en pratique.",
+      },
+      {
+        type: "keypoints",
+        titleEn: "The short version",
+        titleFr: "En bref",
+        itemsEn: [
+          "Article 39 of Règlement L-12430 requires \"regular and hygienic\" cleanup of feces on the land where your dwelling is located, your own yard.",
+          "Article 38 separately requires cleanup of any other public or private place your dog soils, like a sidewalk, a park, or a neighbour's lawn.",
+          "Article 37 requires carrying bags and picking up immediately whenever you are out with your dog, away from your own home or land you have permission to be on.",
+          "Breaking Article 38 or Article 39 carries the same fine under Article 86(3): $300 to $1,000 for an individual, $600 to $2,000 for a corporation, doubled for a repeat offence.",
+        ],
+        itemsFr: [
+          "L'article 39 du Règlement L-12430 exige un ramassage « régulier et hygiénique » des matières fécales sur le terrain où se trouve votre résidence, c'est-à-dire votre cour.",
+          "L'article 38 oblige séparément à nettoyer tout autre lieu public ou privé souillé par votre chien, comme un trottoir, un parc ou le terrain d'un voisin.",
+          "L'article 37 oblige à avoir des sacs et à ramasser immédiatement dès que vous êtes en sortie avec votre chien, à l'extérieur de votre résidence ou d'un terrain où vous avez la permission de vous trouver.",
+          "Une infraction à l'article 38 ou à l'article 39 entraîne la même amende en vertu de l'article 86(3) : 300 $ à 1000 $ pour une personne physique, 600 $ à 2000 $ pour une personne morale, doublée en cas de récidive.",
+        ],
+      },
+      { type: "heading", level: 2, textEn: "What the bylaw requires, article by article", textFr: "Ce que le règlement exige, article par article" },
+      {
+        type: "paragraph",
+        textEn:
+          "Règlement L-12430 is Laval's general bylaw on domestic animals, and Chapter X, \"Urine et matières fécales animales,\" is the part that covers cleanup. It is split into three articles, and they cover different situations with different standards.",
+        textFr:
+          "Le Règlement L-12430 est le règlement général de Laval sur les animaux domestiques, et le chapitre X, « Urine et matières fécales animales », est la partie qui couvre le ramassage. Il se divise en trois articles, qui couvrent des situations différentes avec des normes différentes.",
+      },
+      {
+        type: "list",
+        itemsEn: [
+          "Article 37: when you are out with your dog, you must carry the means to remove feces immediately and dispose of it in an approved waste container, except within your dwelling, on your own land, or on other private land where you have the owner's permission.",
+          "Article 38: it is prohibited to fail to clean, by appropriate means, any public or private place soiled by your dog's feces, other than the land where your own dwelling is located. This covers sidewalks, parks, and other people's property.",
+          "Article 39: it is prohibited to fail to clean, regularly and hygienically, urine or feces inside your dwelling, on a balcony or gallery, and feces on the land where your dwelling is located. Your yard.",
+          "Article 39 also states that the neighbourhood must never be inconvenienced by how you dispose of the urine or feces.",
+        ],
+        itemsFr: [
+          "Article 37 : lorsque vous sortez avec votre chien, vous devez avoir de quoi ramasser immédiatement les matières fécales et les jeter dans un contenant à rebuts autorisé, sauf dans votre unité d'occupation, sur votre propre terrain, ou sur un autre terrain privé où vous avez la permission du propriétaire.",
+          "Article 38 : il est interdit d'omettre de nettoyer, par des moyens appropriés, tout lieu public ou privé souillé par les matières fécales de votre chien, autre que le terrain où se trouve votre propre résidence. Cela couvre les trottoirs, les parcs et les propriétés d'autrui.",
+          "Article 39 : il est interdit d'omettre de nettoyer, de façon régulière et hygiénique, l'urine ou les matières fécales dans votre unité d'occupation, sur une galerie ou un balcon, ainsi que les matières fécales sur le terrain où se trouve votre résidence. Votre cour.",
+          "L'article 39 précise aussi que le voisinage ne doit jamais être incommodé par la façon dont vous disposez de l'urine ou des matières fécales.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/images/blog/gavel-law-desk.jpg",
+        alt: "Wooden gavel resting on a desk",
+        altFr: "Marteau de juge en bois posé sur un bureau",
+        width: 1600,
+        height: 2400,
+        captionEn: "The same fine applies whether the waste is left in a park or in your own yard.",
+        captionFr: "La même amende s'applique, que les déjections soient laissées dans un parc ou dans votre propre cour.",
+        credit: {
+          photographer: "Sora Shimazaki",
+          url: "https://www.pexels.com/photo/black-wooden-gavel-5668484/",
+        },
+      },
+      { type: "heading", level: 2, textEn: "Does \"regular\" mean you have to scoop every day?", textFr: "Est-ce que « régulier » veut dire tous les jours?" },
+      {
+        type: "paragraph",
+        textEn:
+          "The bylaw does not spell out an exact interval for Article 39 the way it does for Article 37, which uses the word \"immediately\" for walks. \"Regularly and hygienically\" is a standard, not a countdown, but it is written that way on purpose: it leaves room for a normal cleanup routine at home instead of requiring you to run outside the moment your dog goes, while still making clear that letting waste accumulate is not compliant. The clause banning any inconvenience to the neighbourhood is doing real work here too, since Laval yards tend to sit close together, and a yard that smells or draws complaints is exactly the situation this article targets.",
+        textFr:
+          "Le règlement ne précise pas d'intervalle exact pour l'article 39 comme il le fait pour l'article 37, qui utilise le mot « immédiatement » pour les sorties. « De façon régulière et hygiénique » est une norme, pas un compte à rebours, mais elle est rédigée ainsi volontairement : elle laisse place à une routine de nettoyage normale à la maison plutôt que d'exiger de sortir dès que votre chien fait ses besoins, tout en précisant clairement que laisser les déjections s'accumuler ne respecte pas la règle. La clause qui interdit d'incommoder le voisinage a aussi un vrai rôle ici, puisque les cours à Laval sont souvent rapprochées, et une cour qui sent mauvais ou qui suscite des plaintes est exactement la situation que cet article vise.",
+      },
+      {
+        type: "paragraph",
+        textEn:
+          "In practice, enforcement is complaint-driven. A bylaw officer is not routinely inspecting backyards, so most Article 39 cases start with a neighbour reporting the smell or the mess to the city. That does not make the obligation optional, it just means the risk is highest for a yard that has been left long enough for someone else to notice.",
+        textFr:
+          "En pratique, l'application se fait généralement à la suite d'une plainte. Un agent municipal n'inspecte pas les cours arrière de façon routinière, donc la plupart des cas liés à l'article 39 débutent lorsqu'un voisin signale l'odeur ou le dégât à la ville. Cela ne rend pas l'obligation facultative pour autant, cela veut simplement dire que le risque est le plus élevé pour une cour laissée à l'abandon assez longtemps pour que quelqu'un d'autre le remarque.",
+      },
+      { type: "heading", level: 2, textEn: "Why it is worth staying ahead of, fine or not", textFr: "Pourquoi garder une longueur d'avance, amende ou pas" },
+      {
+        type: "paragraph",
+        textEn:
+          "The bylaw is one reason to keep the yard clear on a schedule, but it is not the only one.",
+        textFr:
+          "Le règlement est une raison de garder la cour propre sur une base régulière, mais ce n'est pas la seule.",
+      },
+      {
+        type: "list",
+        itemsEn: [
+          "Health: uncollected waste carries bacteria and parasite eggs that can sit in the soil for months, a real risk for kids and other pets. See [the full breakdown](/blog/dog-poop-health-risks-yard).",
+          "Lawn damage: waste is acidic and high in nitrogen, and it burns and kills grass in patches the longer it sits. See [how that happens](/blog/does-dog-poop-kill-grass).",
+          "Odour and pests: a yard that has not been cleared for weeks draws flies and smells worse every warm day, especially in summer, and is the kind of thing a neighbour is most likely to complain about.",
+          "Resale and showings: an agent or buyer walking the yard notices immediately, and it is not the impression most sellers want to make.",
+        ],
+        itemsFr: [
+          "Santé : les déjections non ramassées contiennent des bactéries et des œufs de parasites qui peuvent rester dans le sol pendant des mois, un vrai risque pour les enfants et les autres animaux. Voyez [le détail complet](/fr/blogue/risques-sante-dejections-canines-cour).",
+          "Dommages au gazon : les déjections sont acides et riches en azote, et elles brûlent et tuent le gazon par plaques plus elles restent longtemps. Voyez [comment cela se produit](/fr/blogue/les-crottes-de-chien-tuent-elles-le-gazon).",
+          "Odeurs et ravageurs : une cour non ramassée depuis des semaines attire les mouches et sent de plus en plus mauvais à chaque journée chaude, surtout l'été, exactement le genre de chose qui pousse un voisin à se plaindre.",
+          "Revente et visites : un agent ou un acheteur qui marche dans la cour le remarque immédiatement, et ce n'est pas l'impression que la plupart des vendeurs souhaitent laisser.",
+        ],
+      },
+      {
+        type: "image",
+        src: "/images/blog/clean-backyard-lawn.jpg",
+        alt: "Well-maintained green backyard lawn after cleanup",
+        altFr: "Cour arrière bien entretenue avec un gazon vert après le nettoyage",
+        width: 1600,
+        height: 1087,
+        captionEn: "A yard kept clear on a schedule satisfies Article 39 and everything else on this list at once.",
+        captionFr: "Une cour tenue propre selon un horaire respecte l'article 39 et tout le reste sur cette liste en même temps.",
+        credit: {
+          photographer: "Max Vakhtbovych",
+          url: "https://www.pexels.com/photo/house-backyard-with-lawn-green-grass-7546775/",
+        },
+      },
+      {
+        type: "callout",
+        titleEn: "Stay compliant without thinking about it",
+        titleFr: "Restez en règle sans y penser",
+        bodyEn:
+          "Recurring service clears your yard on a set schedule, weekly or biweekly, no contract, and sends a gate photo after every visit so you always know it was done.",
+        bodyFr:
+          "Le service récurrent nettoie votre cour selon un horaire fixe, hebdomadaire ou aux deux semaines, sans contrat, et vous envoie une photo du portail après chaque visite pour que vous sachiez toujours que le travail a été fait.",
+      },
+      { type: "heading", level: 2, textEn: "The easiest way to stay ahead of it", textFr: "La façon la plus simple de garder une longueur d'avance" },
+      {
+        type: "paragraph",
+        textEn:
+          "A weekly or biweekly visit keeps the yard from ever building up long enough to count as anything but \"regular\" under Article 39, and it removes the guesswork about what counts as often enough. It also keeps the yard from smelling, damaging the lawn, or becoming the kind of thing a neighbour notices. [The pricing](/blog/dog-poop-removal-cost-laval) starts at $20 a visit for one dog in a standard Laval yard, with no contract if you want to stop or change frequency.",
+        textFr:
+          "Une visite hebdomadaire ou aux deux semaines empêche la cour d'accumuler assez de déjections pour ne plus être « régulière » au sens de l'article 39, et enlève toute incertitude sur ce qui compte comme suffisamment fréquent. Cela évite aussi que la cour sente mauvais, abîme le gazon ou devienne le genre de chose qu'un voisin remarque. [Le prix](/fr/blogue/cout-ramassage-dejections-canines-laval) commence à 20 $ par visite pour un chien dans une cour standard à Laval, sans contrat si vous voulez arrêter ou changer la fréquence.",
+      },
+      { type: "heading", level: 2, textEn: "The bottom line", textFr: "En résumé" },
+      {
+        type: "paragraph",
+        textEn:
+          "Laval's bylaw does reach your own yard. Article 39 requires regular, hygienic cleanup there, with the same fine as leaving waste in a park, up to $1,000 and doubled for a repeat offence. On top of the legal side, a yard left uncleared still carries health risks and kills the lawn. Keeping it clear on a schedule covers all of it at once, and [recurring service](/dog-poop-cleanup#quote-form) is the easiest way to make sure it happens every week without adding it to your own list.",
+        textFr:
+          "Le règlement de Laval touche bel et bien votre propre cour. L'article 39 exige un ramassage régulier et hygiénique à cet endroit, avec la même amende que si les déjections étaient laissées dans un parc, jusqu'à 1000 $ et doublée en cas de récidive. Au-delà de l'aspect légal, une cour laissée à l'abandon comporte tout de même des risques pour la santé et tue le gazon. La garder propre selon un horaire règle tout cela à la fois, et [le service récurrent](/fr/ramassage-dejections#quote-form) est la façon la plus simple de s'assurer que ça se fasse chaque semaine sans l'ajouter à votre propre liste de tâches.",
+      },
+    ],
+    faq: [
+      {
+        qEn: "Is it illegal to not pick up dog poop in my own yard in Laval?",
+        qFr: "Est-il illégal de ne pas ramasser les crottes de son chien dans sa propre cour à Laval?",
+        aEn: "Yes. Article 39 of Règlement L-12430 requires regular, hygienic removal of feces from the land where your dwelling is located, the same requirement that applies inside your home or on a balcony or gallery.",
+        aFr: "Oui. L'article 39 du Règlement L-12430 exige un ramassage régulier et hygiénique des matières fécales sur le terrain où se trouve votre résidence, la même exigence qui s'applique dans votre logement ou sur un balcon ou une galerie.",
+      },
+      {
+        qEn: "What is the fine for not picking up after your dog in Laval?",
+        qFr: "Quelle est l'amende pour ne pas ramasser après son chien à Laval?",
+        aEn: "Under Article 86(3), breaking Article 38 (public and other private places) or Article 39 (your own yard) carries the same fine: $300 to $1,000 for an individual and $600 to $2,000 for a corporation, per infraction, doubled for a repeat offence.",
+        aFr: "En vertu de l'article 86(3), une infraction à l'article 38 (lieux publics et autres lieux privés) ou à l'article 39 (votre propre cour) entraîne la même amende : de 300 $ à 1000 $ pour une personne physique et de 600 $ à 2000 $ pour une personne morale, par infraction, un montant doublé en cas de récidive.",
+      },
+      {
+        qEn: "Do I have to pick up immediately in my own yard, like I do on a walk?",
+        qFr: "Dois-je ramasser immédiatement dans ma propre cour, comme lors d'une promenade?",
+        aEn: "No. Article 37's \"immediately\" requirement to carry bags and pick up right away applies when you are out and away from your own home. Article 39 uses a \"regular and hygienic\" standard for your own yard instead, a routine cleanup requirement rather than an instant one.",
+        aFr: "Non. L'exigence d'agir « immédiatement » de l'article 37, soit d'avoir des sacs et de ramasser sur-le-champ, s'applique lorsque vous êtes en sortie, loin de votre résidence. L'article 39 utilise plutôt une norme de ramassage « régulier et hygiénique » pour votre propre cour, une exigence de routine plutôt qu'instantanée.",
+      },
+      {
+        qEn: "Can a neighbour report me for dog poop in my yard?",
+        qFr: "Un voisin peut-il me signaler pour des crottes de chien dans ma cour?",
+        aEn: "Yes. Enforcement of Article 39 is complaint-driven, and the article specifically states the neighbourhood must never be inconvenienced by how you dispose of waste, so an uncleared yard is exactly the kind of thing that can prompt a bylaw complaint.",
+        aFr: "Oui. L'application de l'article 39 se fait généralement à la suite d'une plainte, et l'article précise que le voisinage ne doit jamais être incommodé par la façon dont vous disposez des déjections, donc une cour non ramassée est exactement le genre de situation qui peut mener à une plainte au règlement municipal.",
+      },
+    ],
+    sources: [
+      {
+        labelEn: "Ville de Laval: Règlement L-12430 concernant les animaux (codification administrative, PDF)",
+        labelFr: "Ville de Laval : Règlement L-12430 concernant les animaux (codification administrative, PDF)",
+        url: "https://www.laval.ca/wp-content/uploads/2024/12/reglement-l-12430.pdf",
+      },
+      {
+        labelEn: "Ville de Laval: Animaux domestiques, règlements et permis",
+        labelFr: "Ville de Laval : Animaux domestiques, règlements et permis",
+        url: "https://www.laval.ca/reglements-permis/index-reglements/animaux/",
       },
     ],
   },
