@@ -65,6 +65,12 @@ const testimonials: Testimonial[] = [
     text: "Excellent service ! Je le recommande à tous les propriétaires de chiens qui ne veulent pas ou ne peuvent pas ramasser les petits (ou gros selon le chien) dégâts. C'est un casse tête en moins sur la liste. Merci !",
     source: 'Facebook',
   },
+  {
+    name: 'Maggie P.',
+    location: 'Laval',
+    text: "Super bon service ! Les prix sont très abordables. Michael est super gentil aussi. Je recommande grandement ! :)",
+    source: 'Google',
+  },
 ]
 
 const copy = {
