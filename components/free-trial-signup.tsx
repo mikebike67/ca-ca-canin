@@ -12,6 +12,9 @@ const QUEBEC_BBOX = "-79.98,44.99,-56.93,62.58"
 
 type AddressSuggestion = { id: string; placeName: string }
 
+const formatDiscountLabel = (type: "flat" | "percent", amount: number) =>
+  type === "percent" ? `${amount}%` : `$${amount.toFixed(2)}`
+
 export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
   const isFrench = locale === "fr"
   const router = useRouter()
@@ -21,6 +24,14 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
   const [email, setEmail] = useState("")
   const [address, setAddress] = useState("")
   const [dogs, setDogs] = useState<DogCount>("1")
+  const [referralCode, setReferralCode] = useState("")
+  const [referralStatus, setReferralStatus] = useState<"idle" | "checking" | "valid" | "invalid">("idle")
+  const [referralDiscount, setReferralDiscount] = useState(0)
+  const [referralType, setReferralType] = useState<"flat" | "percent">("flat")
+  const [referralTrialCredit, setReferralTrialCredit] = useState(0)
+  const [referralRequiresProof, setReferralRequiresProof] = useState(false)
+  const [referralIsPartner, setReferralIsPartner] = useState(false)
+  const [referrerLabel, setReferrerLabel] = useState("")
   const [websiteField, setWebsiteField] = useState("")
 
   const [addressSuggestions, setAddressSuggestions] = useState<AddressSuggestion[]>([])
@@ -150,6 +161,48 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
     }
   }
 
+  const handleApplyReferral = async () => {
+    const code = referralCode.trim()
+    if (!code) return
+
+    setReferralStatus("checking")
+
+    try {
+      const res = await fetch("/api/validate-referral", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code }),
+      })
+      const data = await res.json().catch(() => ({ valid: false }))
+
+      if (data.valid) {
+        setReferralStatus("valid")
+        setReferralDiscount(data.discount ?? 0)
+        setReferralType(data.type === "percent" ? "percent" : "flat")
+        setReferralTrialCredit(data.trialCredit ?? 0)
+        setReferralRequiresProof(Boolean(data.requiresProof))
+        setReferralIsPartner(Boolean(data.isPartner))
+        setReferrerLabel(data.referrerLabel ?? "")
+      } else {
+        setReferralStatus("invalid")
+        setReferralDiscount(0)
+        setReferralType("flat")
+        setReferralTrialCredit(0)
+        setReferralRequiresProof(false)
+        setReferralIsPartner(false)
+        setReferrerLabel("")
+      }
+    } catch {
+      setReferralStatus("invalid")
+      setReferralDiscount(0)
+      setReferralType("flat")
+      setReferralTrialCredit(0)
+      setReferralRequiresProof(false)
+      setReferralIsPartner(false)
+      setReferrerLabel("")
+    }
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -176,6 +229,7 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
           email,
           address,
           dogs,
+          referralCode: referralStatus === "valid" ? referralCode.trim() : undefined,
           consent: true,
           website: websiteField,
           locale,
@@ -212,10 +266,10 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
             }`}
           >
             {isFull
-              ? (isFrench ? "Les 10 places sont prises · Liste d'attente" : "All 10 spots are claimed · Waitlist open")
+              ? (isFrench ? "Les 15 places sont prises · Liste d'attente" : "All 15 spots are claimed · Waitlist open")
               : (isFrench
-                  ? `${remaining} sur 10 places disponibles`
-                  : `${remaining} of 10 spots left`)}
+                  ? `${remaining} sur 15 places disponibles`
+                  : `${remaining} of 15 spots left`)}
           </span>
         )}
       </div>
@@ -353,6 +407,59 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
           </div>
         </div>
 
+        <div className="space-y-1">
+          <label htmlFor="referral-code-trial" className="text-sm font-semibold text-gray-700">
+            {isFrench ? "Code de parrainage ou de partenaire (optionnel)" : "Referral or partner code (optional)"}
+          </label>
+          <div className="flex gap-2">
+            <input
+              id="referral-code-trial"
+              type="text"
+              value={referralCode}
+              onChange={(e) => {
+                setReferralCode(e.target.value)
+                setReferralStatus("idle")
+              }}
+              placeholder={isFrench ? "Entrez le code" : "Enter code"}
+              className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm uppercase focus:outline-none focus:ring-2 focus:ring-brand-green"
+            />
+            <Button
+              type="button"
+              onClick={handleApplyReferral}
+              disabled={referralStatus === "checking" || !referralCode.trim()}
+              className="shrink-0 bg-brand-green text-white hover:bg-brand-green-dark"
+            >
+              {referralStatus === "checking" ? "..." : (isFrench ? "Appliquer" : "Apply")}
+            </Button>
+          </div>
+          {referralStatus === "valid" && !referralIsPartner && (
+            <p className="text-sm font-semibold text-brand-green" role="status" aria-live="polite">
+              {isFrench
+                ? `Code appliqué : ${referrerLabel} recevra ${formatDiscountLabel("flat", referralTrialCredit)} de rabais sur sa prochaine facture, juste pour ce parrainage. Si vous devenez client, vous recevrez tous les deux ${formatDiscountLabel(referralType, referralDiscount)} de rabais sur votre prochaine facture.`
+                : `Code applied: ${referrerLabel} gets ${formatDiscountLabel("flat", referralTrialCredit)} off their next bill just for this referral. If you become a customer, you'll both get ${formatDiscountLabel(referralType, referralDiscount)} off your next bill.`}
+            </p>
+          )}
+          {referralStatus === "valid" && referralIsPartner && (
+            <p className="text-sm font-semibold text-brand-green" role="status" aria-live="polite">
+              {isFrench
+                ? `Code appliqué : merci d'utiliser le code partenaire de ${referrerLabel} !`
+                : `Code applied: thanks for using ${referrerLabel}'s partner code!`}
+            </p>
+          )}
+          {referralStatus === "valid" && referralRequiresProof && (
+            <p className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800" role="status" aria-live="polite">
+              {isFrench
+                ? "Ce code necessite une preuve d'adoption ou d'accueil (foster). Nous vous contacterons pour la confirmer."
+                : "This code requires proof of adoption/fostering. We'll follow up to confirm it."}
+            </p>
+          )}
+          {referralStatus === "invalid" && (
+            <p className="text-sm text-red-600" role="alert">
+              {isFrench ? "Code de parrainage invalide." : "That referral code isn't valid."}
+            </p>
+          )}
+        </div>
+
         {/* Consent */}
         <div className="rounded-xl border border-brand-border bg-brand-green-lighter p-4">
           <label className="flex items-start gap-3 text-sm text-gray-700">
@@ -402,8 +509,8 @@ export default function FreeTrialSignup({ locale }: { locale: "en" | "fr" }) {
 
         <p className="text-xs text-gray-500">
           {isFrench
-            ? "Offre limitée à 10 foyers, une place par adresse. 1 visite par semaine pendant 2 semaines, en échange de vos commentaires."
-            : "Limited to 10 households, one spot per address. 1 visit per week for 2 weeks, in exchange for your feedback."}
+            ? "Offre limitée à 15 foyers, une place par adresse. 1 visite par semaine pendant 2 semaines, en échange de vos commentaires."
+            : "Limited to 15 households, one spot per address. 1 visit per week for 2 weeks, in exchange for your feedback."}
         </p>
       </form>
     </div>

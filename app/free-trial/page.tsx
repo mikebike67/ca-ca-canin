@@ -35,14 +35,14 @@ export default function FreeTrialPage() {
         <section className="bg-white px-4 pt-12 pb-6 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-3xl mx-auto text-center">
             <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
-              Only 10 spots available
+              Only 15 spots available
             </span>
             <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
               2 Weeks of Cleanup,<br />
               <span className="text-brand-green">On Us</span>
             </h1>
             <p className="mb-8 text-base text-gray-600 sm:text-xl md:text-2xl">
-              We&rsquo;re picking 10 homeowners in Laval and the North Shore for a free 2-week trial, 1 visit a week, no cost. All we ask in return is honest feedback.
+              We&rsquo;re picking 15 homeowners in Laval and the North Shore for a free 2-week trial, 1 visit a week, no cost. All we ask in return is honest feedback.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
@@ -78,7 +78,7 @@ export default function FreeTrialPage() {
           <div className="max-w-2xl mx-auto reveal-up">
             <div className="text-center mb-8">
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Reserve one of the 10 free spots
+                Reserve one of the 15 free spots
               </h2>
               <p className="text-gray-500">Tell us where to show up and we&rsquo;ll confirm your first visit.</p>
             </div>
@@ -133,11 +133,11 @@ export default function FreeTrialPage() {
             </div>
             <div className="space-y-4">
               {[
-                { q: "What does this actually cost?", a: "Nothing. The trial is 2 full visits, 1 per week for 2 weeks, at no charge for the 10 homeowners we select." },
+                { q: "What does this actually cost?", a: "Nothing. The trial is 2 full visits, 1 per week for 2 weeks, at no charge for the 15 homeowners we select." },
                 { q: "Do I have to continue after the trial?", a: "No. There's no obligation to sign up for paid service afterward. We just ask for honest feedback either way." },
                 { q: "What area is this for?", a: "Laval and the North Shore cities we already serve. If you're outside our service area we'll let you know." },
                 { q: "What kind of feedback do you need?", a: "Just your honest experience, what worked, what didn't, and whether you'd recommend us. A short review helps the most." },
-                { q: "How many spots are left?", a: "The counter above the signup form updates live. Once all 10 are claimed, new signups join a waitlist." },
+                { q: "How many spots are left?", a: "The counter above the signup form updates live. Once all 15 are claimed, new signups join a waitlist." },
               ].map((faq) => (
                 <Card key={faq.q} variant="flat" className="reveal-fade">
                   <CardHeader><CardTitle className="text-lg">{faq.q}</CardTitle></CardHeader>

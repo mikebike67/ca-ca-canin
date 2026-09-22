@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import nodemailer from "nodemailer";
 import type { DogCount } from "@/lib/booking";
+import { lookupReferralCode } from "@/lib/referral";
 
 declare global {
   interface CloudflareEnv {
@@ -25,12 +26,13 @@ type FreeTrialPayload = {
   email: string;
   address: string;
   dogs: string;
+  referralCode?: string;
   consent?: boolean;
   website?: string;
   locale?: "en" | "fr";
 };
 
-const TOTAL_SPOTS = 10;
+const TOTAL_SPOTS = 15;
 const COUNT_KEY = "free-trial:count";
 
 const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
@@ -158,7 +160,7 @@ export async function POST(req: NextRequest) {
     }
 
     const body = (await req.json()) as Partial<FreeTrialPayload>;
-    const { name, phone, email, address, dogs, consent, website, locale } = body;
+    const { name, phone, email, address, dogs, referralCode, consent, website, locale } = body;
 
     if (website) {
       return NextResponse.json({ ok: true, remaining: TOTAL_SPOTS, waitlisted: false, duplicate: false });
@@ -191,6 +193,19 @@ export async function POST(req: NextRequest) {
     if (typeof address !== "string" || address.trim().length < 5 || address.trim().length > 300) {
       return NextResponse.json({ error: "Invalid address." }, { status: 400 });
     }
+
+    const referral = referralCode ? await lookupReferralCode(referralCode) : { valid: false as const };
+    const referralInfo = referral.valid
+      ? {
+          code: referralCode!.trim().toUpperCase(),
+          discount: referral.discount,
+          type: referral.type,
+          requiresProof: referral.requiresProof,
+          isPartner: referral.isPartner,
+          referrerLabel: referral.referrerLabel,
+          trialCredit: referral.trialCredit,
+        }
+      : null;
 
     const kv = await getKv();
     const normalizedAddress = normalizeAddress(address);
@@ -249,11 +264,37 @@ export async function POST(req: NextRequest) {
           : "This address already has a signup on file. This is a repeat submission for the same address.")
       : waitlisted
         ? (isFrench
-            ? "Les 10 places sont deja reservees. Cette personne a ete ajoutee a la liste d'attente."
-            : "All 10 spots are already claimed. This person has been added to the waitlist.")
+            ? "Les 15 places sont deja reservees. Cette personne a ete ajoutee a la liste d'attente."
+            : "All 15 spots are already claimed. This person has been added to the waitlist.")
         : (isFrench
             ? "Nouvelle inscription a l'essai gratuit de 2 semaines."
             : "New signup for the 2-week free trial.");
+
+    const referralDiscountLabel = referralInfo
+      ? referralInfo.type === "percent"
+        ? `${referralInfo.discount}%`
+        : `$${referralInfo.discount.toFixed(2)}`
+      : "";
+    const referralTrialCreditLabel = referralInfo ? `$${referralInfo.trialCredit.toFixed(2)}` : "";
+    const referralTextLine = referralInfo
+      ? `- ${isFrench ? "Code de parrainage" : "Referral code"}: ${referralInfo.code} (${referralInfo.referrerLabel})`
+      : "";
+    const referralAdminTextLine = referralInfo && !referralInfo.isPartner
+      ? `- ${isFrench ? "Credit de parrainage (essai) a verser" : "Trial referral credit owed"}: ${referralTrialCreditLabel} ${isFrench ? "a" : "to"} ${referralInfo.referrerLabel} (${isFrench ? "code" : "code"} ${referralInfo.code}) ${isFrench ? "pour ce parrainage d'essai gratuit" : "for referring this free trial signup"}`
+      : "";
+    const referralFutureAdminLine = referralInfo && !referralInfo.isPartner
+      ? `- ${isFrench ? "Si ce client devient payant" : "If they become a paying customer"}: ${referralDiscountLabel} ${isFrench ? "de plus pour" : "more for"} ${referralInfo.referrerLabel} ${isFrench ? "et" : "and"} ${referralDiscountLabel} ${isFrench ? "pour ce nouveau client, tous deux sur leur prochaine facture (reservation avec le meme code)" : "for this new customer too, both off their next bill (when they book with the same code)"}`
+      : "";
+    const referralProofCustomerLine = referralInfo && referralInfo.requiresProof
+      ? (isFrench
+          ? "Note : ce code sera confirme une fois que vous nous aurez transmis une preuve d'adoption ou d'accueil (foster)."
+          : "Note: this code will be confirmed once you've shared proof of adoption/fostering with us.")
+      : "";
+    const referralProofAdminLine = referralInfo && referralInfo.requiresProof
+      ? (isFrench
+          ? `Preuve requise : cette inscription utilise le code partenaire ${referralInfo.code} (${referralInfo.referrerLabel}). Confirmez la preuve avant d'appliquer le rabais.`
+          : `Proof required: this signup used partner code ${referralInfo.code} (${referralInfo.referrerLabel}). Confirm proof before honoring the discount.`)
+      : "";
 
     const buildText = (isAdmin: boolean) =>
       [
@@ -267,11 +308,48 @@ export async function POST(req: NextRequest) {
         `- ${isFrench ? "Chiens" : "Dogs"}: ${dogsLabel}`,
         `- ${isFrench ? "Telephone" : "Phone"}: ${phone.trim()}`,
         `- ${isFrench ? "Courriel" : "Email"}: ${email.trim()}`,
+        ...(referralTextLine ? [referralTextLine] : []),
+        ...(!isAdmin && referralProofCustomerLine ? [``, referralProofCustomerLine] : []),
+        ...(isAdmin && referralAdminTextLine ? [``, referralAdminTextLine] : []),
+        ...(isAdmin && referralFutureAdminLine ? [referralFutureAdminLine] : []),
+        ...(isAdmin && referralProofAdminLine ? [``, referralProofAdminLine] : []),
         ``,
         isFrench ? `Nous vous contacterons sous peu pour planifier la premiere visite.` : `We'll reach out soon to schedule your first visit.`,
         ``,
         `Ca-Ca Canin`,
       ].join("\n");
+
+    const referralHtmlRow = referralInfo
+      ? `<tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Code de parrainage" : "Referral code"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${referralInfo.code} (${referralInfo.referrerLabel})</td></tr>`
+      : "";
+    const referralAdminCreditHtmlBlock = referralInfo && !referralInfo.isPartner
+      ? `<div style="margin-top:16px; border:1px solid #fbbf24; border-radius:12px; padding:14px; background:#fffbeb;">
+          <p style="margin:0; font-size:14px; color:#92400e; font-weight:600;">
+            ${isFrench ? "Credit de parrainage (essai) a verser" : "Trial referral credit owed"}: ${referralTrialCreditLabel} ${isFrench ? "a" : "to"} ${referralInfo.referrerLabel} (${isFrench ? "code" : "code"} ${referralInfo.code})
+          </p>
+          <p style="margin:4px 0 0; font-size:13px; color:#92400e;">
+            ${isFrench ? "Pour ce parrainage d'essai gratuit, des maintenant." : "For referring this free trial signup, right away."}
+          </p>
+          <p style="margin:10px 0 0; font-size:13px; color:#92400e;">
+            ${isFrench
+              ? `Si ce client devient payant : ${referralDiscountLabel} de plus pour ${referralInfo.referrerLabel}, et ${referralDiscountLabel} pour ce nouveau client, tous deux sur leur prochaine facture (reservation avec le meme code).`
+              : `If this becomes a paying customer: ${referralDiscountLabel} more for ${referralInfo.referrerLabel}, and ${referralDiscountLabel} for this new customer too, both off their next bill (when they book with the same code).`}
+          </p>
+        </div>`
+      : "";
+    const referralProofAdminHtmlBlock = referralInfo && referralInfo.requiresProof
+      ? `<div style="margin-top:16px; border:1px solid #fbbf24; border-radius:12px; padding:14px; background:#fffbeb;">
+          <p style="margin:0; font-size:14px; color:#92400e; font-weight:600;">
+            ${isFrench ? "Preuve requise" : "Proof required"}
+          </p>
+          <p style="margin:4px 0 0; font-size:13px; color:#92400e;">
+            ${referralProofAdminLine}
+          </p>
+        </div>`
+      : "";
+    const referralProofCustomerHtml = referralInfo && referralInfo.requiresProof
+      ? `<p style="margin:16px 0 0; font-size:14px; line-height:1.6; color:#4b5563;">${referralProofCustomerLine}</p>`
+      : "";
 
     const buildHtml = (isAdmin: boolean) => `
       <div style="font-family: Arial, sans-serif; background:#f7faf7; padding:24px; color:#1f2937;">
@@ -292,8 +370,12 @@ export async function POST(req: NextRequest) {
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Chiens" : "Dogs"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${dogsLabel}</td></tr>
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Telephone" : "Phone"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${phone.trim()}</td></tr>
                 <tr><td style="padding:8px 0; color:#6b7280;">${isFrench ? "Courriel" : "Email"}</td><td style="padding:8px 0; text-align:right; font-weight:600;">${email.trim()}</td></tr>
+                ${referralHtmlRow}
               </table>
             </div>
+            ${isAdmin ? referralAdminCreditHtmlBlock : ""}
+            ${isAdmin ? referralProofAdminHtmlBlock : ""}
+            ${!isAdmin ? referralProofCustomerHtml : ""}
             <p style="margin:20px 0 0; font-size:15px; line-height:1.6; color:#4b5563;">
               ${isFrench ? "Nous vous contacterons sous peu pour planifier la premiere visite." : "We'll be in touch soon to schedule your first visit."}
             </p>

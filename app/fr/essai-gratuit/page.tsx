@@ -35,14 +35,14 @@ export default function EssaiGratuitPage() {
         <section className="bg-white px-4 pt-12 pb-6 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-3xl mx-auto text-center">
             <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
-              Seulement 10 places disponibles
+              Seulement 15 places disponibles
             </span>
             <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
               2 semaines de nettoyage,<br />
               <span className="text-brand-green">gratuites</span>
             </h1>
             <p className="mb-8 text-base text-gray-600 sm:text-xl md:text-2xl">
-              Nous choisissons 10 propriétaires à Laval et sur la Rive-Nord pour un essai gratuit de 2 semaines, 1 visite par semaine, sans frais. En échange, on vous demande simplement vos commentaires honnêtes.
+              Nous choisissons 15 propriétaires à Laval et sur la Rive-Nord pour un essai gratuit de 2 semaines, 1 visite par semaine, sans frais. En échange, on vous demande simplement vos commentaires honnêtes.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
               <Link
@@ -78,7 +78,7 @@ export default function EssaiGratuitPage() {
           <div className="max-w-2xl mx-auto reveal-up">
             <div className="text-center mb-8">
               <h2 className="font-heading text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
-                Réservez l&rsquo;une des 10 places gratuites
+                Réservez l&rsquo;une des 15 places gratuites
               </h2>
               <p className="text-gray-500">Dites-nous où passer et on confirme votre première visite.</p>
             </div>
@@ -133,11 +133,11 @@ export default function EssaiGratuitPage() {
             </div>
             <div className="space-y-4">
               {[
-                { q: "Est-ce que ça coûte vraiment quelque chose?", a: "Non. L'essai comprend 2 visites complètes, 1 par semaine pendant 2 semaines, sans frais pour les 10 foyers sélectionnés." },
+                { q: "Est-ce que ça coûte vraiment quelque chose?", a: "Non. L'essai comprend 2 visites complètes, 1 par semaine pendant 2 semaines, sans frais pour les 15 foyers sélectionnés." },
                 { q: "Dois-je continuer après l'essai?", a: "Non. Il n'y a aucune obligation de s'abonner au service payant par la suite. On demande simplement vos commentaires honnêtes, peu importe votre décision." },
                 { q: "Quelle est la zone desservie?", a: "Laval et les municipalités de la Rive-Nord que nous desservons déjà. Si vous êtes hors zone, on vous le dira." },
                 { q: "Quel genre de commentaires avez-vous besoin?", a: "Simplement votre expérience honnête : ce qui a bien fonctionné, ce qui pourrait être amélioré, et si vous nous recommanderiez. Un court avis nous aide énormément." },
-                { q: "Combien de places reste-t-il?", a: "Le compteur au-dessus du formulaire se met à jour en temps réel. Une fois les 10 places prises, les nouvelles inscriptions rejoignent une liste d'attente." },
+                { q: "Combien de places reste-t-il?", a: "Le compteur au-dessus du formulaire se met à jour en temps réel. Une fois les 15 places prises, les nouvelles inscriptions rejoignent une liste d'attente." },
               ].map((faq) => (
                 <Card key={faq.q} variant="flat" className="reveal-fade">
                   <CardHeader><CardTitle className="text-lg">{faq.q}</CardTitle></CardHeader>

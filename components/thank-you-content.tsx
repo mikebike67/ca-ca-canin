@@ -64,7 +64,7 @@ const leadTypes = {
     en: {
       label: "Free trial waitlist",
       title: "You're on the waitlist.",
-      body: "All 10 free trial spots are currently claimed. We've added you to the waitlist and will reach out if a spot opens up.",
+      body: "All 15 free trial spots are currently claimed. We've added you to the waitlist and will reach out if a spot opens up.",
       next: "Didn't receive it? Check your junk folder.",
       cta: "Back to home",
       ctaHref: "/",
@@ -72,7 +72,7 @@ const leadTypes = {
     fr: {
       label: "Liste d'attente de l'essai gratuit",
       title: "Vous etes sur la liste d'attente.",
-      body: "Les 10 places de l'essai gratuit sont actuellement prises. Nous vous avons ajoute a la liste d'attente et vous contacterons si une place se libere.",
+      body: "Les 15 places de l'essai gratuit sont actuellement prises. Nous vous avons ajoute a la liste d'attente et vous contacterons si une place se libere.",
       next: "Vous ne l'avez pas recu? Verifiez vos courriels indesirables.",
       cta: "Retour a l'accueil",
       ctaHref: "/fr",

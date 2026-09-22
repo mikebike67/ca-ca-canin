@@ -4,6 +4,7 @@ declare global {
   interface CloudflareEnv {
     REFERRAL_CODES?: string;
     REFERRAL_DISCOUNT_AMOUNT?: string;
+    REFERRAL_TRIAL_CREDIT_AMOUNT?: string;
   }
 }
 
@@ -39,6 +40,7 @@ export async function getReferralConfig() {
 
   const rawCodes = cfEnv?.REFERRAL_CODES ?? process.env.REFERRAL_CODES ?? "{}";
   const rawDiscount = cfEnv?.REFERRAL_DISCOUNT_AMOUNT ?? process.env.REFERRAL_DISCOUNT_AMOUNT ?? "0";
+  const rawTrialCredit = cfEnv?.REFERRAL_TRIAL_CREDIT_AMOUNT ?? process.env.REFERRAL_TRIAL_CREDIT_AMOUNT ?? "5";
 
   let codes: Record<string, ReferralCodeEntry> = {};
   try {
@@ -51,10 +53,12 @@ export async function getReferralConfig() {
   }
 
   const discount = Number(rawDiscount);
+  const trialCredit = Number(rawTrialCredit);
 
   return {
     codes,
     discount: Number.isFinite(discount) ? discount : 0,
+    trialCredit: Number.isFinite(trialCredit) ? trialCredit : 5,
   };
 }
 
@@ -90,7 +94,7 @@ function normalizeCodeEntry(entry: ReferralCodeEntry, globalDiscount: number): N
 }
 
 export async function lookupReferralCode(code: string) {
-  const { codes, discount: globalDiscount } = await getReferralConfig();
+  const { codes, discount: globalDiscount, trialCredit } = await getReferralConfig();
   const normalized = code.trim().toUpperCase();
 
   const match = Object.keys(codes).find((key) => key.trim().toUpperCase() === normalized);
@@ -112,6 +116,7 @@ export async function lookupReferralCode(code: string) {
     recurring: config.recurring,
     requiresProof: config.requiresProof,
     isPartner: config.isPartner,
+    trialCredit,
     referrerLabel: config.isPartner ? config.label : formatReferrerLabel(config.label),
   };
 }

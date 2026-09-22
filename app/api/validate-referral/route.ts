@@ -58,6 +58,9 @@ export async function POST(req: NextRequest) {
       type: result.type,
       recurring: result.recurring,
       requiresProof: result.requiresProof,
+      isPartner: result.isPartner,
+      referrerLabel: result.referrerLabel,
+      trialCredit: result.trialCredit,
     });
   } catch (error) {
     console.error("Referral validation error:", error);
