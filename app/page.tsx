@@ -87,15 +87,14 @@ export default function Page() {
         <section className="bg-white px-4 pt-12 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
           <div className="max-w-7xl mx-auto">
             <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
-              {/* RESPONSIVE: hide the decorative hero image on smaller screens to keep the mobile hero compact and focused on the CTA. */}
-              <div className="hidden justify-center lg:flex lg:justify-start">
+              <div className="flex justify-center lg:justify-start">
                 <Image
                   src="/images/hero-photo-en.jpg"
                   alt="Michael with his dog"
                   width={1200}
                   height={900}
                   priority
-                  sizes="(min-width: 1024px) 34rem, 0px"
+                  sizes="(min-width: 1024px) 34rem, (min-width: 640px) 30rem, 21rem"
                   className="relative z-10 mx-auto h-auto w-full max-w-[21rem] rounded-3xl object-cover shadow-xl sm:max-w-[30rem] lg:max-w-[34rem]"
                 />
               </div>
