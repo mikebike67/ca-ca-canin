@@ -26,7 +26,7 @@ export default function Page() {
       >
         Passer au contenu
       </a>
-      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" showAnnouncement />
+      <SiteHeader locale="fr" altHref="/" ctaLabel="Vérifier ma disponibilité" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script
@@ -89,33 +89,26 @@ export default function Page() {
             <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
               {/* RESPONSIVE: hide the decorative hero image on smaller screens to keep the mobile hero compact and focused on the CTA. */}
               <div className="hidden justify-center lg:flex lg:justify-start">
-                <div className="relative w-full max-w-[23rem] overflow-hidden sm:max-w-[30rem] lg:max-w-[38rem]">
-                  <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
-                  <Image
-                    src="/images/hero-dog.png"
-                    alt="Chien heureux assis dans une cour propre"
-                    width={1200}
-                    height={1200}
-                    priority
-                    sizes="(min-width: 1024px) 34rem, 0px"
-                    className="relative z-10 mx-auto h-auto w-full max-w-[21rem] -translate-y-6 object-contain sm:max-w-[30rem] sm:-translate-y-8 lg:max-w-[34rem] lg:-translate-y-10"
-                  />
-                  <div
-                    className="absolute inset-x-0 bottom-0 z-20 h-14 bg-white sm:h-16 lg:h-20"
-                    style={{ clipPath: "ellipse(70% 100% at 50% 100%)" }}
-                  />
-                </div>
+                <Image
+                  src="/images/hero-photo-fr.jpg"
+                  alt="Michael avec son chien"
+                  width={1200}
+                  height={900}
+                  priority
+                  sizes="(min-width: 1024px) 34rem, 0px"
+                  className="relative z-10 mx-auto h-auto w-full max-w-[21rem] rounded-3xl object-cover shadow-xl sm:max-w-[30rem] lg:max-w-[34rem]"
+                />
               </div>
-              <div className="text-center lg:text-left">
+              <div className="text-center">
                 <h1 className={`mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl`}>
                   Ramassage de déjections canines<br />
                   <span className="text-brand-green">à Laval et sur la Rive-Nord</span>
                 </h1>
-                <p className="mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
+                <p className="mx-auto mb-8 max-w-3xl text-base text-gray-600 sm:text-xl md:text-2xl lg:max-w-2xl">
                   Obtenez des tarifs clairs, un devis rapide et un service régulier de ramassage à Laval et sur la Rive-Nord. Choisissez votre ville, vérifiez la disponibilité et évitez que la corvée s'accumule.
                 </p>
                 {/* RESPONSIVE: keep CTA buttons full-width on phones so they are easy to tap. */}
-                <div className="flex flex-col items-stretch justify-center gap-4 lg:items-start">
+                <div className="flex flex-col items-stretch justify-center gap-4 md:flex-row md:items-center">
                   <Button
                     size="lg"
                     className="w-full rounded-full px-6 py-4 text-base sm:w-[22rem] sm:px-8 sm:py-6 sm:text-lg"
@@ -129,13 +122,13 @@ export default function Page() {
                     </Link>
                   </Button>
                 </div>
-                <p className="mt-3 text-sm font-medium text-gray-600 lg:max-w-md">
+                <p className="mx-auto mt-3 text-sm font-medium text-gray-600 lg:max-w-md">
                   Aucun contrat. Aucun va-et-vient inutile. Juste un devis rapide et une cour propre.
                 </p>
-                <p className="mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
+                <p className="mx-auto mt-2 text-sm font-semibold text-brand-green lg:max-w-md">
                   La plupart des demandes sont confirmées en 1 jour ouvrable.
                 </p>
-                <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap lg:justify-start">
+                <div className="mt-8 flex flex-col items-center justify-center gap-3 text-sm text-gray-600 sm:flex-row sm:flex-wrap">
                   <div className="flex items-center gap-2 text-center sm:text-left">
                     <CheckCircle2 className="h-4 w-4 text-brand-green" />
                   Aucun contrat
@@ -149,7 +142,7 @@ export default function Page() {
                   Textos avant l’arrivée
                   </div>
                 </div>
-                <div className="mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
+                <div className="mx-auto mt-6 grid gap-3 md:grid-cols-3 lg:max-w-2xl">
                   {[
                     "Service Laval et Rive-Nord",
                     "Réponse habituelle en 1 jour ouvrable",

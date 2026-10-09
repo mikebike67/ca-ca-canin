@@ -71,6 +71,18 @@ const testimonials: Testimonial[] = [
     text: "Super bon service ! Les prix sont très abordables. Michael est super gentil aussi. Je recommande grandement ! :)",
     source: 'Google',
   },
+  {
+    name: 'Emily B.',
+    location: 'Saint-Eustache',
+    text: "J'ai été super satisfaite de son service! J'ai deux chiens et la cour était toujours propre après son passage. Il travaille de façon très professionnelle et je vous le recommande sans hésiter. C'est certain que je vais faire appel à ses services au printemps! 😊",
+    source: 'Google',
+  },
+  {
+    name: 'Charlie L.',
+    location: 'Laval',
+    text: "Super expérience. Rapide, professionnel et consciencieux de la sécurité sanitaire 🙂 Je recommande à 100%",
+    source: 'Google',
+  },
 ]
 
 const copy = {

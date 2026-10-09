@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import SiteHeader from "@/components/site-header"
 import SiteFooter from "@/components/site-footer"
 import Link from "next/link"
+import Image from "next/image"
 import dynamic from "next/dynamic"
 import { useScrollReveal } from "@/hooks/use-scroll-reveal"
 import { CheckCircle2, MessageSquareHeart, CalendarClock, Camera, Bell } from "lucide-react"
@@ -33,41 +34,56 @@ export default function EssaiGratuitPage() {
 
         {/* Hero */}
         <section className="bg-white px-4 pt-12 pb-6 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
-          <div className="max-w-3xl mx-auto text-center">
-            <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
-              Seulement 15 places disponibles
-            </span>
-            <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
-              2 semaines de nettoyage,<br />
-              <span className="text-brand-green">gratuites</span>
-            </h1>
-            <p className="mb-8 text-base text-gray-600 sm:text-xl md:text-2xl">
-              Nous choisissons 15 propriétaires à Laval et sur la Rive-Nord pour un essai gratuit de 2 semaines, 1 visite par semaine, sans frais. En échange, on vous demande simplement vos commentaires honnêtes.
-            </p>
-            <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              <Link
-                href="#signup"
-                data-cta="hero-signup"
-                className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg inline-flex items-center justify-center font-semibold transition-colors"
-              >
-                Réserver ma place
-              </Link>
-            </div>
-            <p className="mt-3 text-sm font-medium text-gray-600">
-              Aucun frais. Aucune obligation. Juste votre cour, propre, pendant 2 semaines.
-            </p>
-            <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="h-4 w-4 text-brand-green" />
-                Sans contrat
+          <div className="max-w-7xl mx-auto">
+            <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
+              <div className="hidden justify-center lg:flex lg:justify-start">
+                <Image
+                  src="/images/hero-photo-fr.jpg"
+                  alt="Michael avec son chien"
+                  width={1200}
+                  height={900}
+                  priority
+                  sizes="(min-width: 1024px) 34rem, 0px"
+                  className="relative z-10 mx-auto h-auto w-full max-w-[21rem] rounded-3xl object-cover shadow-xl sm:max-w-[30rem] lg:max-w-[34rem]"
+                />
               </div>
-              <div className="flex items-center gap-2">
-                <Camera className="h-4 w-4 text-brand-green" />
-                Photo de la cour envoyée
-              </div>
-              <div className="flex items-center gap-2">
-                <Bell className="h-4 w-4 text-brand-green" />
-                Texto avant l&rsquo;arrivée
+              <div className="max-w-3xl mx-auto text-center lg:max-w-none lg:mx-0">
+                <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-50 px-4 py-1.5 text-sm font-semibold text-amber-700 mb-5">
+                  Seulement 15 places disponibles
+                </span>
+                <h1 className="mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl">
+                  2 semaines de nettoyage,<br />
+                  <span className="text-brand-green">gratuites</span>
+                </h1>
+                <p className="mb-8 text-base text-gray-600 sm:text-xl md:text-2xl">
+                  Nous choisissons 15 propriétaires à Laval et sur la Rive-Nord pour un essai gratuit de 2 semaines, 1 visite par semaine, sans frais. En échange, on vous demande simplement vos commentaires honnêtes.
+                </p>
+                <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+                  <Link
+                    href="#signup"
+                    data-cta="hero-signup"
+                    className="w-full rounded-full bg-brand-green px-6 py-4 text-base text-white hover:bg-brand-green-dark sm:w-auto sm:px-8 sm:py-6 sm:text-lg inline-flex items-center justify-center font-semibold transition-colors"
+                  >
+                    Réserver ma place
+                  </Link>
+                </div>
+                <p className="mt-3 text-sm font-medium text-gray-600">
+                  Aucun frais. Aucune obligation. Juste votre cour, propre, pendant 2 semaines.
+                </p>
+                <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <CheckCircle2 className="h-4 w-4 text-brand-green" />
+                    Sans contrat
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Camera className="h-4 w-4 text-brand-green" />
+                    Photo de la cour envoyée
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Bell className="h-4 w-4 text-brand-green" />
+                    Texto avant l&rsquo;arrivée
+                  </div>
+                </div>
               </div>
             </div>
           </div>

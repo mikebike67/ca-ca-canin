@@ -26,7 +26,7 @@ export default function Page() {
       >
         Skip to content
       </a>
-      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" showAnnouncement />
+      <SiteHeader locale="en" altHref="/fr" ctaLabel="Check Availability" />
 
       <main id="main-content" className="flex-grow scroll-mt-12 pt-24">
         <script
@@ -89,22 +89,15 @@ export default function Page() {
             <div className="grid items-center gap-8 lg:grid-cols-[minmax(280px,0.95fr)_minmax(0,1fr)] lg:gap-10">
               {/* RESPONSIVE: hide the decorative hero image on smaller screens to keep the mobile hero compact and focused on the CTA. */}
               <div className="hidden justify-center lg:flex lg:justify-start">
-                <div className="relative w-full max-w-[23rem] overflow-hidden sm:max-w-[30rem] lg:max-w-[38rem]">
-                  <div className="absolute inset-x-8 bottom-8 h-12 rounded-full bg-brand-brown/15 blur-3xl sm:inset-x-10 sm:bottom-10 sm:h-14 lg:inset-x-12" />
-                  <Image
-                    src="/images/hero-dog.png"
-                    alt="Happy dog sitting in a clean yard"
-                    width={1200}
-                    height={1200}
-                    priority
-                    sizes="(min-width: 1024px) 34rem, 0px"
-                    className="relative z-10 mx-auto h-auto w-full max-w-[21rem] -translate-y-6 object-contain sm:max-w-[30rem] sm:-translate-y-8 lg:max-w-[34rem] lg:-translate-y-10"
-                  />
-                  <div
-                    className="absolute inset-x-0 bottom-0 z-20 h-14 bg-white sm:h-16 lg:h-20"
-                    style={{ clipPath: "ellipse(70% 100% at 50% 100%)" }}
-                  />
-                </div>
+                <Image
+                  src="/images/hero-photo-en.jpg"
+                  alt="Michael with his dog"
+                  width={1200}
+                  height={900}
+                  priority
+                  sizes="(min-width: 1024px) 34rem, 0px"
+                  className="relative z-10 mx-auto h-auto w-full max-w-[21rem] rounded-3xl object-cover shadow-xl sm:max-w-[30rem] lg:max-w-[34rem]"
+                />
               </div>
               <div className="text-center">
                 <h1 className={`mb-5 font-heading text-4xl font-bold text-gray-900 sm:text-5xl md:mb-6 md:text-6xl`}>
